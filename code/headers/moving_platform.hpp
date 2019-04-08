@@ -5,7 +5,7 @@
 namespace r2d2::moving_platform {
 
     class moving_platform_c : public base_module_c {
-    private:
+    protected:
         // vars
         int8_t speed, angle;
 
