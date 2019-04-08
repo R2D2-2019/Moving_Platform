@@ -6,6 +6,6 @@ int main(void) {
     hwlib::wait_ms(1000);
     for (;;){
         hwlib::cout << "this works via arduino";
-        hwlib::wait_ms(1000);
+        hwlib::wait_ms(5000);
     }
 }
