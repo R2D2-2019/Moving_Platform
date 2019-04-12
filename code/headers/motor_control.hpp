@@ -5,7 +5,7 @@ namespace r2d2::moving_platform {
 
     class motor_control_c {
     protected:
-        signed int8_t speed;
+        int8_t speed;
 
     public:
         virtual void set_speed(const int8_t &_speed) = 0;
