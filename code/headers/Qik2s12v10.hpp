@@ -13,7 +13,7 @@ namespace r2d2::moving_platform {
 	/// The qik2s12v10 is a motor controller that can control two brushed DC motors. The qik2s12v10, and this class, can control the speed and brakes of the individual motors.
 	/// The qik2s12v10 can also set and return its configuration parameter, which includes things like Acceleration rate and PWM resolution and frequency.
 	/// Furthermore, the qik2s12v10 can check for errors and return these.
-    class Qik2s12v10 {
+	class Qik2s12v10 {
 	private:
 		/// @brief
 		/// Pin that will be used to receive information from the UART TTL communication with the qik2s12v10.
@@ -25,7 +25,7 @@ namespace r2d2::moving_platform {
 		/// Pin that can be used to reset the qik2s12v10.
 		hwlib::pin_out& resetPin;
 		
-    public:
+	public:
 		/// @brief
 		/// Qik2s12v10 constructor.
 		/// @details
@@ -38,15 +38,15 @@ namespace r2d2::moving_platform {
 		/// @brief
 		/// Sets the speed of both motors.
 		/// @param _speed The speed of both motors. This value can be between -128 and 127, where -128 is full power backwards, 0 is no power and 127 is full power forward.
-        void set_speed(const int8_t &_speed);
+		void set_speed(const int8_t &_speed);
 		/// @brief
 		/// Sets the speed of the M0 motor.
 		/// @param _speed The speed of the motor. This value can be between -128 and 127, where -128 is full power backwards, 0 is no power and 127 is full power forward.
-        void setM0Speed(const int8_t &_speed);
+        	void setM0Speed(const int8_t &_speed);
 		/// @brief
 		/// Sets the speed of the M1 motor.
 		/// @param _speed The speed of the motor. This value can be between -128 and 127, where -128 is full power backwards, 0 is no power and 127 is full power forward.
-        void setM1Speed(const int8_t &_speed);
+        	void setM1Speed(const int8_t &_speed);
 		
 		/// @brief
 		/// Initializes the qik2s12v10 by resetting it and then setting the baud rate.
