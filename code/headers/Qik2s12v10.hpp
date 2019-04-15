@@ -2,6 +2,7 @@
 
 #include "hwlib.hpp"
 #include "motor_control.hpp"
+#include <hardware_usart.hpp>
 
 /// @file
 
@@ -15,15 +16,8 @@ namespace r2d2::moving_platform {
 	/// Furthermore, the qik2s12v10 can check for errors and return these.
     class Qik2s12v10 {
 	private:
-		/// @brief
-		/// Pin that will be used to receive information from the UART TTL communication with the qik2s12v10.
-		hwlib::pin_in& receivePin;
-		/// @brief
-		/// Pin that will be used to send information to the qik2s12v10 using UART TTL communication.
-		hwlib::pin_out& transmitPin;
-		/// @brief
-		/// Pin that can be used to reset the qik2s12v10.
-		hwlib::pin_out& resetPin;
+		hwlib::pin_out* resetPin;
+		r2d2::hardware_usart_c usart_bus;
 		
     public:
 		/// @brief
@@ -33,7 +27,7 @@ namespace r2d2::moving_platform {
 		/// @param _receivePin Pin that will be used to receive information from the UART TTL communication with the qik2s12v10.
 		/// @param _transmitPin Pin that will be used to send information to the qik2s12v10 using UART TTL communication.
 		/// @param _resetPin Pin that can be used to reset the qik2s12v10.
-		Qik2s12v10(hwlib::pin_in& _receivePin, hwlib::pin_out& _transmitPin, hwlib::pin_out& _resetPin);
+		Qik2s12v10(r2d2::uart_ports_c uart_port, unsigned int baudRate, hwlib::pin_out* _resetPin);
 		
 		/// @brief
 		/// Sets the speed of both motors.
@@ -51,7 +45,7 @@ namespace r2d2::moving_platform {
 		/// @brief
 		/// Initializes the qik2s12v10 by resetting it and then setting the baud rate.
 		/// @param baudRate The baud rate that the Qik2s12v10 will use in its UART TTL serial communication in Bps.
-		void init(const long& baudRate);
+		void init();
 		/// @brief
 		/// Sets the brake for the M0 motor.
 		/// @param brake The amount of brake that will be applied to the motor, in the range [0,128] where 0 is no brake and 127 is full brake.

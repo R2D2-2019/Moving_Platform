@@ -1,12 +1,12 @@
 #include "hwlib.hpp"
 #include "Qik2s12v10.hpp"
+#include <hardware_usart.hpp>
 
 namespace r2d2::moving_platform {
 
-	Qik2s12v10::Qik2s12v10(hwlib::pin_in& _receivePin, hwlib::pin_out& _transmitPin, hwlib::pin_out& _resetPin):
-		receivePin(_receivePin),
-		transmitPin(_transmitPin),
-		resetPin(_resetPin){}
+	Qik2s12v10::Qik2s12v10(r2d2::uart_ports_c uart_port, unsigned int baudRate, hwlib::pin_out* _resetPin):
+		resetPin(_resetPin),
+		usart_bus(baudRate, uart_port){}
 	
 	void Qik2s12v10::set_speed(const int8_t &_speed){
 		
@@ -18,8 +18,15 @@ namespace r2d2::moving_platform {
 		
 	}
 	
-	void Qik2s12v10::init(const long& baudRate){
-		
+	void Qik2s12v10::init(){
+		// reset the qik 2s12v10
+		resetPin->write(0);
+		hwlib::wait_ms(1);
+		resetPin->write(1);
+		hwlib::wait_ms(10);
+
+		// setup the uart communication
+		usart_bus << 0xAA;
 	}
 	void Qik2s12v10::setM0Break(const unsigned char& brake){
 		
