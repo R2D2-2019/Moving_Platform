@@ -36,11 +36,11 @@ namespace r2d2::moving_platform {
 		/// @brief
 		/// Sets the speed of the M0 motor.
 		/// @param _speed The speed of the motor. This value can be between -128 and 127, where -128 is full power backwards, 0 is no power and 127 is full power forward.
-        	void setM0Speed(const int8_t &_speed);
+        void setM0Speed(const int8_t &_speed);
 		/// @brief
 		/// Sets the speed of the M1 motor.
 		/// @param _speed The speed of the motor. This value can be between -128 and 127, where -128 is full power backwards, 0 is no power and 127 is full power forward.
-        	void setM1Speed(const int8_t &_speed);
+        void setM1Speed(const int8_t &_speed);
 		
 		/// @brief
 		/// Initializes the qik2s12v10 by resetting it and then setting the baud rate.
@@ -49,15 +49,15 @@ namespace r2d2::moving_platform {
 		/// @brief
 		/// Sets the brake for the M0 motor.
 		/// @param brake The amount of brake that will be applied to the motor, in the range [0,128] where 0 is no brake and 127 is full brake.
-		void setM0Break(const unsigned char& brake);
+		void setM0Brake(const unsigned char& brake);
 		/// @brief
 		/// Sets the brake for the M1 motor.
 		/// @param brake The amount of brake that will be applied to the motor, in the range [0,128] where 0 is no brake and 127 is full brake.
-		void setM1Break(const unsigned char& brake);
+		void setM1Brake(const unsigned char& brake);
 		/// @brief
 		/// Sets the brake for both motors.
 		/// @param brake The amount of brake that will be applied to the motors, in the range [0,128] where 0 is no brake and 127 is full brake.
-		void setBreaks(const unsigned char& brake);
+		void setBrakes(const unsigned char& brake);
 		
 		/// @brief
 		/// Returns the errors that the qik2s12v10 has detected since this function was last used. The meaning of each bit can be found here:

@@ -27,14 +27,27 @@ namespace r2d2::moving_platform {
 
 		// setup the uart communication
 		usart_bus << 0xAA;
-	}
-	void Qik2s12v10::setM0Break(const unsigned char& brake){
+
+		// for testing
+		char tmp;
+		while(usart_bus.available()){tmp = usart_bus.receive();} // clear the buffer
+		hwlib::cout << "requesting firmware version\n";
+		hwlib::wait_ms(1);
+		usart_bus << 0x81; // send request
+		hwlib::wait_ms(1);
+		hwlib::cout << "waiting for firmware version\n";
+		while(!usart_bus.available()){} // wait for answer
+		hwlib::cout << "firmware version:";
+		hwlib::cout << usart_bus.receive() << '\n'; // print answer
 		
 	}
-	void Qik2s12v10::setM1Break(const unsigned char& brake){
+	void Qik2s12v10::setM0Brake(const unsigned char& brake){
 		
 	}
-	void Qik2s12v10::setBreaks(const unsigned char& brake){
+	void Qik2s12v10::setM1Brake(const unsigned char& brake){
+		
+	}
+	void Qik2s12v10::setBrakes(const unsigned char& brake){
 		
 	}
 	
