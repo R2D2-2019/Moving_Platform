@@ -10,12 +10,14 @@ namespace r2d2::moving_platform {
 	const uint8_t Qik2s12v10::qikMotorM0SetReverse = 0x8A;
 	const uint8_t Qik2s12v10::qikMotorM1SetForward = 0x8C;
 	const uint8_t Qik2s12v10::qikMotorM1SetReverse = 0x8E;
+	const uint8_t Qik2s12v10::qikGetConfigParameter = 0x83;
 
 	Qik2s12v10::Qik2s12v10(r2d2::uart_ports_c uart_port, unsigned int baudRate, hwlib::pin_out* _resetPin):
 		resetPin(_resetPin),
 		usart_bus(baudRate, uart_port){}
 
 	void Qik2s12v10::set_speed(const int8_t &_speed){
+		// todo: depending op the motor configuration, 127 may only be half power, instead of full power
 		// todo: change the speed variable to the actual speed
 		uint8_t speedByte = 0;
 		if(_speed >= 0){
@@ -29,6 +31,8 @@ namespace r2d2::moving_platform {
 		}
 	}
 	void Qik2s12v10::setM0Speed(const int8_t &_speed){
+		// todo: depending op the motor configuration, 127 may only be half power, instead of full power
+		// todo: change the speed variable to the actual speed
 		uint8_t speedByte = 0;
 		if(_speed >= 0){
 			speedByte = _speed;
@@ -39,7 +43,16 @@ namespace r2d2::moving_platform {
 		}
 	}
 	void Qik2s12v10::setM1Speed(const int8_t &_speed){
-
+		// todo: depending op the motor configuration, 127 may only be half power, instead of full power
+		// todo: change the speed variable to the actual speed
+		uint8_t speedByte = 0;
+		if(_speed >= 0){
+			speedByte = _speed;
+			usart_bus << qikMotorM1SetForward << speedByte;
+		}else{
+			speedByte = _speed + 127;
+			usart_bus << qikMotorM1SetReverse << speedByte;
+		}
 	}
 
 	void Qik2s12v10::init(){
@@ -53,8 +66,7 @@ namespace r2d2::moving_platform {
 		usart_bus << qikAutodetectBaudRate;
 
 		// for testing
-		char tmp;
-		while(usart_bus.available()){tmp = usart_bus.receive();} // clear the buffer
+		while(!usart_bus.available()){usart_bus.receive();} // clear the buffer
 		hwlib::cout << "requesting firmware version\n";
 		hwlib::wait_ms(1);
 		usart_bus << qikRequestFirmwareversion; // send request
@@ -79,7 +91,10 @@ namespace r2d2::moving_platform {
 		return 0;
 	}
 	uint8_t Qik2s12v10::getConfigurationParameter(const uint8_t& parameter){
-		return 0;
+		while(!usart_bus.available()){usart_bus.receive();} // clear the buffer
+		usart_bus << qikGetConfigParameter << parameter; // send request
+		while(!usart_bus.available()){} // wait for answer
+		return usart_bus.receive(); // return answer
 	}
 	void Qik2s12v10::setConfigurationParameter(const uint8_t& parameter, const uint8_t& value){
 
