@@ -55,40 +55,40 @@ namespace r2d2::moving_platform {
 		/// @brief
 		/// Sets the brake for the M0 motor.
 		/// @param brake The amount of brake that will be applied to the motor, in the range [0,128] where 0 is no brake and 127 is full brake.
-		void setM0Brake(const unsigned char& brake);
+		void setM0Brake(const uint8_t& brake);
 		/// @brief
 		/// Sets the brake for the M1 motor.
 		/// @param brake The amount of brake that will be applied to the motor, in the range [0,128] where 0 is no brake and 127 is full brake.
-		void setM1Brake(const unsigned char& brake);
+		void setM1Brake(const uint8_t& brake);
 		/// @brief
 		/// Sets the brake for both motors.
 		/// @param brake The amount of brake that will be applied to the motors, in the range [0,128] where 0 is no brake and 127 is full brake.
-		void setBrakes(const unsigned char& brake);
+		void setBrakes(const uint8_t& brake);
 		
 		/// @brief
 		/// Returns the errors that the qik2s12v10 has detected since this function was last used. The meaning of each bit can be found here:
 		/// https://www.pololu.com/docs/0J29/5.c
-		unsigned char getError();
+		uint8_t getError();
 		/// @brief
 		/// Returns the value that the parameter specified by parameter currently has.
 		/// @param parameter Specifies the parameter that should be returned. The parameters can be found here:
 		/// https://www.pololu.com/docs/0J29/5.a
-		unsigned char getConfigurationParameter(const unsigned char& parameter);
+		uint8_t getConfigurationParameter(const uint8_t& parameter);
 		/// @brief
 		/// Sets the value of the configurationParameter specified by parameter.
 		/// @param parameter Specifies the parameter that should be set. The parameters can be found here:
 		/// https://www.pololu.com/docs/0J29/5.a
 		/// @param value The value that the configurationParameter should be set to.
-		void setConfigurationParameter(const unsigned char& parameter, const unsigned char& value);
+		void setConfigurationParameter(const uint8_t& parameter, const uint8_t& value);
 		
 		/// @brief
 		/// Returns the raw reading from motor M0 that indicates how much current flows through the motor at average over the last 5ms.
 		/// This reading is raw, so not converted to milliampere.
-		unsigned char getM0Current();
+		uint8_t getM0Current();
 		/// @brief
 		/// Returns the raw reading from motor M1 that indicates how much current flows through the motor at average over the last 5ms.
 		/// This reading is raw, so not converted to milliampere.
-		unsigned char getM1Current();
+		uint8_t getM1Current();
 		/// @brief
 		/// This function uses the raw reading from motor M0 to estimate how much current flows through the motor in milliampere.
 		/// Note that the value returned by this function can differ from the actual current by as much as 20%.

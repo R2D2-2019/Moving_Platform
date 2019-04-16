@@ -16,6 +16,7 @@ namespace r2d2::moving_platform {
 		usart_bus(baudRate, uart_port){}
 
 	void Qik2s12v10::set_speed(const int8_t &_speed){
+		// todo: change the speed variable to the actual speed
 		uint8_t speedByte = 0;
 		if(_speed >= 0){
 			speedByte = _speed;
@@ -28,7 +29,14 @@ namespace r2d2::moving_platform {
 		}
 	}
 	void Qik2s12v10::setM0Speed(const int8_t &_speed){
-
+		uint8_t speedByte = 0;
+		if(_speed >= 0){
+			speedByte = _speed;
+			usart_bus << qikMotorM0SetForward << speedByte;
+		}else{
+			speedByte = _speed + 127;
+			usart_bus << qikMotorM0SetReverse << speedByte;
+		}
 	}
 	void Qik2s12v10::setM1Speed(const int8_t &_speed){
 
@@ -57,30 +65,30 @@ namespace r2d2::moving_platform {
 		hwlib::cout << usart_bus.receive() << '\n'; // print answer
 
 	}
-	void Qik2s12v10::setM0Brake(const unsigned char& brake){
+	void Qik2s12v10::setM0Brake(const uint8_t& brake){
 
 	}
-	void Qik2s12v10::setM1Brake(const unsigned char& brake){
+	void Qik2s12v10::setM1Brake(const uint8_t& brake){
 
 	}
-	void Qik2s12v10::setBrakes(const unsigned char& brake){
+	void Qik2s12v10::setBrakes(const uint8_t& brake){
 
 	}
 
-	unsigned char Qik2s12v10::getError(){
+	uint8_t Qik2s12v10::getError(){
 		return 0;
 	}
-	unsigned char Qik2s12v10::getConfigurationParameter(const unsigned char& parameter){
+	uint8_t Qik2s12v10::getConfigurationParameter(const uint8_t& parameter){
 		return 0;
 	}
-	void Qik2s12v10::setConfigurationParameter(const unsigned char& parameter, const unsigned char& value){
+	void Qik2s12v10::setConfigurationParameter(const uint8_t& parameter, const uint8_t& value){
 
 	}
 
-	unsigned char Qik2s12v10::getM0Current(){
+	uint8_t Qik2s12v10::getM0Current(){
 		return 0;
 	}
-	unsigned char Qik2s12v10::getM1Current(){
+	uint8_t Qik2s12v10::getM1Current(){
 		return 0;
 	}
 	unsigned int Qik2s12v10::getM0CurrentMilliamps(){
