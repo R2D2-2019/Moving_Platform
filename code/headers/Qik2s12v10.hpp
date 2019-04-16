@@ -16,9 +16,15 @@ namespace r2d2::moving_platform {
 	/// Furthermore, the qik2s12v10 can check for errors and return these.
 	class Qik2s12v10 {
 	private:
+		static const uint8_t qikAutodetectBaudRate;
+		static const uint8_t qikRequestFirmwareversion;
+		static const uint8_t qikMotorM0SetForward;
+		static const uint8_t qikMotorM0SetReverse;
+		static const uint8_t qikMotorM1SetForward;
+		static const uint8_t qikMotorM1SetReverse;
+
 		hwlib::pin_out* resetPin;
 		r2d2::hardware_usart_c usart_bus;
-		
 	public:
 		/// @brief
 		/// Qik2s12v10 constructor.
