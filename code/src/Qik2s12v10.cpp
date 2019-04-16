@@ -11,6 +11,7 @@ namespace r2d2::moving_platform {
 	const uint8_t Qik2s12v10::qikMotorM1SetForward = 0x8C;
 	const uint8_t Qik2s12v10::qikMotorM1SetReverse = 0x8E;
 	const uint8_t Qik2s12v10::qikGetConfigParameter = 0x83;
+	const uint8_t Qik2s12v10::qikGetError = 0x82;
 
 	Qik2s12v10::Qik2s12v10(r2d2::uart_ports_c uart_port, unsigned int baudRate, hwlib::pin_out* _resetPin):
 		resetPin(_resetPin),
@@ -88,7 +89,10 @@ namespace r2d2::moving_platform {
 	}
 
 	uint8_t Qik2s12v10::getError(){
-		return 0;
+		while(!usart_bus.available()){usart_bus.receive();} // clear the buffer
+		usart_bus << qikGetError; // send request
+		while(!usart_bus.available()){} // wait for answer
+		return usart_bus.receive(); // return answer
 	}
 	uint8_t Qik2s12v10::getConfigurationParameter(const uint8_t& parameter){
 		while(!usart_bus.available()){usart_bus.receive();} // clear the buffer

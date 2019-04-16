@@ -23,6 +23,7 @@ namespace r2d2::moving_platform {
 		static const uint8_t qikMotorM1SetForward;
 		static const uint8_t qikMotorM1SetReverse;
 		static const uint8_t qikGetConfigParameter;
+		static const uint8_t qikGetError;
 
 		hwlib::pin_out* resetPin;
 		r2d2::hardware_usart_c usart_bus;
