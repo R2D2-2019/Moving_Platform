@@ -71,21 +71,6 @@ namespace r2d2::moving_platform {
 
         // setup the uart communication
         usart_bus << qik_autodetect_baudrate;
-
-        // for testing
-        hwlib::cout << "clearing buffer\n";
-        while (usart_bus.available() > 0) {
-            usart_bus.receive();
-        } // clear the buffer
-        hwlib::cout << "requesting firmware version\n";
-        hwlib::wait_ms(1);
-        usart_bus << qik_request_firmwareversion; // send request
-        hwlib::wait_ms(1);
-        hwlib::cout << "waiting for firmware version\n";
-        while (!usart_bus.available()) {
-        } // wait for answer
-        hwlib::cout << "firmware version:";
-        hwlib::cout << usart_bus.receive() << '\n'; // print answer
     }
     void qik_2s12v10_c::set_m0_brake(const uint8_t &brake) {
     }
