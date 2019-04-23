@@ -13,7 +13,7 @@ namespace r2d2::moving_platform {
 		 * this speed represents a throtle in percentages (%)
 		 * This means that 100 is max and forward, -100 is backwards
 		 */
-        signed int8_t speed;
+        int8_t speed;
 
     public:
 		/**
