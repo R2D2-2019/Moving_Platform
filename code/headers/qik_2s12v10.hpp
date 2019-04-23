@@ -2,7 +2,7 @@
 
 #include "hwlib.hpp"
 #include "motor_control.hpp"
-#include <hardware_usart.hpp>
+#include "hardware_usart.hpp"
 
 /// @file
 
