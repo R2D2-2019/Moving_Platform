@@ -1,3 +1,7 @@
+/*
+ * This main is used to test the qik_2s12v10_c class.
+ */
+
 #include "hwlib.hpp"
 #include <qik_2s12v10.hpp>
 
@@ -49,11 +53,12 @@ int main(void) {
         hwlib::cout << "Testing the get_configuration_parameter function.\n";
         hwlib::cout << "Current PWM configuration (should be 0): "
                     << qik_2s12v10_motorcontroller.get_configuration_parameter(
-                           1);
+                           1)
+                    << '\n';
         hwlib::wait_ms(500);
     }
     if (test_get_error) {
-        hwlib::cout << "testing the get_error function.\n";
+        hwlib::cout << "Testing the get_error function.\n";
         hwlib::cout << "Error byte: " << hwlib::bin
                     << qik_2s12v10_motorcontroller.get_error() << hwlib::dec
                     << '\n';

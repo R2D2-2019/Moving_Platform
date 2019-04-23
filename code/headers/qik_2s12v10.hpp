@@ -12,11 +12,13 @@ namespace r2d2::moving_platform {
     /// Class that represents a qik2s12v10 motor controller.
     /// @details
     /// The qik2s12v10 is a motor controller that can control two brushed DC
-    /// motors. The qik2s12v10, and this class, can control the speed and brakes
+    /// motors. The qik2s12v10 can control the speed and brakes
     /// of the individual motors. The qik2s12v10 can also set and return its
     /// configuration parameter, which includes things like Acceleration rate
-    /// and PWM resolution and frequency. Furthermore, the qik2s12v10 can check
+    /// and PWM resolution and frequency. Lastly, the qik2s12v10 can check
     /// for errors and return these.
+    /// For full documentation on the qik2s12v10, see this site:
+    /// https://www.pololu.com/docs/0J29
     class qik_2s12v10_c {
     private:
         static const uint8_t qik_autodetect_baudrate;
@@ -35,11 +37,11 @@ namespace r2d2::moving_platform {
         /// @brief
         /// Qik2s12v10 constructor.
         /// @details
-        /// Constructs a Qik2s12v10 using the given pins.
+        /// Constructs a Qik2s12v10 with the given parameters.
         /// @param uart_port The port that the qik_2s12v10_c class will use to
-        /// communicate with the qik 2s12v10 motor controller.
+        /// communicate with the qik 2s12v10 motor controller board.
         /// @param baudrate The baud rate that the Qik2s12v10 will use in its
-        /// UART TTL serial communication in Bps.
+        /// UART TTL serial communication in bps.
         /// @param _reset_pin Pin that can be used to reset the qik2s12v10.
         qik_2s12v10_c(r2d2::uart_ports_c uart_port, unsigned int baudrate,
                       hwlib::pin_out *_reset_pin);

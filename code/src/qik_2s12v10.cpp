@@ -2,7 +2,6 @@
 #include "hwlib.hpp"
 #include <hardware_usart.hpp>
 
-
 namespace r2d2::moving_platform {
 
     const uint8_t qik_2s12v10_c::qik_autodetect_baudrate = 0xAA;
@@ -21,9 +20,9 @@ namespace r2d2::moving_platform {
     }
 
     void qik_2s12v10_c::set_speed(const int8_t &_speed) {
-        // todo: depending op the motor configuration, 127 may only be half
-        // power, instead of full power todo: change the speed variable to the
-        // actual speed
+        // Todo: depending on the motor configuration, 127 may not be the
+        // maximum value
+        // Todo: change the speed variable to the actual speed.
         uint8_t speed_byte = 0;
         if (_speed >= 0) {
             speed_byte = _speed;
@@ -36,9 +35,8 @@ namespace r2d2::moving_platform {
         }
     }
     void qik_2s12v10_c::set_m0_speed(const int8_t &_speed) {
-        // todo: depending op the motor configuration, 127 may only be half
-        // power, instead of full power todo: change the speed variable to the
-        // actual speed
+        // Todo: depending on the motor configuration, 127 may not be the
+        // maximum value
         uint8_t speed_byte = 0;
         if (_speed >= 0) {
             speed_byte = _speed;
@@ -49,9 +47,8 @@ namespace r2d2::moving_platform {
         }
     }
     void qik_2s12v10_c::set_m1_speed(const int8_t &_speed) {
-        // todo: depending op the motor configuration, 127 may only be half
-        // power, instead of full power todo: change the speed variable to the
-        // actual speed
+        // Todo: depending on the motor configuration, 127 may not be the
+        // maximum value
         uint8_t speed_byte = 0;
         if (_speed >= 0) {
             speed_byte = _speed;
