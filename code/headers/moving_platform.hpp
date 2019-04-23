@@ -3,25 +3,49 @@
 #include <base_module.hpp>
 
 namespace r2d2::moving_platform {
-
+	
+	/**
+	 * Class moving_platform_c is an abstract class that can be implemented for all different kinds of motors
+	 * This class exists so you can use a moving platform even without knowing what kind of platform you have been provided with. 
+	 */
     class moving_platform_c : public base_module_c {
     protected:
-        // vars
-        int8_t speed, angle;
+        /**
+		 * this speed represents a throtle in percentages (%)
+		 * This means that 100 is max and forward, -100 is backwards
+		 * 
+		 * the angle is represented in degrees
+		 */
+        signed int8_t speed, angle;
 
-        // functions
-        virtual void set_speed(const int8_t &speed) = 0;
-        virtual void set_steering(const int8_t &steering) = 0;
-        virtual void turn(const int16_t &degrees) = 0;
+		/**
+		 * set the speed to the given value
+		 */
+        virtual void set_speed(const signed int8_t &speed) = 0;
+		
+		/**
+		 * set the angle to the given value
+		 */
+        virtual void set_steering(const signed int8_t &steering) = 0;
 
-        inline int8_t get_speed() const {
+		/**
+		 * returns the speed value
+		 */
+        inline signed int8_t get_speed() const {
             return speed;
         };
-        inline int8_t get_steering() const {
+		
+		/**
+		 * returns the angle value
+		 */
+        inline signed int8_t get_steering() const {
             return angle;
         };
 
-        // test
+        /**
+		 * functiuons for testing purpose
+		 * !not te be implemented or used in final product!
+		 */
         virtual void move(const int8_t &distance) = 0;
         virtual void move(const int8_t &x, const int8_t &y) = 0;
 
