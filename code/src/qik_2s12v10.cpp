@@ -1,6 +1,4 @@
 #include "qik_2s12v10.hpp"
-#include "hwlib.hpp"
-#include <hardware_usart.hpp>
 
 namespace r2d2::moving_platform {
 
