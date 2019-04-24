@@ -16,17 +16,17 @@ namespace r2d2::moving_platform {
 		 * 
 		 * the angle is represented in degrees
 		 */
-        signed int8_t speed, angle;
+        int8_t speed, angle;
 
 		/**
 		 * set the speed to the given value
 		 */
-        virtual void set_speed(const signed int8_t &speed) = 0;
+        virtual void set_speed(const int8_t &speed) = 0;
 		
 		/**
 		 * set the angle to the given value
 		 */
-        virtual void set_steering(const signed int8_t &steering) = 0;
+        virtual void set_steering(const int8_t &steering) = 0;
 
 		/**
 		 * returns the speed value
