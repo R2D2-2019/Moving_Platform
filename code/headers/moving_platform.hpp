@@ -1,5 +1,5 @@
 #pragma once
-#include "hwlib.hpp"
+#include <hwlib.hpp>
 #include <base_module.hpp>
 
 namespace r2d2::moving_platform {
@@ -31,14 +31,14 @@ namespace r2d2::moving_platform {
 		/**
 		 * returns the speed value
 		 */
-        inline signed int8_t get_speed() const {
+        int8_t get_speed() const {
             return speed;
         };
 		
 		/**
 		 * returns the angle value
 		 */
-        inline signed int8_t get_steering() const {
+        int8_t get_steering() const {
             return angle;
         };
 
@@ -51,7 +51,7 @@ namespace r2d2::moving_platform {
 
     public:
         moving_platform_c(base_comm_c &comm) : base_module_c(comm) {
-            //comm.listen_for_frames();
+            comm.listen_for_frames();
         }
 
         void process() override {
