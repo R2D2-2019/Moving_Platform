@@ -58,12 +58,6 @@ namespace r2d2::moving_platform {
         // setup the uart communication
         usart_bus << qik_autodetect_baudrate;
     }
-    void qik_2s12v10_c::set_m0_brake(const uint8_t &brake) {
-    }
-    void qik_2s12v10_c::set_m1_brake(const uint8_t &brake) {
-    }
-    void qik_2s12v10_c::set_brakes(const uint8_t &brake) {
-    }
 
     uint8_t qik_2s12v10_c::get_error() {
         while (usart_bus.available() > 0) {
@@ -91,18 +85,4 @@ namespace r2d2::moving_platform {
                                                     const uint8_t &value) {
         
     }
-
-    uint8_t qik_2s12v10_c::get_m0_current() {
-        return 0;
-    }
-    uint8_t qik_2s12v10_c::get_m1_current() {
-        return 0;
-    }
-    unsigned int qik_2s12v10_c::get_m0_current_milliamps() {
-        return 0;
-    }
-    unsigned int qik_2s12v10_c::get_m1_current_milliamps() {
-        return 0;
-    }
-
 } // namespace r2d2::moving_platform

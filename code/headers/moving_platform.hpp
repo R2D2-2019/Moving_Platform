@@ -16,7 +16,8 @@ namespace r2d2::moving_platform {
 		 * 
 		 * the angle is represented in degrees
 		 */
-        int8_t speed, angle;
+        int8_t speed;
+        int16_t steering_angle;
 
 		/**
 		 * set the speed to the given value
@@ -26,7 +27,7 @@ namespace r2d2::moving_platform {
 		/**
 		 * set the angle to the given value
 		 */
-        virtual void set_steering(const int8_t &steering) = 0;
+        virtual void set_steering(const int16_t &steering) = 0;
 
 		/**
 		 * returns the speed value
@@ -39,7 +40,7 @@ namespace r2d2::moving_platform {
 		 * returns the angle value
 		 */
         int8_t get_steering() const {
-            return angle;
+            return steering_angle;
         };
 
         /**

@@ -73,17 +73,25 @@ namespace r2d2::moving_platform {
         /// Sets the brake for the M0 motor.
         /// @param brake The amount of brake that will be applied to the motor,
         /// in the range [0,128] where 0 is no brake and 127 is full brake.
-        void set_m0_brake(const uint8_t &brake);
+
+        // void set_m0_brake(const uint8_t &brake);
+        //  -----------------WIP
+
         /// @brief
         /// Sets the brake for the M1 motor.
         /// @param brake The amount of brake that will be applied to the motor,
         /// in the range [0,128] where 0 is no brake and 127 is full brake.
-        void set_m1_brake(const uint8_t &brake);
+
+        // void set_m1_brake(const uint8_t &brake);
+        // -------------------WIP 
+        
         /// @brief
         /// Sets the brake for both motors.
         /// @param brake The amount of brake that will be applied to the motors,
         /// in the range [0,128] where 0 is no brake and 127 is full brake.
-        void set_brakes(const uint8_t &brake);
+
+        // void set_brakes(const uint8_t &brake);
+        // ---------------------WIP
 
         enum qik_2s12v10_error{
             motor_0_fault                     = 0b10000000,
@@ -121,23 +129,31 @@ namespace r2d2::moving_platform {
         /// Returns the raw reading from motor M0 that indicates how much
         /// current flows through the motor at average over the last 5ms. This
         /// reading is raw, so not converted to milliampere.
-        uint8_t get_m0_current();
+
+        // uint8_t get_m0_current();
+        //--------------------WIP
         /// @brief
         /// Returns the raw reading from motor M1 that indicates how much
         /// current flows through the motor at average over the last 5ms. This
         /// reading is raw, so not converted to milliampere.
-        uint8_t get_m1_current();
+
+        // uint8_t get_m1_current();
+        //--------------------WIP
         /// @brief
         /// This function uses the raw reading from motor M0 to estimate how
         /// much current flows through the motor in milliampere. Note that the
         /// value returned by this function can differ from the actual current
         /// by as much as 20%.
-        size_t get_m0_current_milliamps();
+
+        // size_t get_m0_current_milliamps();
+        //--------------------WIP
         /// @brief
         /// This function uses the raw reading from motor M1 to estimate how
         /// much current flows through the motor in milliampere. Note that the
         /// value returned by this function can differ from the actual current
         /// by as much as 20%.
-        size_t get_m1_current_milliamps();
+
+        // size_t get_m1_current_milliamps();
+        //---------------------WIP
     };
 } // namespace r2d2::moving_platform
