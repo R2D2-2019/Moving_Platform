@@ -122,8 +122,11 @@ namespace r2d2::moving_platform {
         /// parameters can be found here: https://www.pololu.com/docs/0J29/5.a
         /// @param value The value that the configurationParameter should be set
         /// to.
-        void set_configuration_parameter(const uint8_t &parameter,
-                                         const uint8_t &value);
+
+        // void set_configuration_parameter(const uint8_t &parameter,
+                                        //  const uint8_t &value);
+        // ---------------------WIP
+
 
         /// @brief
         /// Returns the raw reading from motor M0 that indicates how much

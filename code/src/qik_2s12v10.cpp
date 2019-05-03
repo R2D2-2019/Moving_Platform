@@ -81,8 +81,4 @@ namespace r2d2::moving_platform {
         }                           // wait for answer
         return usart_bus.receive(); // return answer
     }
-    void qik_2s12v10_c::set_configuration_parameter(const uint8_t &parameter,
-                                                    const uint8_t &value) {
-        
-    }
 } // namespace r2d2::moving_platform
