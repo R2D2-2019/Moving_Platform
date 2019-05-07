@@ -1,8 +1,8 @@
 #pragma once
 
-#include "hwlib.hpp"
-#include "motor_control.hpp"
-#include "hardware_usart.hpp"
+#include <hwlib.hpp>
+#include <motor_control.hpp>
+#include <hardware_usart.hpp>
 
 /// @file
 
@@ -69,21 +69,9 @@ namespace r2d2::moving_platform {
         /// Initializes the qik2s12v10 by resetting it and then setting the baud
         /// rate.
         void init();
-        /// @brief
-        /// Sets the brake for the M0 motor.
-        /// @param brake The amount of brake that will be applied to the motor,
-        /// in the range [0,128] where 0 is no brake and 127 is full brake.
-        void set_m0_brake(const uint8_t &brake);
-        /// @brief
-        /// Sets the brake for the M1 motor.
-        /// @param brake The amount of brake that will be applied to the motor,
-        /// in the range [0,128] where 0 is no brake and 127 is full brake.
-        void set_m1_brake(const uint8_t &brake);
-        /// @brief
-        /// Sets the brake for both motors.
-        /// @param brake The amount of brake that will be applied to the motors,
-        /// in the range [0,128] where 0 is no brake and 127 is full brake.
-        void set_brakes(const uint8_t &brake);
+  
+        void brake();
+        
 
         /// @brief
         /// Returns the errors that the qik2s12v10 has detected since this

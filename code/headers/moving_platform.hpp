@@ -1,5 +1,5 @@
 #pragma once
-#include "hwlib.hpp"
+#include <hwlib.hpp>
 #include <base_module.hpp>
 
 namespace r2d2::moving_platform {
