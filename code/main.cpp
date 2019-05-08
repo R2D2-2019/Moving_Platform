@@ -26,13 +26,20 @@ int main(void) {
     hwlib::cout << "Initialization compleet.\n";
 
     if (test_set_speed) {
+        hwlib::cout << "Testing the get_error function.\n";
+        hwlib::cout << "Error byte: " << hwlib::bin
+                    << qik_2s12v10_motorcontroller.get_error() << hwlib::dec
+                    << '\n';
         hwlib::cout << "Testing both motors, full power forward.\n";
-        qik_2s12v10_motorcontroller.set_speed(127);
+        qik_2s12v10_motorcontroller.set_speed(40);
         hwlib::wait_ms(2000);
+        qik_2s12v10_motorcontroller.brake();
+        hwlib::cout << "Motor tests compleet.\n";
+        hwlib::wait_ms(500); 
         hwlib::cout << "Testing both motors, full power backward.\n";
-        qik_2s12v10_motorcontroller.set_speed(-127);
+        qik_2s12v10_motorcontroller.set_speed(-40);
         hwlib::wait_ms(2000);
-        qik_2s12v10_motorcontroller.set_speed(0);
+        /*qik_2s12v10_motorcontroller.set_speed(0);
         hwlib::cout << "Testing motor m0, full power forward.\n";
         qik_2s12v10_motorcontroller.set_m0_speed(127);
         hwlib::wait_ms(2000);
@@ -46,9 +53,10 @@ int main(void) {
         hwlib::cout << "Testing motor m1, full power backward.\n";
         qik_2s12v10_motorcontroller.set_m1_speed(-127);
         hwlib::wait_ms(2000);
+        */
         qik_2s12v10_motorcontroller.brake();
         hwlib::cout << "Motor tests compleet.\n";
-        hwlib::wait_ms(500);
+        hwlib::wait_ms(500); 
     }
     if (test_get_configuration_parameter) {
         hwlib::cout << "Testing the get_configuration_parameter function.\n";

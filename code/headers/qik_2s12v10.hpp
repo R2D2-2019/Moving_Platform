@@ -71,7 +71,9 @@ namespace r2d2::moving_platform {
         void init();
   
         void brake();
-        
+
+        void turn(const int8_t degrees);
+
 
         /// @brief
         /// Returns the errors that the qik2s12v10 has detected since this

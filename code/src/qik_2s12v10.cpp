@@ -1,4 +1,4 @@
-#include "qik_2s12v10.hpp"
+#include <qik_2s12v10.hpp>
 
 namespace r2d2::moving_platform {
 
@@ -24,10 +24,10 @@ namespace r2d2::moving_platform {
         // Todo: change the speed variable to the actual speed.
         if (_speed >= 0) {
             usart_bus << qik_motor_m0_set_forward << _speed;
-            usart_bus << qik_motor_m1_set_forward << _speed;
+            usart_bus << qik_motor_m1_set_reverse << _speed;
         } else {
             usart_bus << qik_motor_m0_set_reverse << (-1 * _speed);
-            usart_bus << qik_motor_m1_set_reverse << (-1 * _speed);
+            usart_bus << qik_motor_m1_set_forward << (-1 * _speed);
         }
     }
     void qik_2s12v10_c::set_m0_speed(const int8_t &_speed) {
@@ -62,6 +62,10 @@ namespace r2d2::moving_platform {
 
     void qik_2s12v10_c::brake(){
         set_speed(0);
+    }
+
+    void turn(int8_t degrees){
+        
     }
 
     uint8_t qik_2s12v10_c::get_error() {
