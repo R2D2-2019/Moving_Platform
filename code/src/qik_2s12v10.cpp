@@ -73,7 +73,7 @@ namespace r2d2::moving_platform {
         }else{
             set_m0_speed(-40);
             set_m1_speed(-40);
-            hwlib::wait_ms(((2222*(-degrees)/360) + 60);
+            hwlib::wait_ms((2222*(-degrees)/360) + 60);
         }
         brake();
     }
