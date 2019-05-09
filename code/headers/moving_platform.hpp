@@ -1,5 +1,5 @@
 #pragma once
-#include "hwlib.hpp"
+#include <hwlib.hpp>
 #include <base_module.hpp>
 
 namespace r2d2::moving_platform {
@@ -16,7 +16,8 @@ namespace r2d2::moving_platform {
 		 * 
 		 * the angle is represented in degrees
 		 */
-        int8_t speed, angle;
+        int8_t speed;
+        int16_t steering_angle;
 
 		/**
 		 * set the speed to the given value
@@ -26,20 +27,20 @@ namespace r2d2::moving_platform {
 		/**
 		 * set the angle to the given value
 		 */
-        virtual void set_steering(const int8_t &steering) = 0;
+        virtual void set_steering(const int16_t &steering) = 0;
 
 		/**
 		 * returns the speed value
 		 */
-        inline signed int8_t get_speed() const {
+        int8_t get_speed() const {
             return speed;
         };
 		
 		/**
 		 * returns the angle value
 		 */
-        inline signed int8_t get_steering() const {
-            return angle;
+        int8_t get_steering() const {
+            return steering_angle;
         };
 
         /**
@@ -51,7 +52,7 @@ namespace r2d2::moving_platform {
 
     public:
         moving_platform_c(base_comm_c &comm) : base_module_c(comm) {
-            //comm.listen_for_frames();
+            comm.listen_for_frames();
         }
 
         void process() override {
