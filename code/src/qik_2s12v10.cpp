@@ -67,13 +67,15 @@ namespace r2d2::moving_platform {
     void qik_2s12v10_c::turn(int8_t degrees){
         if(degrees >=0){
             set_m0_speed(40);
-            hwlib::wait_ms(degrees*80);
-            brake();
-        } else{
             set_m1_speed(40);
-            hwlib::wait_ms(degrees*80);
-            brake();
+            hwlib::cout<<((2222*degrees)/360) << "\n";
+            hwlib::wait_ms(((2222*degrees)/360) + 60);  // one round for beetle is 222 sec and needs start up 
+        }else{
+            set_m0_speed(-40);
+            set_m1_speed(-40);
+            hwlib::wait_ms(((2222*(-degrees)/360) + 60);
         }
+        brake();
     }
 
     uint8_t qik_2s12v10_c::get_error() {
