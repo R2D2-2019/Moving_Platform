@@ -64,8 +64,16 @@ namespace r2d2::moving_platform {
         set_speed(0);
     }
 
-    void turn(int8_t degrees){
-        
+    void qik_2s12v10_c::turn(int8_t degrees){
+        if(degrees >=0){
+            set_m0_speed(40);
+            hwlib::wait_ms(degrees*80);
+            brake();
+        } else{
+            set_m1_speed(40);
+            hwlib::wait_ms(degrees*80);
+            brake();
+        }
     }
 
     uint8_t qik_2s12v10_c::get_error() {

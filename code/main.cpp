@@ -39,6 +39,11 @@ int main(void) {
         hwlib::cout << "Testing both motors, full power backward.\n";
         qik_2s12v10_motorcontroller.set_speed(-40);
         hwlib::wait_ms(2000);
+        hwlib::cout << "Turning 90 degrees.\n";
+        qik_2s12v10_motorcontroller.turn(90);
+        hwlib::wait_ms(2000);
+        hwlib::cout << "Turning -90 degrees\n";
+        qik_2s12v10_motorcontroller.turn(-90);
         /*qik_2s12v10_motorcontroller.set_speed(0);
         hwlib::cout << "Testing motor m0, full power forward.\n";
         qik_2s12v10_motorcontroller.set_m0_speed(127);
