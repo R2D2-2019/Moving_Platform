@@ -21,14 +21,14 @@ namespace r2d2::moving_platform {
     /// https://www.pololu.com/docs/0J29
     class qik_2s12v10_c : motor_control_c {
     private:
-        static const uint8_t qik_autodetect_baudrate;
-        static const uint8_t qik_request_firmwareversion;
-        static const uint8_t qik_motor_m0_set_forward;
-        static const uint8_t qik_motor_m0_set_reverse;
-        static const uint8_t qik_motor_m1_set_forward;
-        static const uint8_t qik_motor_m1_set_reverse;
-        static const uint8_t qik_get_config_parameter;
-        static const uint8_t qik_get_error;
+        const uint8_t qik_autodetect_baudrate = 0xAA;
+        const uint8_t qik_request_firmwareversion = 0x81;
+        const uint8_t qik_motor_m0_set_forward = 0x88;
+        const uint8_t qik_motor_m0_set_reverse = 0x8A;
+        const uint8_t qik_motor_m1_set_forward = 0x8C;
+        const uint8_t qik_motor_m1_set_reverse = 0x8E;
+        const uint8_t qik_get_config_parameter = 0x83;
+        const uint8_t qik_get_error = 0x82;
 
         hwlib::pin_out &reset_pin;
         r2d2::hardware_usart_c usart_bus;
