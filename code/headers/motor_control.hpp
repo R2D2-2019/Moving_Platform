@@ -19,7 +19,7 @@ namespace r2d2::moving_platform {
         /**
 		    * the speed set must not exceed 100
 		    */
-        virtual void set_speed(int8_t &new_speed) = 0;
+        virtual void set_speed(const int8_t &new_speed) = 0;
 
         /**
 		    * returns the speed value
