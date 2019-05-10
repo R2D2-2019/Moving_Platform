@@ -11,10 +11,10 @@ namespace r2d2::moving_platform {
     const uint8_t qik_2s12v10_c::qik_get_config_parameter = 0x83;
     const uint8_t qik_2s12v10_c::qik_get_error = 0x82;
 
-    qik_2s12v10_c::qik_2s12v10_c(r2d2::uart_ports_c uart_port,
+    qik_2s12v10_c::qik_2s12v10_c(r2d2::uart_ports_c &uart_port,
                                  unsigned int baudRate,
-                                 hwlib::pin_out *_reset_pin): 
-        reset_pin(_reset_pin), 
+                                 hwlib::pin_out &reset_pin): 
+        reset_pin(reset_pin), 
         usart_bus(baudRate, uart_port) 
         {}
 
@@ -22,30 +22,30 @@ namespace r2d2::moving_platform {
         // Todo: depending on the motor configuration, 127 may not be the
         // maximum value
         // Todo: change the speed variable to the actual speed.
-        if (_speed >= 0) {
-            usart_bus << qik_motor_m0_set_forward << _speed;
-            usart_bus << qik_motor_m1_set_reverse << _speed;
+        if (new_speed >= 0) {
+            usart_bus << qik_motor_m0_set_forward << new_speed;
+            usart_bus << qik_motor_m1_set_reverse << new_speed;
         } else {
-            usart_bus << qik_motor_m0_set_reverse << (-1 * _speed);
-            usart_bus << qik_motor_m1_set_forward << (-1 * _speed);
+            usart_bus << qik_motor_m0_set_reverse << (-1 * new_speed);
+            usart_bus << qik_motor_m1_set_forward << (-1 * new_speed);
         }
     }
     void qik_2s12v10_c::set_m0_speed(const int8_t &new_speed) {
         // Todo: depending on the motor configuration, 127 may not be the
         // maximum value
-        if (_speed >= 0) {
-            usart_bus << qik_motor_m0_set_forward << _speed;
+        if (new_speed >= 0) {
+            usart_bus << qik_motor_m0_set_forward << new_speed;
         } else {
-            usart_bus << qik_motor_m0_set_reverse << (-1 * _speed);
+            usart_bus << qik_motor_m0_set_reverse << (-1 * new_speed);
         }
     }
     void qik_2s12v10_c::set_m1_speed(const int8_t &new_speed) {
         // Todo: depending on the motor configuration, 127 may not be the
         // maximum value
-        if (_speed >= 0) {
-            usart_bus << qik_motor_m1_set_forward << _speed;
+        if (new_speed >= 0) {
+            usart_bus << qik_motor_m1_set_forward << new_speed;
         } else {
-            usart_bus << qik_motor_m1_set_reverse << (-1 * _speed);
+            usart_bus << qik_motor_m1_set_reverse << (-1 * new_speed);
         }
     }
 

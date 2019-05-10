@@ -17,7 +17,8 @@ int main(void) {
 
     auto qik_2s12v10_reset_pin = hwlib::target::pin_out(2, 25); // digital pin 5
     auto qik_2s12v10_motorcontroller = r2d2::moving_platform::qik_2s12v10_c(
-        r2d2::uart_ports_c::uart1, 9600u, &qik_2s12v10_reset_pin);
+    r2d2::uart_ports_c uart_port_one = r2d2::uart_ports_c::uart1;
+        r2d2::uart_ports_c::uart1, 9600u, qik_2s12v10_reset_pin);
 
     hwlib::cout << "Initializing qik 2s12v10.\n";
     qik_2s12v10_motorcontroller.init();
