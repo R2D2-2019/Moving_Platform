@@ -9,7 +9,7 @@ namespace r2d2::moving_platform {
 	 * This class exists so you can use a moving platform even without knowing what kind of platform you have been provided with. 
 	 */
     class moving_platform_c : public base_module_c {
-    protected:
+    private:
         /**
 		 * this speed represents a throtle in percentages (%)
 		 * This means that 100 is max and forward, -100 is backwards
@@ -18,7 +18,13 @@ namespace r2d2::moving_platform {
 		 */
         int8_t speed;
         int16_t steering_angle;
-
+	
+	public:
+	
+		moving_platform_c(base_comm_c &comm) : base_module_c(comm) {
+            comm.listen_for_frames();
+        }
+	
 		/**
 		 * set the speed to the given value
 		 */
@@ -28,6 +34,11 @@ namespace r2d2::moving_platform {
 		 * set the angle to the given value
 		 */
         virtual void set_steering(const int16_t &steering) = 0;
+		
+		/**
+		 *	turns the moving platform
+		 */
+		virtual void turn(const int16_t&) = 0;
 
 		/**
 		 * returns the speed value
@@ -49,11 +60,6 @@ namespace r2d2::moving_platform {
 		 */
         virtual void move(const int8_t &distance) = 0;
         virtual void move(const int8_t &x, const int8_t &y) = 0;
-
-    public:
-        moving_platform_c(base_comm_c &comm) : base_module_c(comm) {
-            comm.listen_for_frames();
-        }
 
         void process() override {
             while (comm.has_data()) {
