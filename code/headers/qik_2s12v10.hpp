@@ -6,7 +6,7 @@
 
 /// @file
 
-namespace r2d2 {
+namespace r2d2::moving_platform {
 
     /// @brief
     /// Class that represents a qik2s12v10 motor controller.
