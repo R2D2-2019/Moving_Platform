@@ -1,16 +1,30 @@
 #pragma once
-#include "hwlib.hpp"
+#include <hwlib.hpp>
 
 namespace r2d2::moving_platform {
 
+	/**
+	 * Class motor_control_c is an abstract class that can be implemented for all different kinds of motors
+	 * This class exists so you can use the motor even without knowing what motor you have been provided with. 
+	 */
     class motor_control_c {
-    protected:
-        signed int8_t speed;
+    private:
+        /**
+		    * this speed represents a throtle in percentages (%)
+		    * This means that 100 is max and forward, -100 is backwards
+		    */
+        int8_t speed;
 
     public:
-        virtual void set_speed(const int8_t &_speed) = 0;
+        /**
+		    * the speed set must not exceed 100
+		    */
+        virtual void set_speed(const int8_t &new_speed) = 0;
 
-        inline int8_t get_speed() const {
+        /**
+		    * returns the speed value
+		    */
+        int8_t get_speed() const {
             return speed;
         }
     };
