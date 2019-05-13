@@ -56,7 +56,7 @@ namespace r2d2::moving_platform {
         /// @param speed The speed of both motors. This value can be between
         /// -128 and 127, where -128 is full power backwards, 0 is no power and
         /// 127 is full power forward.
-        void set_speed(const int8_t &new_speed) override;
+        void set_speed(const int8_t &new_speed);
         /// @brief
         /// Sets the speed of the M0 motor.
         /// @param speed The speed of the motor. This value can be between -128
