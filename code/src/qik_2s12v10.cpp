@@ -8,7 +8,7 @@ namespace r2d2::moving_platform {
                                  hwlib::pin_out &reset_pin): 
         reset_pin(reset_pin), 
         usart_bus(baud_rate, uart_port) 
-        {}
+        {init();}
 
     void qik_2s12v10_c::set_speed(const int8_t &new_speed) {
         // Todo: depending on the motor configuration, 127 may not be the
