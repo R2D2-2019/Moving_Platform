@@ -29,6 +29,8 @@ namespace r2d2::moving_platform {
         static const uint8_t qik_motor_m1_set_reverse;
         static const uint8_t qik_get_config_parameter;
         static const uint8_t qik_get_error;
+        static const uint8_t qik_get_motor_m0_current;
+        static const uint8_t qik_get_motor_m1_current;
 
         hwlib::pin_out &reset_pin;
         r2d2::hardware_usart_c usart_bus;
@@ -99,6 +101,34 @@ namespace r2d2::moving_platform {
         uint8_t get_configuration_parameter(const uint8_t &parameter);
 
 
+        /// @brief
+        /// Returns the raw reading from motor M0 that indicates how much
+        /// current flows through the motor at average over the last 5ms. This
+        /// reading is raw, so not converted to milliampere.
+
+        uint8_t get_m0_current();
         
+        /// @brief
+        /// Returns the raw reading from motor M1 that indicates how much
+        /// current flows through the motor at average over the last 5ms. This
+        /// reading is raw, so not converted to milliampere.
+
+        uint8_t get_m1_current();
+
+        /// @brief
+        /// This function uses the raw reading from motor M0 to estimate how
+        /// much current flows through the motor in milliampere. Note that the
+        /// value returned by this function can differ from the actual current
+        /// by as much as 20% and according to the datasheet the values needs to be multiplied by 150.
+
+        size_t get_m0_current_milliamps();
+
+        /// @brief
+        /// This function uses the raw reading from motor M1 to estimate how
+        /// much current flows through the motor in milliampere. Note that the
+        /// value returned by this function can differ from the actual current
+        /// by as much as 20% and according to the datasheet the values needs to be multiplied by 150.
+
+        size_t get_m1_current_milliamps();
     };
 } // namespace r2d2::moving_platform
