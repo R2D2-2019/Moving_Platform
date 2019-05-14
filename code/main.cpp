@@ -12,7 +12,7 @@ int main(void) {
     hwlib::wait_ms(1000);
 
     // qik_2s12v10_c testing
-    bool test_set_speed = true;
+    bool test_set_speed = false;
     //bool test_get_configuration_parameter = true;
     //bool test_get_error = true;
 
@@ -28,17 +28,24 @@ int main(void) {
     qik_2s12v10_motorcontroller.get_configuration_parameter(1);
     hwlib::cout << "Initialization compleet.\n";*/
 
+    while (1)
+    {
+        beetle.process();
+    }
+    
+
+
     if (test_set_speed) {
         //motor tests:
         hwlib::cout << "Testing both motors, full power forward.\n";
-        beetle.set_speed(40);
+        beetle.set_speed(31);
         hwlib::wait_ms(2000);
         beetle.set_speed(0);
 
         hwlib::wait_ms(500);
 
         hwlib::cout << "Testing both motors, full power backward.\n";
-        beetle.set_speed(-40);
+        beetle.set_speed(-31);
         hwlib::wait_ms(2000);
         beetle.set_speed(0);
 

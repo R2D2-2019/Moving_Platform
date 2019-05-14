@@ -64,8 +64,16 @@ namespace r2d2::moving_platform {
         void process() override {
             while (comm.has_data()) {
                 auto frame = comm.get_data();
-
+                /*
                 // Process the frame
+                if(frame.brake){
+                    set_speed(0);
+                } else if(frame.speed > 10 || frame < -10){
+                    set_speed(frame.speed);
+                } else if(frame.rotation){
+                    turn(frame.rotation);
+                }*/
+                
             }
         }
     };

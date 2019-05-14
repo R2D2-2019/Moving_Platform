@@ -18,14 +18,23 @@ namespace r2d2::moving_platform {
         // Todo: depending on the motor configuration, 127 may not be the
         // maximum value
         // Todo: change the speed variable to the actual speed.
-        qik_2s12v10_motorcontroller.set_m0_speed(new_speed);
-        qik_2s12v10_motorcontroller.set_m1_speed(-new_speed);
+        int speed_temp = new_speed;
+        if(speed_temp > 100){
+            speed_temp = 100;
+        } else if (speed_temp <-100){
+            speed_temp = -100;
+        }
+        if(speed_temp >=-100 && speed_temp <=100){
+            qik_2s12v10_motorcontroller.set_m0_speed(128*speed_temp/100);
+            qik_2s12v10_motorcontroller.set_m1_speed(-(128*speed_temp/100));
+        }
     }
 
     void beetle_c::set_steering(const int16_t &degrees){
 
     }
     void beetle_c::turn(const int16_t &degrees){
+        
         if(degrees >=0){
             qik_2s12v10_motorcontroller.set_m0_speed(40);
             qik_2s12v10_motorcontroller.set_m1_speed(40);
