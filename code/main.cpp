@@ -31,6 +31,7 @@ int main(void) {
     while (1)
     {
         beetle.process();
+        hwlib::wait_ms(100);
     }
     
 

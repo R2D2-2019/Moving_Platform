@@ -53,26 +53,49 @@ namespace r2d2::moving_platform {
         virtual void move(const int8_t &x, const int8_t &y) = 0;
 
     public:
-        moving_platform_c(base_comm_c &comm) : base_module_c(comm) {
+        moving_platform_c(base_comm_c &comm) : 
+            base_module_c(comm),
+            speed(0),
+            steering_angle(0) {
+            
             comm.listen_for_frames(
                 {
-                    r2d2::frame_type::BUTTON_STATE
+                    r2d2::frame_type::MOVEMENT_CONTROL
                 }
             );
         }
 
         void process() override {
+            comm.request(r2d2::frame_type::MOVEMENT_CONTROL);
             while (comm.has_data()) {
+                hwlib::cout << "dataaa \n";
+                
                 auto frame = comm.get_data();
-                /*
                 // Process the frame
-                if(frame.brake){
+
+                // Don't handle requests
+                if (frame.request) {
+                    continue;
+                }
+
+                const auto data = frame.as_frame_type<
+                    frame_type::MOVEMENT_CONTROL
+                >();
+
+                if(data.brake){
+                    hwlib::cout << "brake: true \n";
                     set_speed(0);
-                } else if(frame.speed > 10 || frame < -10){
-                    set_speed(frame.speed);
-                } else if(frame.rotation){
-                    turn(frame.rotation);
-                }*/
+                    break;
+                }
+                
+                if(data.speed){
+                    hwlib::cout << "speed: " << data.speed << "\n";
+                    set_speed(data.speed);
+                } 
+                if(data.rotation){
+                    hwlib::cout << "rotation: " << data.rotation << "\n";
+                    turn(data.rotation);
+                }
                 
             }
         }

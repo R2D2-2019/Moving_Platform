@@ -18,34 +18,46 @@ namespace r2d2::moving_platform {
         // Todo: depending on the motor configuration, 127 may not be the
         // maximum value
         // Todo: change the speed variable to the actual speed.
-        int speed_temp = new_speed;
-        if(speed_temp > 100){
-            speed_temp = 100;
-        } else if (speed_temp <-100){
-            speed_temp = -100;
+        speed = new_speed;
+        if(speed > 100){
+            speed = 100;
+        } else if (speed <-100){
+            speed = -100;
+        } else if (speed < 10 && speed > -10){
+            speed = 0;
+            qik_2s12v10_motorcontroller.set_m0_speed(0);
+            qik_2s12v10_motorcontroller.set_m1_speed(0);
         }
-        if(speed_temp >=-100 && speed_temp <=100){
-            qik_2s12v10_motorcontroller.set_m0_speed(128*speed_temp/100);
-            qik_2s12v10_motorcontroller.set_m1_speed(-(128*speed_temp/100));
-        }
+        //if(speed >=-100 && speed <=100){
+            //qik_2s12v10_motorcontroller.set_m0_speed(128*speed/100);
+            //qik_2s12v10_motorcontroller.set_m1_speed(-(128*speed/100));
+        //}
     }
 
     void beetle_c::set_steering(const int16_t &degrees){
 
     }
     void beetle_c::turn(const int16_t &degrees){
-        
-        if(degrees >=0){
-            qik_2s12v10_motorcontroller.set_m0_speed(40);
-            qik_2s12v10_motorcontroller.set_m1_speed(40);
-            hwlib::cout<<((2222*degrees)/360) << "\n";
-            hwlib::wait_ms(((2222*degrees)/360) + 60);  // one round for beetle is 222 sec and needs start up 
-        }else{
-            qik_2s12v10_motorcontroller.set_m0_speed(-40);
-            qik_2s12v10_motorcontroller.set_m1_speed(-40);
-            hwlib::wait_ms((2222*(-degrees)/360) + 60);
+        int new_degrees = degrees;
+        if(new_degrees < 15 && new_degrees > -15){
+            new_degrees = 0;
+            
         }
-        qik_2s12v10_motorcontroller.brake();
+        
+        if(speed != 0){
+            if(new_degrees >=0 ){
+                // turn left
+                qik_2s12v10_motorcontroller.set_m0_speed((speed+new_degrees/4)/3);
+                qik_2s12v10_motorcontroller.set_m1_speed(-(speed+new_degrees/4));
+                //hwlib::wait_ms(((2222*degrees)/360) + 60);  // one round for beetle is 222 sec and needs start up 
+            } else{
+                // turn right
+                qik_2s12v10_motorcontroller.set_m0_speed((speed+new_degrees/4));
+                qik_2s12v10_motorcontroller.set_m1_speed(-(speed+new_degrees/4)/3);
+                //hwlib::wait_ms((2222*(-degrees)/360) + 60);
+            }
+        }
+        
     }
     void beetle_c::move (const int8_t &distance){
 
