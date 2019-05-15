@@ -9,7 +9,7 @@ namespace r2d2::moving_platform {
 	 * This class exists so you can use a moving platform even without knowing what kind of platform you have been provided with. 
 	 */
     class moving_platform_c : public base_module_c {
-    private:
+    protected:
         /**
 		 * this speed represents a throtle in percentages (%)
 		 * This means that 100 is max and forward, -100 is backwards
@@ -21,47 +21,6 @@ namespace r2d2::moving_platform {
 	
 	public:
 	
-		moving_platform_c(base_comm_c &comm) : base_module_c(comm) {
-            comm.listen_for_frames();
-        }
-	
-		/**
-		 * set the speed to the given value
-		 */
-        virtual void set_speed(const int8_t &speed) = 0;
-		
-		/**
-		 * set the angle to the given value
-		 */
-        virtual void set_steering(const int16_t &degrees) = 0;
-        /**
-		    *	turns the moving platform
-		    */
-        virtual void turn(const int16_t &degrees) = 0;
-
-
-		/**
-		 * returns the speed value
-		 */
-        int8_t get_speed() const {
-            return speed;
-        };
-		
-		/**
-		 * returns the angle value
-		 */
-        int8_t get_steering() const {
-            return steering_angle;
-        };
-
-        /**
-		 * functiuons for testing purpose
-		 * !not te be implemented or used in final product!
-		 */
-        virtual void move(const int8_t &distance) = 0;
-        virtual void move(const int8_t &x, const int8_t &y) = 0;
-
-    public:
         moving_platform_c(base_comm_c &comm) : 
             base_module_c(comm),
             speed(0),
@@ -104,5 +63,39 @@ namespace r2d2::moving_platform {
                 
             }
         }
+	
+		/**
+		 * set the speed to the given value
+		 */
+        virtual void set_speed(const int8_t &speed) = 0;
+		
+		/**
+		 * set the angle to the given value
+		 */
+        virtual void set_steering(const int16_t &degrees) = 0;
+        /**
+		    *	turns the moving platform
+		    */
+        virtual void turn(const int16_t &degrees) = 0;
+
+
+		/**
+		 * returns the speed value
+		 */
+        int8_t get_speed() const;
+		
+		/**
+		 * returns the angle value
+		 */
+        int16_t get_steering() const;
+
+        /**
+		 * functiuons for testing purpose
+		 * !not te be implemented or used in final product!
+		 */
+        virtual void move(const int8_t &distance) = 0;
+        virtual void move(const int8_t &x, const int8_t &y) = 0;
+
+    
     };
 } // namespace r2d2::moving_platform

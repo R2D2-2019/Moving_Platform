@@ -15,8 +15,6 @@ int main(void) {
     bool beetle_canbus = false;
     // beetle testing
     bool test_set_speed = true;
-    //bool test_get_configuration_parameter = true;
-    //bool test_get_error = true;
 
     auto qik_2s12v10_reset_pin = hwlib::target::pin_out(2, 25); // digital pin 5
     r2d2::uart_ports_c uart_port_one = r2d2::uart_ports_c::uart1;
@@ -63,20 +61,6 @@ int main(void) {
         beetle.set_speed(0);
     }
 
-    /*if (test_get_configuration_parameter) {
-        hwlib::cout << "Testing the get_configuration_parameter function.\n";
-        hwlib::cout << "Current PWM configuration (should be 0): "
-                    << qik_2s12v10_motorcontroller.get_configuration_parameter(1)
-                    << '\n';
-        hwlib::wait_ms(500);
-    }
-
-    if (test_get_error) {
-        hwlib::cout << "Testing the get_error function.\n";
-        hwlib::cout << "Error byte: " << hwlib::bin
-                    << qik_2s12v10_motorcontroller.get_error() << hwlib::dec
-                    << '\n';
-    }*/
     hwlib::cout << "All tests have been completed\n";
 
     return 0;
