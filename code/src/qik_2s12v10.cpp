@@ -10,6 +10,8 @@ namespace r2d2::moving_platform {
     const uint8_t qik_2s12v10_c::qik_motor_m1_set_reverse = 0x8E;
     const uint8_t qik_2s12v10_c::qik_get_config_parameter = 0x83;
     const uint8_t qik_2s12v10_c::qik_get_error = 0x82;
+    const uint8_t qik_2s12v10_c::qik_get_motor_m0_current = 0x90;
+    const uint8_t qik_2s12v10_c::qik_get_motor_m1_current = 0x91;
 
     qik_2s12v10_c::qik_2s12v10_c(r2d2::uart_ports_c &uart_port,
                                  unsigned int baudRate,
@@ -100,4 +102,39 @@ namespace r2d2::moving_platform {
         }                           // wait for answer
         return usart_bus.receive(); // return answer
     }
+        
+        
+    uint8_t qik_2s12v10_c::get_m0_current(){
+        while (usart_bus.available() > 0) { // clear buffer
+            usart_bus.receive();
+            hwlib::wait_ms(0.05);
+        }
+        usart_bus << qik_get_motor_m0_current;
+        while (!usart_bus.available()) {
+            hwlib::wait_ms(50);
+        }
+        return usart_bus.receive();
+        
+    }
+
+    uint8_t qik_2s12v10_c::get_m1_current(){
+        while (usart_bus.available() > 0) { // clear buffer
+            usart_bus.receive();
+            hwlib::wait_ms(0.05);
+        }
+        usart_bus << qik_get_motor_m1_current;
+        while (!usart_bus.available()) {
+            hwlib::wait_ms(50);
+        }
+        return usart_bus.receive();
+    }
+
+    size_t qik_2s12v10_c::get_m0_current_milliamps(){
+        return get_m0_current() * 150;
+    }
+
+    size_t qik_2s12v10_c::get_m1_current_milliamps(){
+        return get_m0_current() * 150;
+    }
+
 } // namespace r2d2::moving_platform

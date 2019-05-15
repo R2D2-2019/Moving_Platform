@@ -14,6 +14,7 @@ int main(void) {
     bool test_set_speed = true;
     bool test_get_configuration_parameter = true;
     bool test_get_error = true;
+    bool test_get_motor_current = true;
 
     auto qik_2s12v10_reset_pin = hwlib::target::pin_out(2, 25); // digital pin 5
     auto qik_2s12v10_motorcontroller = r2d2::moving_platform::qik_2s12v10_c(
@@ -56,6 +57,12 @@ int main(void) {
                     << qik_2s12v10_motorcontroller.get_configuration_parameter(1)
                     << '\n';
         hwlib::wait_ms(500);
+    }
+    if (test_get_motor_current) {
+        hwlib::cout << "Testing the get_m0_current_milliamps function.\n";
+        hwlib::cout << qik_2s12v10_motorcontroller.get_m0_current_milliamps() << '\n';
+        hwlib::cout << "Testing the get_m1_current_milliamps function.\n";
+        hwlib::cout << qik_2s12v10_motorcontroller.get_m1_current_milliamps() << '\n';
     }
     if (test_get_error) {
         hwlib::cout << "Testing the get_error function.\n";
