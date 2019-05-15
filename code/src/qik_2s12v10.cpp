@@ -2,22 +2,11 @@
 
 namespace r2d2::moving_platform {
 
-    const uint8_t qik_2s12v10_c::qik_autodetect_baudrate = 0xAA;
-    const uint8_t qik_2s12v10_c::qik_request_firmwareversion = 0x81;
-    const uint8_t qik_2s12v10_c::qik_motor_m0_set_forward = 0x88;
-    const uint8_t qik_2s12v10_c::qik_motor_m0_set_reverse = 0x8A;
-    const uint8_t qik_2s12v10_c::qik_motor_m1_set_forward = 0x8C;
-    const uint8_t qik_2s12v10_c::qik_motor_m1_set_reverse = 0x8E;
-    const uint8_t qik_2s12v10_c::qik_get_config_parameter = 0x83;
-    const uint8_t qik_2s12v10_c::qik_get_error = 0x82;
-    const uint8_t qik_2s12v10_c::qik_get_motor_m0_current = 0x90;
-    const uint8_t qik_2s12v10_c::qik_get_motor_m1_current = 0x91;
-
     qik_2s12v10_c::qik_2s12v10_c(r2d2::uart_ports_c &uart_port,
-                                 unsigned int baudRate,
+                                 unsigned int baud_rate,
                                  hwlib::pin_out &reset_pin): 
         reset_pin(reset_pin), 
-        usart_bus(baudRate, uart_port) 
+        usart_bus(baud_rate, uart_port) 
         {}
 
     void qik_2s12v10_c::set_speed(const int8_t &new_speed) {
@@ -64,20 +53,6 @@ namespace r2d2::moving_platform {
 
     void qik_2s12v10_c::brake(){
         set_speed(0);
-    }
-
-    void qik_2s12v10_c::turn(int8_t degrees){
-        if(degrees >=0){
-            set_m0_speed(40);
-            set_m1_speed(40);
-            hwlib::cout<<((2222*degrees)/360) << "\n";
-            hwlib::wait_ms(((2222*degrees)/360) + 60);  // one round for beetle is 222 sec and needs start up 
-        }else{
-            set_m0_speed(-40);
-            set_m1_speed(-40);
-            hwlib::wait_ms((2222*(-degrees)/360) + 60);
-        }
-        brake();
     }
 
     uint8_t qik_2s12v10_c::get_error() {

@@ -19,18 +19,18 @@ namespace r2d2::moving_platform {
     /// for errors and return these.
     /// For full documentation on the qik2s12v10, see this site:
     /// https://www.pololu.com/docs/0J29
-    class qik_2s12v10_c : motor_control_c {
+    class qik_2s12v10_c {
     private:
-        static const uint8_t qik_autodetect_baudrate;
-        static const uint8_t qik_request_firmwareversion;
-        static const uint8_t qik_motor_m0_set_forward;
-        static const uint8_t qik_motor_m0_set_reverse;
-        static const uint8_t qik_motor_m1_set_forward;
-        static const uint8_t qik_motor_m1_set_reverse;
-        static const uint8_t qik_get_config_parameter;
-        static const uint8_t qik_get_error;
-        static const uint8_t qik_get_motor_m0_current;
-        static const uint8_t qik_get_motor_m1_current;
+        const uint8_t qik_autodetect_baudrate = 0xAA;
+        const uint8_t qik_request_firmwareversion = 0x81;
+        const uint8_t qik_motor_m0_set_forward = 0x88;
+        const uint8_t qik_motor_m0_set_reverse = 0x8A;
+        const uint8_t qik_motor_m1_set_forward = 0x8C;
+        const uint8_t qik_motor_m1_set_reverse = 0x8E;
+        const uint8_t qik_get_config_parameter = 0x83;
+        const uint8_t qik_get_error = 0x82;
+        const uint8_t qik_get_motor_m0_current = 0x90;
+        const uint8_t qik_get_motor_m1_current = 0x91;
 
         hwlib::pin_out &reset_pin;
         r2d2::hardware_usart_c usart_bus;
@@ -47,13 +47,18 @@ namespace r2d2::moving_platform {
         /// @param _reset_pin Pin that can be used to reset the qik2s12v10.
         qik_2s12v10_c(r2d2::uart_ports_c &uart_port, unsigned int baudrate,
                       hwlib::pin_out &reset_pin);
+					  
+		/// @brief
+        /// Initializes the qik2s12v10 by resetting it and then setting the baud
+        /// rate.
+        void init();
 
         /// @brief
         /// Sets the speed of both motors.
         /// @param speed The speed of both motors. This value can be between
         /// -128 and 127, where -128 is full power backwards, 0 is no power and
         /// 127 is full power forward.
-        void set_speed(const int8_t &new_speed) override;
+        void set_speed(const int8_t &new_speed);
         /// @brief
         /// Sets the speed of the M0 motor.
         /// @param speed The speed of the motor. This value can be between -128
@@ -67,10 +72,6 @@ namespace r2d2::moving_platform {
         /// is full power forward.
         void set_m1_speed(const int8_t &new_speed);
 
-        /// @brief
-        /// Initializes the qik2s12v10 by resetting it and then setting the baud
-        /// rate.
-        void init();
 
         enum qik_2s12v10_error{
             motor_0_fault                     = 0b10000000,
@@ -84,8 +85,6 @@ namespace r2d2::moving_platform {
         };
   
         void brake();
-
-        void turn(const int8_t degrees);
 
         /// @brief
         /// Returns the errors that the qik2s12v10 has detected since this
