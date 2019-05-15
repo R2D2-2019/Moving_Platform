@@ -8,6 +8,10 @@
 # 
 #############################################################################
 
+#add USART_library
+USART               ?= ../../../libraries/USART_library
+include              $(USART)/Makefile.inc
+
 # settings for Arduino Due projects
 TARGET            ?= arduino_due
 SERIAL_PORT       ?= COM8
@@ -17,4 +21,3 @@ HEAP              ?= BMPTK
 
 # defer to the Makefile.link
 include           $(RELATIVE)/Makefile.link
-
