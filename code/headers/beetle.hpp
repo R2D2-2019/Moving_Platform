@@ -22,7 +22,8 @@ namespace r2d2::moving_platform {
         */
         beetle_c(r2d2::uart_ports_c &uart_port,
              unsigned int baud_rate,
-             hwlib::pin_out &reset_pin, base_comm_c &comm);
+             hwlib::pin_out &reset_pin, 
+             base_comm_c &comm);
 
 
         /**
