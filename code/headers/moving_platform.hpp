@@ -68,7 +68,6 @@ namespace r2d2::moving_platform {
         void process() override {
             comm.request(r2d2::frame_type::MOVEMENT_CONTROL);
             while (comm.has_data()) {
-                hwlib::cout << "dataaa \n";
                 
                 auto frame = comm.get_data();
                 // Process the frame
@@ -83,17 +82,14 @@ namespace r2d2::moving_platform {
                 >();
 
                 if(data.brake){
-                    hwlib::cout << "brake: true \n";
                     set_speed(0);
                     break;
                 }
                 
                 if(data.speed){
-                    hwlib::cout << "speed: " << data.speed << "\n";
                     set_speed(data.speed);
                 } 
                 if(data.rotation){
-                    hwlib::cout << "rotation: " << data.rotation << "\n";
                     turn(data.rotation);
                 }
                 

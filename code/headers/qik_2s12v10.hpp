@@ -19,7 +19,7 @@ namespace r2d2::moving_platform {
     /// for errors and return these.
     /// For full documentation on the qik2s12v10, see this site:
     /// https://www.pololu.com/docs/0J29
-    class qik_2s12v10_c : motor_control_c {
+    class qik_2s12v10_c {
     private:
         const uint8_t qik_autodetect_baudrate = 0xAA;
         const uint8_t qik_request_firmwareversion = 0x81;
@@ -46,12 +46,6 @@ namespace r2d2::moving_platform {
         qik_2s12v10_c(r2d2::uart_ports_c &uart_port, unsigned int baudrate,
                       hwlib::pin_out &reset_pin);
 
-        /// @brief
-        /// Sets the speed of both motors.
-        /// @param speed The speed of both motors. This value can be between
-        /// -128 and 127, where -128 is full power backwards, 0 is no power and
-        /// 127 is full power forward.
-        void set_speed(const int8_t &new_speed) override;
         /// @brief
         /// Sets the speed of the M0 motor.
         /// @param speed The speed of the motor. This value can be between -128
@@ -82,8 +76,6 @@ namespace r2d2::moving_platform {
         };
   
         void brake();
-
-        void turn(const int8_t degrees);
 
         /// @brief
         /// Returns the errors that the qik2s12v10 has detected since this

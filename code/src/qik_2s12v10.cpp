@@ -10,18 +10,6 @@ namespace r2d2::moving_platform {
         usart_bus(baud_rate, uart_port) 
         {}
 
-    void qik_2s12v10_c::set_speed(const int8_t &new_speed) {
-        // Todo: depending on the motor configuration, 127 may not be the
-        // maximum value
-        // Todo: change the speed variable to the actual speed.
-        if (new_speed >= 0) {
-            usart_bus << qik_motor_m0_set_forward << new_speed;
-            usart_bus << qik_motor_m1_set_reverse << new_speed;
-        } else {
-            usart_bus << qik_motor_m0_set_reverse << (-1 * new_speed);
-            usart_bus << qik_motor_m1_set_forward << (-1 * new_speed);
-        }
-    }
     void qik_2s12v10_c::set_m0_speed(const int8_t &new_speed) {
         // Todo: depending on the motor configuration, 127 may not be the
         // maximum value
@@ -53,21 +41,8 @@ namespace r2d2::moving_platform {
     }
 
     void qik_2s12v10_c::brake(){
-        set_speed(0);
-    }
-
-    void qik_2s12v10_c::turn(int8_t degrees){       //temp: now only for beetle, needs to be universal
-        if(degrees >=0){
-            set_m0_speed(40);
-            set_m1_speed(40);
-            hwlib::cout<<((2222*degrees)/360) << "\n";
-            hwlib::wait_ms(((2222*degrees)/360) + 60);  // one round for beetle is 222 sec and needs start up 
-        }else{
-            set_m0_speed(-40);
-            set_m1_speed(-40);
-            hwlib::wait_ms((2222*(-degrees)/360) + 60);
-        }
-        brake();
+        set_m0_speed(0);
+        set_m1_speed(0);
     }
 
     uint8_t qik_2s12v10_c::get_error() {
