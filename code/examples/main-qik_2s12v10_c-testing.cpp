@@ -11,10 +11,11 @@ int main(void) {
     hwlib::wait_ms(1000);
 
     // qik_2s12v10_c testing
-    bool test_set_speed = true;
-    bool test_get_configuration_parameter = true;
-    bool test_get_error = true;
-    bool test_get_motor_current = true;
+    bool test_set_speed = false;
+    bool test_get_configuration_parameter = false;
+    bool test_get_error = false;
+    bool test_get_motor_current = false;
+    bool test_brake_motor = true;
 
     auto qik_2s12v10_reset_pin = hwlib::target::pin_out(2, 25); // digital pin 5
     r2d2::uart_ports_c uart_port_one = r2d2::uart_ports_c::uart1;
@@ -39,39 +40,39 @@ int main(void) {
         hwlib::cout << "Testing both motors, full power forward.\n";
         qik_2s12v10_motorcontroller.set_speed(127);
         hwlib::wait_ms(2000);
-        qik_2s12v10_motorcontroller.brake();
+        qik_2s12v10_motorcontroller.brake(127);
 
         hwlib::wait_ms(500);
 
         hwlib::cout << "Testing both motors, full power backward.\n";
         qik_2s12v10_motorcontroller.set_speed(-127);
         hwlib::wait_ms(2000);
-        qik_2s12v10_motorcontroller.brake();
+        qik_2s12v10_motorcontroller.brake(127);
 
         hwlib::wait_ms(500);
 
         hwlib::cout << "Testing motor m0, full power forward.\n";
         qik_2s12v10_motorcontroller.set_m0_speed(127);
         hwlib::wait_ms(2000);
-        qik_2s12v10_motorcontroller.brake();
+        qik_2s12v10_motorcontroller.brake(127);
 
         hwlib::wait_ms(500);
 
         hwlib::cout << "Testing motor m0, full power backward.\n";
         qik_2s12v10_motorcontroller.set_m0_speed(-127);
         hwlib::wait_ms(2000);
-        qik_2s12v10_motorcontroller.brake();
+        qik_2s12v10_motorcontroller.brake(127);
 
 
         hwlib::cout << "Testing motor m1, full power forward.\n";
         qik_2s12v10_motorcontroller.set_m1_speed(127);
         hwlib::wait_ms(2000);
-        qik_2s12v10_motorcontroller.brake();
+        qik_2s12v10_motorcontroller.brake(127);
 
         hwlib::cout << "Testing motor m1, full power backward.\n";
         qik_2s12v10_motorcontroller.set_m1_speed(-127);
         hwlib::wait_ms(2000);
-        qik_2s12v10_motorcontroller.brake();
+        qik_2s12v10_motorcontroller.brake(127);
 
         hwlib::cout << "Motor tests compleet.\n";
         hwlib::wait_ms(500);
@@ -96,6 +97,37 @@ int main(void) {
                     << qik_2s12v10_motorcontroller.get_error() << hwlib::dec
                     << '\n';
     }
+    if (test_brake_motor){
+        qik_2s12v10_motorcontroller.get_error();         //checking error, because not doing so sometimes causes problems
+
+        hwlib::cout << "testing brake function:\n";
+        hwlib::cout << "brake both motors\n";
+        qik_2s12v10_motorcontroller.set_speed(127);
+        hwlib::wait_ms(2000);
+        qik_2s12v10_motorcontroller.brake(127);
+        hwlib::wait_ms(2000);
+
+        hwlib::cout << "brake motor0\n";
+        qik_2s12v10_motorcontroller.set_speed(127);
+        hwlib::wait_ms(1000);
+        qik_2s12v10_motorcontroller.brake_m0(127);
+        hwlib::wait_ms(5000);
+        //reset
+        qik_2s12v10_motorcontroller.brake(127);
+        hwlib::wait_ms(2000);
+
+        hwlib::cout << "brake motor1\n";
+        qik_2s12v10_motorcontroller.set_speed(127);
+        hwlib::wait_ms(1000);
+        qik_2s12v10_motorcontroller.brake_m1(127);
+        hwlib::wait_ms(5000);
+        //reset
+        qik_2s12v10_motorcontroller.brake(127);
+
+        hwlib::cout << "brake tests done\n";
+
+    }
+
     hwlib::cout << "All tests have been completed\n";
 
     return 0;

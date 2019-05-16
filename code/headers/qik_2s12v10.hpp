@@ -31,6 +31,8 @@ namespace r2d2::moving_platform {
         const uint8_t qik_get_error = 0x82;
         const uint8_t qik_get_motor_m0_current = 0x90;
         const uint8_t qik_get_motor_m1_current = 0x91;
+        const uint8_t qik_motor_m0_brake = 0x86;
+        const uint8_t qik_motor_m1_brake = 0x87;
 
         hwlib::pin_out &reset_pin;
         r2d2::hardware_usart_c usart_bus;
@@ -84,7 +86,27 @@ namespace r2d2::moving_platform {
             timeout                           = 0b00000001
         };
   
-        void brake();
+
+        /// @brief
+        /// This function sends a message to the motorcontroller. The motorcontroller
+        /// then uses the brakes of the motors. 
+        /// @param The parameter is a number between 0 and 127. This number indicates
+        /// how quick/powerfull the brakes are.
+        void brake(const int8_t &brake_amount);
+
+        /// @brief
+        /// This function sends a message to the motorcontroller. The motorcontroller
+        /// then uses the brakes of motor 0. 
+        /// @param The parameter is a number between 0 and 127. This number indicates
+        /// how quick/powerfull the brakes are.
+        void brake_m0(const int8_t &brake_amount);
+
+        /// @brief
+        /// This function sends a message to the motorcontroller. The motorcontroller
+        /// then uses the brakes of the motor 1. 
+        /// @param The parameter is a number between 0 and 127. This number indicates
+        /// how quick/powerfull the brakes are.
+        void brake_m1(const int8_t &brake_amount);
 
         /// @brief
         /// Returns the errors that the qik2s12v10 has detected since this
