@@ -2,8 +2,7 @@
 
 namespace r2d2::moving_platform {
 
-    beetle_c::beetle_c(r2d2::uart_ports_c &uart_port_one,
-             unsigned int baud_rate,
+    beetle_c::beetle_c(r2d2::usart::usart_ports uart_port_one, unsigned int baud_rate,
              hwlib::pin_out &reset_pin, 
              base_comm_c &comm):
              moving_platform_c(comm),

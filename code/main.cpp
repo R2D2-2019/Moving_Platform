@@ -17,11 +17,11 @@ int main(void) {
     bool test_set_speed = true;
 
     auto qik_2s12v10_reset_pin = hwlib::target::pin_out(2, 25); // digital pin 5
-    r2d2::uart_ports_c uart_port_one = r2d2::uart_ports_c::uart1;
+    
+    r2d2::usart::usart_ports uart_port_one = r2d2::usart::usart_ports::uart1;
 
     r2d2::comm_c comm;
-    auto beetle = r2d2::moving_platform::beetle_c(
-        uart_port_one, 9600u, qik_2s12v10_reset_pin, comm);
+    auto beetle = r2d2::moving_platform::beetle_c(uart_port_one, 9600u, qik_2s12v10_reset_pin, comm);
 
     if(beetle_canbus){
         while (1){
