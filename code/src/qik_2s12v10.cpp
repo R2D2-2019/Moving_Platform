@@ -3,10 +3,10 @@
 namespace r2d2::moving_platform {
 
 
-    qik_2s12v10_c::qik_2s12v10_c(r2d2::usart::usart_ports uart_port_one, unsigned int baud_rate,
+    qik_2s12v10_c::qik_2s12v10_c(r2d2::usart::usart_ports &usart_port, unsigned int baud_rate,
                                  hwlib::pin_out &reset_pin): 
-        reset_pin(reset_pin), 
-        usart_bus(r2d2::usart::hardware_usart_c<>(baud_rate, uart_port_one)) 
+        reset_pin(reset_pin),
+        usart_bus(baud_rate, usart_port) 
         {}
 
     void qik_2s12v10_c::set_m0_speed(const int8_t &new_speed) {
@@ -45,6 +45,7 @@ namespace r2d2::moving_platform {
     }
 
     uint8_t qik_2s12v10_c::get_error() {
+        
         while (usart_bus.available() > 0) {
             usart_bus.receive();
             hwlib::wait_ms(0.05);

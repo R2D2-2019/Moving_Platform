@@ -2,11 +2,11 @@
 
 namespace r2d2::moving_platform {
 
-    beetle_c::beetle_c(r2d2::usart::usart_ports uart_port_one, unsigned int baud_rate,
+    beetle_c::beetle_c(r2d2::usart::usart_ports &usart_port, unsigned int baud_rate,
              hwlib::pin_out &reset_pin, 
              base_comm_c &comm):
              moving_platform_c(comm),
-             qik_2s12v10_motorcontroller (uart_port_one, baud_rate, reset_pin)
+             qik_2s12v10_motorcontroller (usart_port, baud_rate, reset_pin)
     {
         
         qik_2s12v10_motorcontroller.init();

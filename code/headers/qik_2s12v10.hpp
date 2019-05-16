@@ -31,7 +31,7 @@ namespace r2d2::moving_platform {
         const uint8_t qik_get_error = 0x82;
 
         hwlib::pin_out &reset_pin;
-        r2d2::usart::hardware_usart_c<250> usart_bus;
+        r2d2::usart::hardware_usart_c<> usart_bus;
 
     public:
         /// @brief
@@ -43,7 +43,7 @@ namespace r2d2::moving_platform {
         /// @param baudrate The baud rate that the Qik2s12v10 will use in its
         /// UART TTL serial communication in bps.
         /// @param _reset_pin Pin that can be used to reset the qik2s12v10.
-        qik_2s12v10_c(r2d2::usart::usart_ports uart_port_one, unsigned int baudrate,
+        qik_2s12v10_c(r2d2::usart::usart_ports &usart_port, unsigned int baudrate,
                       hwlib::pin_out &reset_pin);
 					  
 		/// @brief
