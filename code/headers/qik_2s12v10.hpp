@@ -92,21 +92,21 @@ namespace r2d2::moving_platform {
         /// then uses the brakes of the motors. 
         /// @param The parameter is a number between 0 and 127. This number indicates
         /// how quick/powerfull the brakes are.
-        void brake(const int8_t &brake_amount);
+        void brake(const int8_t brake_amount);
 
         /// @brief
         /// This function sends a message to the motorcontroller. The motorcontroller
         /// then uses the brakes of motor 0. 
         /// @param The parameter is a number between 0 and 127. This number indicates
         /// how quick/powerfull the brakes are.
-        void brake_m0(const int8_t &brake_amount);
+        void brake_m0(const int8_t brake_amount);
 
         /// @brief
         /// This function sends a message to the motorcontroller. The motorcontroller
         /// then uses the brakes of the motor 1. 
         /// @param The parameter is a number between 0 and 127. This number indicates
         /// how quick/powerfull the brakes are.
-        void brake_m1(const int8_t &brake_amount);
+        void brake_m1(const int8_t brake_amount);
 
         /// @brief
         /// Returns the errors that the qik2s12v10 has detected since this
