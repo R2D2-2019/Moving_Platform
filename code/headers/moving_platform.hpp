@@ -1,42 +1,37 @@
 #pragma once
-#include <hwlib.hpp>
 #include <base_module.hpp>
+#include <hwlib.hpp>
 
 namespace r2d2::moving_platform {
-	
-	/**
-	 * Class moving_platform_c is an abstract class that can be implemented for all different kinds of motors
-	 * This class exists so you can use a moving platform even without knowing what kind of platform you have been provided with. 
-	 */
+
+    /**
+     * Class moving_platform_c is an abstract class that can be implemented for
+     * all different kinds of motors This class exists so you can use a moving
+     * platform even without knowing what kind of platform you have been
+     * provided with.
+     */
     class moving_platform_c : public base_module_c {
     protected:
         /**
-		 * this speed represents a throtle in percentages (%)
-		 * This means that 100 is max and forward, -100 is backwards
-		 * 
-		 * the angle is represented in degrees
-		 */
+         * this speed represents a throtle in percentages (%)
+         * This means that 100 is max and forward, -100 is backwards
+         *
+         * the angle is represented in degrees
+         */
         int8_t speed;
         int16_t steering_angle;
-	
-	public:
-	
-        moving_platform_c(base_comm_c &comm) : 
-            base_module_c(comm),
-            speed(0),
-            steering_angle(0) {
-            
-            comm.listen_for_frames(
-                {
-                    r2d2::frame_type::MOVEMENT_CONTROL
-                }
-            );
+
+    public:
+        moving_platform_c(base_comm_c &comm)
+            : base_module_c(comm), speed(0), steering_angle(0) {
+
+            comm.listen_for_frames({r2d2::frame_type::MOVEMENT_CONTROL});
         }
 
         void process() override {
             comm.request(r2d2::frame_type::MOVEMENT_CONTROL);
             while (comm.has_data()) {
-                
+
                 auto frame = comm.get_data();
                 // Process the frame
 
@@ -45,57 +40,52 @@ namespace r2d2::moving_platform {
                     continue;
                 }
 
-                const auto data = frame.as_frame_type<
-                    frame_type::MOVEMENT_CONTROL
-                >();
+                const auto data =
+                    frame.as_frame_type<frame_type::MOVEMENT_CONTROL>();
 
-                if(data.brake){
+                if (data.brake) {
                     set_speed(0);
                     break;
                 }
-                
-                if(data.speed){
+
+                if (data.speed) {
                     set_speed(data.speed);
-                } 
-                if(data.rotation){
+                }
+                if (data.rotation) {
                     turn(data.rotation);
                 }
-                
             }
         }
-	
-		/**
-		 * set the speed to the given value
-		 */
+
+        /**
+         * set the speed to the given value
+         */
         virtual void set_speed(const int8_t &speed) = 0;
-		
-		/**
-		 * set the angle to the given value
-		 */
+
+        /**
+         * set the angle to the given value
+         */
         virtual void set_steering(const int16_t &degrees) = 0;
         /**
-		    *	turns the moving platform
-		    */
+         *	turns the moving platform
+         */
         virtual void turn(const int16_t &degrees) = 0;
 
-
-		/**
-		 * returns the speed value
-		 */
+        /**
+         * returns the speed value
+         */
         int8_t get_speed() const;
-		
-		/**
-		 * returns the angle value
-		 */
+
+        /**
+         * returns the angle value
+         */
         int16_t get_steering() const;
 
         /**
-		 * functiuons for testing purpose
-		 * !not te be implemented or used in final product!
-		 */
+         * functiuons for testing purpose
+         * !not te be implemented or used in final product!
+         */
         virtual void move(const int8_t &distance) = 0;
         virtual void move(const int8_t &x, const int8_t &y) = 0;
-
-    
     };
 } // namespace r2d2::moving_platform

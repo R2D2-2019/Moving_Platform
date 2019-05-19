@@ -2,12 +2,11 @@
 
 namespace r2d2::moving_platform {
 
-
-    qik_2s12v10_c::qik_2s12v10_c(r2d2::usart::usart_ports &usart_port, unsigned int baud_rate,
-                                 hwlib::pin_out &reset_pin): 
-        reset_pin(reset_pin),
-        usart_bus(baud_rate, usart_port) 
-        {}
+    qik_2s12v10_c::qik_2s12v10_c(r2d2::usart::usart_ports &usart_port,
+                                 unsigned int baud_rate,
+                                 hwlib::pin_out &reset_pin)
+        : reset_pin(reset_pin), usart_bus(baud_rate, usart_port) {
+    }
 
     void qik_2s12v10_c::set_m0_speed(const int8_t &new_speed) {
         // Todo: depending on the motor configuration, 127 may not be the
@@ -39,13 +38,13 @@ namespace r2d2::moving_platform {
         usart_bus << qik_autodetect_baudrate;
     }
 
-    void qik_2s12v10_c::brake(){
+    void qik_2s12v10_c::brake() {
         set_m0_speed(0);
         set_m1_speed(0);
     }
 
     uint8_t qik_2s12v10_c::get_error() {
-        
+
         while (usart_bus.available() > 0) {
             usart_bus.receive();
             hwlib::wait_ms(0.05);
@@ -56,7 +55,8 @@ namespace r2d2::moving_platform {
         }                           // wait for answer
         return usart_bus.receive(); // return answer
     }
-    uint8_t qik_2s12v10_c::get_configuration_parameter(const uint8_t &parameter) {
+    uint8_t
+    qik_2s12v10_c::get_configuration_parameter(const uint8_t &parameter) {
         while (usart_bus.available() > 0) {
             usart_bus.receive();
             hwlib::wait_ms(0.05);
