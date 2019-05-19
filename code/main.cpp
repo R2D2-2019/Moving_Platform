@@ -2,9 +2,10 @@
  * This main is used to test the canbus or beetle class.
  */
 
-#include <hwlib.hpp>
 #include <beetle.hpp>
 #include <comm.hpp>
+#include <hwlib.hpp>
+
 
 int main(void) {
     // kill the watchdog
@@ -20,18 +21,18 @@ int main(void) {
     r2d2::usart::usart_ports usart_port = r2d2::usart::usart_ports::uart1;
 
     r2d2::comm_c comm;
-    auto beetle = r2d2::moving_platform::beetle_c(usart_port, 9600u, qik_2s12v10_reset_pin, comm);
+    auto beetle = r2d2::moving_platform::beetle_c(usart_port, 9600u,
+                                                  qik_2s12v10_reset_pin, comm);
 
-    if(beetle_canbus){
-        while (1){
+    if (beetle_canbus) {
+        while (1) {
             beetle.process();
             hwlib::wait_ms(100);
         }
     }
-    
-    
+
     if (test_set_speed) {
-        //motor tests:
+        // motor tests:
         hwlib::cout << "Testing both motors, 31% power forward.\n";
         beetle.set_speed(80);
         beetle.turn(0);
@@ -52,7 +53,6 @@ int main(void) {
         beetle.turn(60);
         hwlib::wait_ms(3000);
         beetle.set_speed(0);
-
 
         hwlib::wait_ms(500);
         beetle.set_speed(0);
