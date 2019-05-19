@@ -11,7 +11,7 @@ namespace r2d2::moving_platform {
         qik_2s12v10_motorcontroller.init();
         qik_2s12v10_motorcontroller.get_configuration_parameter(1);
     }
-    void beetle_c::set_speed(const int8_t &new_speed) {
+    void beetle_c::set_speed(int8_t new_speed) {
         // Todo: depending on the motor configuration, 127 may not be the
         // maximum value
         // Todo: change the speed variable to the actual speed.
@@ -36,9 +36,9 @@ namespace r2d2::moving_platform {
         }
     }
 
-    void beetle_c::set_steering(const int16_t &degrees) {
+    void beetle_c::set_steering(int16_t degrees) {
     }
-    void beetle_c::turn(const int16_t &degrees) {
+    void beetle_c::turn(int16_t degrees) {
         int new_degrees = degrees;
         // because of inaccuracies, when moving forward, the steer of manual
         // control will give a number beween -10 and 10 Just to make sure the
@@ -72,8 +72,8 @@ namespace r2d2::moving_platform {
             }
         }
     }
-    void beetle_c::move(const int8_t &distance) {
+    void beetle_c::move(int8_t distance) {
     }
-    void beetle_c::move(const int8_t &x, const int8_t &y) {
+    void beetle_c::move(int8_t x, int8_t y) {
     }
 } // namespace r2d2::moving_platform

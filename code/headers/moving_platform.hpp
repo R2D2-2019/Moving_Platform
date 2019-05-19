@@ -27,7 +27,10 @@ namespace r2d2::moving_platform {
 
             comm.listen_for_frames({r2d2::frame_type::MOVEMENT_CONTROL});
         }
-
+        /**
+         * @brief
+         * This function will process the frames from the canbus. only reads from canbus
+         */
         void process() override {
             comm.request(r2d2::frame_type::MOVEMENT_CONTROL);
             while (comm.has_data()) {
@@ -60,16 +63,16 @@ namespace r2d2::moving_platform {
         /**
          * set the speed to the given value
          */
-        virtual void set_speed(const int8_t &speed) = 0;
+        virtual void set_speed(int8_t speed) = 0;
 
         /**
          * set the angle to the given value
          */
-        virtual void set_steering(const int16_t &degrees) = 0;
+        virtual void set_steering(int16_t degrees) = 0;
         /**
          *	turns the moving platform
          */
-        virtual void turn(const int16_t &degrees) = 0;
+        virtual void turn(int16_t degrees) = 0;
 
         /**
          * returns the speed value
@@ -85,7 +88,7 @@ namespace r2d2::moving_platform {
          * functiuons for testing purpose
          * !not te be implemented or used in final product!
          */
-        virtual void move(const int8_t &distance) = 0;
-        virtual void move(const int8_t &x, const int8_t &y) = 0;
+        virtual void move(int8_t distance) = 0;
+        virtual void move(int8_t x, int8_t y) = 0;
     };
 } // namespace r2d2::moving_platform

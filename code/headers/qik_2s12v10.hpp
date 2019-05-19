@@ -57,13 +57,13 @@ namespace r2d2::moving_platform {
         /// @param speed The speed of the motor. This value can be between -128
         /// and 127, where -128 is full power backwards, 0 is no power and 127
         /// is full power forward.
-        void set_m0_speed(const int8_t &new_speed);
+        void set_m0_speed(int8_t new_speed);
         /// @brief
         /// Sets the speed of the M1 motor.
         /// @param speed The speed of the motor. This value can be between -128
         /// and 127, where -128 is full power backwards, 0 is no power and 127
         /// is full power forward.
-        void set_m1_speed(const int8_t &new_speed);
+        void set_m1_speed(int8_t new_speed);
 
         enum qik_2s12v10_error {
             motor_0_fault = 0b10000000,
@@ -89,6 +89,6 @@ namespace r2d2::moving_platform {
         /// @param parameter Specifies the parameter that should be returned.
         /// The parameters can be found here:
         /// https://www.pololu.com/docs/0J29/5.a
-        uint8_t get_configuration_parameter(const uint8_t &parameter);
+        uint8_t get_configuration_parameter(uint8_t parameter);
     };
 } // namespace r2d2::moving_platform
