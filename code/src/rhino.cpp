@@ -40,6 +40,11 @@ namespace r2d2::moving_platform {
     }
     void rhino_c::turn(int16_t degrees) {
         int new_degrees = degrees;
+        //to make sure the platform is still turning if speed is more than 90,
+        //a speedcap is made at 90.
+        if (speed >= 90){
+            speed = 90;
+        }
         // because of inaccuracies, when moving forward, the steer of manual
         // control will give a number beween -10 and 10 Just to make sure the
         // robot will move forward and not react to quickly, a theshold is made
@@ -51,8 +56,8 @@ namespace r2d2::moving_platform {
         int percentage = new_degrees * 100 / 90;
         int new_speed_m0;
         int new_speed_m1;
-        
-        if (speed == 0){
+
+        if (speed == 0){    //this makes sure the platform can still turn if the speed is 0.
             new_speed_m0 = speed + 100 * (percentage) / 100;
             new_speed_m1 = speed + 100 * (-percentage) / 100;
         }else{
@@ -62,6 +67,7 @@ namespace r2d2::moving_platform {
         qik_2s12v10_motorcontroller.set_m0_speed(new_speed_m0);
         qik_2s12v10_motorcontroller.set_m1_speed(new_speed_m1);
     }
+    
     void rhino_c::move(int8_t distance) {
     }
     void rhino_c::move(int8_t x, int8_t y) {
