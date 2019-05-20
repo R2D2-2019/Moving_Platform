@@ -19,8 +19,7 @@ namespace r2d2::moving_platform {
          * @param    reset_pin: hwlib::pin_out &
          * @param    comm:      base_comm_c &
          */
-        beetle_c(r2d2::usart::usart_ports &usart_port, unsigned int baud_rate,
-                 hwlib::pin_out &reset_pin, base_comm_c &comm);
+        beetle_c(qik_2s12v10_c &motor_controller, base_comm_c &comm);
 
         /**
          * @brief

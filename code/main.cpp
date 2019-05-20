@@ -19,10 +19,10 @@ int main(void) {
 
     auto qik_2s12v10_reset_pin = hwlib::target::pin_out(2, 25); // digital pin 5
     r2d2::usart::usart_ports usart_port = r2d2::usart::usart_ports::uart1;
-
+    r2d2::usart::hardware_usart_c usart_bus(9600u, usart_port);
+    r2d2::moving_platform::qik_2s12v10_c motor_controller(usart_bus, qik_2s12v10_reset_pin);
     r2d2::comm_c comm;
-    auto beetle = r2d2::moving_platform::beetle_c(usart_port, 9600u,
-                                                  qik_2s12v10_reset_pin, comm);
+    auto beetle = r2d2::moving_platform::beetle_c(motor_controller, comm);
 
     if (beetle_canbus) {
         while (1) {
