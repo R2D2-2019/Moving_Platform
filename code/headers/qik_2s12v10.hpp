@@ -1,12 +1,53 @@
 #pragma once
 
+#include <hardware_usart.hpp>
 #include <hwlib.hpp>
 #include <motor_control.hpp>
-#include <hardware_usart.hpp>
+
+
 
 /// @file
+namespace r2d2{
 
+}
 namespace r2d2::moving_platform {
+
+    enum class qik_2s12v10_error : uint8_t {
+            motor_0_fault = 0b10000000,
+            motor_1_fault = 0b01000000,
+            motor_0_over_current = 0b00100000,
+            motor_1_over_current = 0b00010000,
+            serial_hardware_error = 0b00001000,
+            crc_error = 0b00000100,
+            format_error = 0b00000010,
+            timeout = 0b00000001
+        };
+        
+    enum class qik_2s12v10_configuration_parameter_return : uint8_t{
+        command_ok = 0,
+        bad_parameter,
+        bad_value
+    };
+
+    
+    enum class qik_2s12v10_registers : uint8_t{
+        
+
+        qik_autodetect_baudrate = 0xAA,
+        qik_request_firmwareversion = 0x81,
+        qik_motor_m0_set_forward = 0x88,
+        qik_motor_m0_set_reverse = 0x8A,
+        qik_motor_m1_set_forward = 0x8C,
+        qik_motor_m1_set_reverse = 0x8E,
+        qik_get_config_parameter = 0x83,
+        qik_get_error = 0x82,
+        qik_get_motor_m0_current = 0x90,
+        qik_get_motor_m1_current = 0x91,
+        qik_motor_m0_brake = 0x86,
+        qik_motor_m1_brake = 0x87
+    };
+    
+    
 
     /// @brief
     /// Class that represents a qik2s12v10 motor controller.
@@ -21,21 +62,10 @@ namespace r2d2::moving_platform {
     /// https://www.pololu.com/docs/0J29
     class qik_2s12v10_c {
     private:
-        const uint8_t qik_autodetect_baudrate = 0xAA;
-        const uint8_t qik_request_firmwareversion = 0x81;
-        const uint8_t qik_motor_m0_set_forward = 0x88;
-        const uint8_t qik_motor_m0_set_reverse = 0x8A;
-        const uint8_t qik_motor_m1_set_forward = 0x8C;
-        const uint8_t qik_motor_m1_set_reverse = 0x8E;
-        const uint8_t qik_get_config_parameter = 0x83;
-        const uint8_t qik_get_error = 0x82;
-        const uint8_t qik_get_motor_m0_current = 0x90;
-        const uint8_t qik_get_motor_m1_current = 0x91;
-        const uint8_t qik_motor_m0_brake = 0x86;
-        const uint8_t qik_motor_m1_brake = 0x87;
+
 
         hwlib::pin_out &reset_pin;
-        r2d2::hardware_usart_c usart_bus;
+        r2d2::usart::hardware_usart_c<> usart_bus;
 
     public:
         /// @brief
@@ -47,45 +77,26 @@ namespace r2d2::moving_platform {
         /// @param baudrate The baud rate that the Qik2s12v10 will use in its
         /// UART TTL serial communication in bps.
         /// @param _reset_pin Pin that can be used to reset the qik2s12v10.
-        qik_2s12v10_c(r2d2::uart_ports_c &uart_port, unsigned int baudrate,
-                      hwlib::pin_out &reset_pin);
-					  
-		/// @brief
+        qik_2s12v10_c(r2d2::usart::usart_ports &usart_port,
+                      unsigned int baudrate, hwlib::pin_out &reset_pin);
+
+        /// @brief
         /// Initializes the qik2s12v10 by resetting it and then setting the baud
         /// rate.
         void init();
 
         /// @brief
-        /// Sets the speed of both motors.
-        /// @param speed The speed of both motors. This value can be between
-        /// -128 and 127, where -128 is full power backwards, 0 is no power and
-        /// 127 is full power forward.
-        void set_speed(const int8_t &new_speed);
-        /// @brief
         /// Sets the speed of the M0 motor.
         /// @param speed The speed of the motor. This value can be between -128
         /// and 127, where -128 is full power backwards, 0 is no power and 127
         /// is full power forward.
-        void set_m0_speed(const int8_t &new_speed);
+        void set_m0_speed(int8_t new_speed);
         /// @brief
         /// Sets the speed of the M1 motor.
         /// @param speed The speed of the motor. This value can be between -128
         /// and 127, where -128 is full power backwards, 0 is no power and 127
         /// is full power forward.
-        void set_m1_speed(const int8_t &new_speed);
-
-
-        enum qik_2s12v10_error{
-            motor_0_fault                     = 0b10000000,
-            motor_1_fault                     = 0b01000000,
-            motor_0_over_current              = 0b00100000,
-            motor_1_over_current              = 0b00010000,
-            serial_hardware_error             = 0b00001000,
-            crc_error                         = 0b00000100,
-            format_error                      = 0b00000010,
-            timeout                           = 0b00000001
-        };
-  
+        void set_m1_speed(int8_t new_speed);
 
         /// @brief
         /// This function sends a message to the motorcontroller. The motorcontroller
@@ -113,13 +124,15 @@ namespace r2d2::moving_platform {
         /// function was last used. The meaning of each bit can be found here:
         /// https://www.pololu.com/docs/0J29/5.c
         uint8_t get_error();
+
         /// @brief
         /// Returns the value that the parameter specified by parameter
         /// currently has.
         /// @param parameter Specifies the parameter that should be returned.
         /// The parameters can be found here:
         /// https://www.pololu.com/docs/0J29/5.a
-        uint8_t get_configuration_parameter(const uint8_t &parameter);
+
+        uint8_t get_configuration_parameter(uint8_t parameter);
 
 
         /// @brief
@@ -142,7 +155,7 @@ namespace r2d2::moving_platform {
         /// value returned by this function can differ from the actual current
         /// by as much as 20% and according to the datasheet the values needs to be multiplied by 150.
 
-        size_t get_m0_current_milliamps();
+        uint16_t get_m0_current_milliamps();
 
         /// @brief
         /// This function uses the raw reading from motor M1 to estimate how
@@ -150,6 +163,7 @@ namespace r2d2::moving_platform {
         /// value returned by this function can differ from the actual current
         /// by as much as 20% and according to the datasheet the values needs to be multiplied by 150.
 
-        size_t get_m1_current_milliamps();
+        uint16_t get_m1_current_milliamps();
+
     };
 } // namespace r2d2::moving_platform
