@@ -47,30 +47,20 @@ namespace r2d2::moving_platform {
         if (new_degrees < 15 && new_degrees > -15) {
             new_degrees = 0;
         }
-
-        if (speed != 0) {
-            if (new_degrees == 0) {
-                qik_2s12v10_motorcontroller.set_m0_speed(speed);
-                qik_2s12v10_motorcontroller.set_m1_speed(-speed);
-            } else if (new_degrees > 0) {
-                // turn left
-                // to make the left wheel go slower, we decresed the speed with
-                // factor 4 and 3 (no meaning just gave good output on beetle)
-                qik_2s12v10_motorcontroller.set_m0_speed(
-                    (speed + new_degrees / 4) / 3);
-                qik_2s12v10_motorcontroller.set_m1_speed(
-                    -(speed + new_degrees / 4));
-
-            } else {
-                // turn right
-                // to make the right wheel go slower, we decresed the speed with
-                // factor 4 and 3 (no meaning just gave good output on beetle)
-                qik_2s12v10_motorcontroller.set_m0_speed(
-                    (speed + new_degrees / 4));
-                qik_2s12v10_motorcontroller.set_m1_speed(
-                    -(speed + new_degrees / 4) / 3);
-            }
+        //calculating a percentage of the degrees
+        int percentage = new_degrees * 100 / 90;
+        int new_speed_m0;
+        int new_speed_m1;
+        
+        if (speed == 0){
+            new_speed_m0 = speed + 100 * (percentage) / 100;
+            new_speed_m1 = speed + 100 * (-percentage) / 100;
+        }else{
+            new_speed_m0 = speed + (((200%(speed + 100)) * percentage) / 100);
+            new_speed_m1 = speed + (((200%(speed + 100)) * -percentage) / 100);
         }
+        qik_2s12v10_motorcontroller.set_m0_speed(new_speed_m0);
+        qik_2s12v10_motorcontroller.set_m1_speed(new_speed_m1);
     }
     void rhino_c::move(int8_t distance) {
     }
