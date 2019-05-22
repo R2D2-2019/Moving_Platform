@@ -2,12 +2,12 @@
 
 namespace r2d2::moving_platform {
 
-    beetle_c::beetle_c(qik_2s12v10_c &motor_controller, base_comm_c &comm)
+    beetle_c::beetle_c(r2d2::moving_platform::qik_2s12v10_c *qik_2s12v10_motorcontroller, base_comm_c &comm)
         : moving_platform_c(comm),
-          qik_2s12v10_motorcontroller(motor_controller) {
+          qik_2s12v10_motorcontroller(qik_2s12v10_motorcontroller) {
 
-        qik_2s12v10_motorcontroller.init();
-        qik_2s12v10_motorcontroller.get_configuration_parameter(1);
+        hwlib::cout<<"constructor beelte start \n";
+        hwlib::cout<<"constructor beetle done \n";
     }
     void beetle_c::set_speed(int8_t new_speed) {
         // Todo: depending on the motor configuration, 127 may not be the
@@ -29,8 +29,8 @@ namespace r2d2::moving_platform {
         // is made for -10 till 10.
         else if (speed < 10 && speed > -10) {
             speed = 0;
-            qik_2s12v10_motorcontroller.set_m0_speed(0);
-            qik_2s12v10_motorcontroller.set_m1_speed(0);
+            qik_2s12v10_motorcontroller->set_m0_speed(0);
+            qik_2s12v10_motorcontroller->set_m1_speed(0);
         }
     }
 
@@ -48,24 +48,24 @@ namespace r2d2::moving_platform {
 
         if (speed != 0) {
             if (new_degrees == 0) {
-                qik_2s12v10_motorcontroller.set_m0_speed(speed);
-                qik_2s12v10_motorcontroller.set_m1_speed(-speed);
+                qik_2s12v10_motorcontroller->set_m0_speed(speed);
+                qik_2s12v10_motorcontroller->set_m1_speed(-speed);
             } else if (new_degrees > 0) {
                 // turn left
                 // to make the left wheel go slower, we decresed the speed with
                 // factor 4 and 3 (no meaning just gave good output on beetle)
-                qik_2s12v10_motorcontroller.set_m0_speed(
+                qik_2s12v10_motorcontroller->set_m0_speed(
                     (speed + new_degrees / 4) / 3);
-                qik_2s12v10_motorcontroller.set_m1_speed(
+                qik_2s12v10_motorcontroller->set_m1_speed(
                     -(speed + new_degrees / 4));
 
             } else {
                 // turn right
                 // to make the right wheel go slower, we decresed the speed with
                 // factor 4 and 3 (no meaning just gave good output on beetle)
-                qik_2s12v10_motorcontroller.set_m0_speed(
+                qik_2s12v10_motorcontroller->set_m0_speed(
                     (speed + new_degrees / 4));
-                qik_2s12v10_motorcontroller.set_m1_speed(
+                qik_2s12v10_motorcontroller->set_m1_speed(
                     -(speed + new_degrees / 4) / 3);
             }
         }
