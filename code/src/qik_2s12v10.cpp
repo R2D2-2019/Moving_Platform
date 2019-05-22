@@ -8,7 +8,13 @@ namespace r2d2::moving_platform {
                                  hwlib::pin_out &reset_pin): 
         reset_pin(reset_pin), 
         usart_bus(baud_rate, uart_port) 
-        {}
+        {
+            hwlib::cout<<"qik made \n";
+            init();
+            get_configuration_parameter(1);
+            hwlib::cout<<"constructor qik done \n";
+
+        }
 
     void qik_2s12v10_c::set_speed(const int8_t &new_speed) {
         // Todo: depending on the motor configuration, 127 may not be the
@@ -25,6 +31,7 @@ namespace r2d2::moving_platform {
     void qik_2s12v10_c::set_m0_speed(const int8_t &new_speed) {
         // Todo: depending on the motor configuration, 127 may not be the
         // maximum value
+        hwlib::cout << "m0 speed\n";
         if (new_speed >= 0) {
             usart_bus << qik_motor_m0_set_forward << new_speed;
         } else {
@@ -34,6 +41,7 @@ namespace r2d2::moving_platform {
     void qik_2s12v10_c::set_m1_speed(const int8_t &new_speed) {
         // Todo: depending on the motor configuration, 127 may not be the
         // maximum value
+        hwlib::cout << "m1 speed \n";
         if (new_speed >= 0) {
             usart_bus << qik_motor_m1_set_forward << new_speed;
         } else {
@@ -43,13 +51,16 @@ namespace r2d2::moving_platform {
 
     void qik_2s12v10_c::init() {
         // reset the qik 2s12v10
+        hwlib::cout << "it is in init\n";
         reset_pin.write(0);
         hwlib::wait_ms(1);
         reset_pin.write(1);
         hwlib::wait_ms(10);
 
+        hwlib::cout << "go to usart bus\n";
         // setup the uart communication
         usart_bus << qik_autodetect_baudrate;
+        hwlib::cout << "send done \n";
     }
 
     void qik_2s12v10_c::brake(){
@@ -82,14 +93,19 @@ namespace r2d2::moving_platform {
         return usart_bus.receive(); // return answer
     }
     uint8_t qik_2s12v10_c::get_configuration_parameter(const uint8_t &parameter) {
+        hwlib::cout << "send config par \n";
         while (usart_bus.available() > 0) {
             usart_bus.receive();
             hwlib::wait_ms(0.05);
-        }                                                   // clear the buffer
+        } 
+        hwlib::cout << "bus available >0 \n";                                                  // clear the buffer
         usart_bus << qik_get_config_parameter << parameter; // send request
+        
         while (!usart_bus.available()) {
             hwlib::wait_ms(50);     // don't use all time
         }                           // wait for answer
+        hwlib::cout << "usart_bus available\n";
         return usart_bus.receive(); // return answer
+        return 0;
     }
 } // namespace r2d2::moving_platform

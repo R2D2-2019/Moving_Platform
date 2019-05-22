@@ -2,7 +2,6 @@
 #include <hwlib.hpp>
 #include <qik_2s12v10.hpp>
 #include <moving_platform.hpp>
-#include <base_module.hpp>
 
 namespace r2d2::moving_platform {
 
@@ -14,7 +13,7 @@ namespace r2d2::moving_platform {
 
         beetle_c(r2d2::uart_ports_c &uart_port,
              unsigned int baud_rate,
-             hwlib::pin_out &reset_pin, base_comm_c &comm);
+             hwlib::pin_out &reset_pin);
 
         /**
 		* the speed set must not exceed 100

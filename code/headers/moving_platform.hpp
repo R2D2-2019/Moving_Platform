@@ -1,6 +1,5 @@
 #pragma once
 #include <hwlib.hpp>
-#include <base_module.hpp>
 
 namespace r2d2::moving_platform {
 	
@@ -8,7 +7,7 @@ namespace r2d2::moving_platform {
 	 * Class moving_platform_c is an abstract class that can be implemented for all different kinds of motors
 	 * This class exists so you can use a moving platform even without knowing what kind of platform you have been provided with. 
 	 */
-    class moving_platform_c : public base_module_c {
+    class moving_platform_c {
     protected:
         /**
 		 * this speed represents a throtle in percentages (%)
@@ -53,19 +52,18 @@ namespace r2d2::moving_platform {
         virtual void move(const int8_t &x, const int8_t &y) = 0;
 
     public:
-        moving_platform_c(base_comm_c &comm) : 
-            base_module_c(comm),
+        moving_platform_c() : 
             speed(0),
             steering_angle(0) {
-            
-            comm.listen_for_frames(
+            hwlib::cout << "woohoee in movingplatform\n";
+            /*comm.listen_for_frames(
                 {
                     r2d2::frame_type::MOVEMENT_CONTROL
                 }
-            );
+            );*/
         }
 
-        void process() override {
+        /*void process() override {
             comm.request(r2d2::frame_type::MOVEMENT_CONTROL);
             while (comm.has_data()) {
                 hwlib::cout << "dataaa \n";
@@ -85,19 +83,23 @@ namespace r2d2::moving_platform {
                 if(data.brake){
                     hwlib::cout << "brake: true \n";
                     set_speed(0);
-                    break;
-                }
-                
-                if(data.speed){
+                } else if (data.speed > 0){
                     hwlib::cout << "speed: " << data.speed << "\n";
                     set_speed(data.speed);
-                } 
-                if(data.rotation){
+                } else if (data.speed == 0) {
+                    hwlib::cout << "speed: 0 \n";
+                    set_speed(0);
+                } else if(data.rotation!=0){
                     hwlib::cout << "rotation: " << data.rotation << "\n";
                     turn(data.rotation);
+                } else{
+                    set_speed(0);
                 }
                 
-            }
-        }
+
+
+                
+                
+            }*/
     };
 } // namespace r2d2::moving_platform
