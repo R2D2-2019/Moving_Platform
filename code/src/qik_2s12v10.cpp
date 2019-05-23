@@ -67,8 +67,8 @@ namespace r2d2::moving_platform {
         : reset_pin(reset_pin), usart_bus(baud_rate, usart_port) {
     }
 
-    void qik_2s12v10_c::wait_for_bus(qik_2s12v10_bus_state &required_state, uint8_t wait_length){
-        while (usart_bus.available() != required_state) {
+    void qik_2s12v10_c::wait_for_bus(const qik_2s12v10_bus_state &required_state, uint8_t wait_length){
+        while (usart_bus.available() != static_cast<uint8_t>(required_state)) {
             usart_bus.receive();
             hwlib::wait_ms(wait_length);
         } 
@@ -124,7 +124,7 @@ namespace r2d2::moving_platform {
     }
 
     qik_2s12v10_error qik_2s12v10_c::get_error() {
-        wait_for_bus(qik_2s12v10_bus_state::avaiable);// clear the buffer
+        wait_for_bus(qik_2s12v10_bus_state::available);// clear the buffer
         usart_bus << qik_2s12v10_registers::get_error; // send request
         wait_for_bus(qik_2s12v10_bus_state::unavailable);                     // wait for answer
         return static_cast<qik_2s12v10_error>(
