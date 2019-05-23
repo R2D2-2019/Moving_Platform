@@ -7,10 +7,13 @@
 
 
 /// @file
-namespace r2d2{
-
-}
 namespace r2d2::moving_platform {
+
+    enum class qik_2s12v10_configuration_parameter_return : uint8_t{
+        command_ok = 0,
+        bad_parameter,
+        bad_value
+    };
 
     enum class qik_2s12v10_error : uint8_t {
             motor_0_fault = 0b10000000,
@@ -23,16 +26,7 @@ namespace r2d2::moving_platform {
             timeout = 0b00000001
         };
         
-    enum class qik_2s12v10_configuration_parameter_return : uint8_t{
-        command_ok = 0,
-        bad_parameter,
-        bad_value
-    };
-
-    
     enum class qik_2s12v10_registers : uint8_t{
-        
-
         qik_autodetect_baudrate = 0xAA,
         qik_request_firmwareversion = 0x81,
         qik_motor_m0_set_forward = 0x88,
@@ -68,6 +62,7 @@ namespace r2d2::moving_platform {
         r2d2::usart::hardware_usart_c<> usart_bus;
 
     public:
+        
         /// @brief
         /// Qik2s12v10 constructor.
         /// @details
@@ -123,7 +118,7 @@ namespace r2d2::moving_platform {
         /// Returns the errors that the qik2s12v10 has detected since this
         /// function was last used. The meaning of each bit can be found here:
         /// https://www.pololu.com/docs/0J29/5.c
-        uint8_t get_error();
+        qik_2s12v10_error get_error();
 
         /// @brief
         /// Returns the value that the parameter specified by parameter
@@ -132,7 +127,7 @@ namespace r2d2::moving_platform {
         /// The parameters can be found here:
         /// https://www.pololu.com/docs/0J29/5.a
 
-        uint8_t get_configuration_parameter(uint8_t parameter);
+        qik_2s12v10_configuration_parameter_return get_configuration_parameter(uint8_t parameter);
 
 
         /// @brief
