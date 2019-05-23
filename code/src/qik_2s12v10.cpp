@@ -144,8 +144,9 @@ namespace r2d2::moving_platform {
     qik_2s12v10_set_configuration_parameter_return qik_2s12v10_c::set_configuration_parameter(qik_2s12v10_configuration_parameter parameter, uint8_t value){
         wait_for_bus(qik_2s12v10_bus_state::available);
         usart_bus << parameter
-                  << parameter
-                  << value; // send request
+                  << value // send request
+                  << 0x55
+                  << 0x2A;
         wait_for_bus(qik_2s12v10_bus_state::unavailable);
         return static_cast<qik_2s12v10_set_configuration_parameter_return>(usart_bus.receive()); // return answer
     }
