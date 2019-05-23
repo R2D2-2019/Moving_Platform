@@ -55,6 +55,11 @@ namespace r2d2::moving_platform {
         get_error = 0x82
     };
 
+    enum class qik_2s12v10_bus_state : uint8_t{
+        unavailable = 0,
+        available
+    }
+
     /* @brief
      * Class that represents a qik2s12v10 motor controller.
      * @details
@@ -71,7 +76,7 @@ namespace r2d2::moving_platform {
     private:
         hwlib::pin_out &reset_pin;
         r2d2::usart::hardware_usart_c<> usart_bus;
-
+        void wait_for_bus(uint8_t wait_length = 5);
     public:
         /* @brief
          * Qik2s12v10 constructor.

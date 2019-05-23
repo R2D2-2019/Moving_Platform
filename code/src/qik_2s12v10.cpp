@@ -61,12 +61,19 @@ namespace r2d2::moving_platform {
         }
         return out;
     }
-
     qik_2s12v10_c::qik_2s12v10_c(r2d2::usart::usart_ports &usart_port,
                                  unsigned int baud_rate,
                                  hwlib::pin_out &reset_pin)
         : reset_pin(reset_pin), usart_bus(baud_rate, usart_port) {
     }
+
+    void qik_2s12v10_c::wait_for_bus(qik_2s12v10_bus_state &required_state, uint8_t wait_length){
+        while (usart_bus.available() != required_state) {
+            usart_bus.receive();
+            hwlib::wait_ms(wait_length);
+        } 
+    }
+
 
     void qik_2s12v10_c::set_m0_speed(int8_t new_speed) {
         // Todo: depending on the motor configuration, 127 may not be the
@@ -117,68 +124,42 @@ namespace r2d2::moving_platform {
     }
 
     qik_2s12v10_error qik_2s12v10_c::get_error() {
-
-        while (usart_bus.available() > 0) {
-            usart_bus.receive();
-            hwlib::wait_ms(0.05);
-        }                                                  // clear the buffer
+        wait_for_bus(qik_2s12v10_bus_state::avaiable);// clear the buffer
         usart_bus << qik_2s12v10_registers::get_error; // send request
-        while (!usart_bus.available()) {
-            hwlib::wait_ms(50); // don't use all time
-        }                       // wait for answer
+        wait_for_bus(qik_2s12v10_bus_state::unavailable);                     // wait for answer
         return static_cast<qik_2s12v10_error>(
             usart_bus.receive()); // return answer
     }
 
     uint8_t
     qik_2s12v10_c::get_configuration_parameter(uint8_t parameter) {
-        while (usart_bus.available() > 0) {
-            usart_bus.receive();
-            hwlib::wait_ms(0.05);
-        } // clear the buffer
+        wait_for_bus(qik_2s12v10_bus_state::available);
         usart_bus << qik_2s12v10_registers::get_config_parameter
                   << parameter; // send request
-        while (!usart_bus.available()) {
-            hwlib::wait_ms(50); // don't use all time
-        }                       // wait for answer
+        wait_for_bus(qik_2s12v10_bus_state::unavailable);
         return usart_bus.receive(); // return answer
     }
     
     qik_2s12v10_set_configuration_parameter_return qik_2s12v10_c::set_configuration_parameter(qik_2s12v10_configuration_parameter parameter, uint8_t value){
-        while (usart_bus.available() > 0) {
-            usart_bus.receive();
-            hwlib::wait_ms(0.05);
-        } // clear the buffer
+        wait_for_bus(qik_2s12v10_bus_state::available);
         usart_bus << parameter
                   << parameter
                   << value; // send request
-        while (!usart_bus.available()) {
-            hwlib::wait_ms(50); // don't use all time
-        }                       // wait for answer
+        wait_for_bus(qik_2s12v10_bus_state::unavailable);
         return static_cast<qik_2s12v10_set_configuration_parameter_return>(usart_bus.receive()); // return answer
     }
 
     uint8_t qik_2s12v10_c::get_m0_current() {
-        while (usart_bus.available() > 0) { // clear buffer
-            usart_bus.receive();
-            hwlib::wait_ms(0.05);
-        }
+        wait_for_bus(qik_2s12v10_bus_state::available);
         usart_bus << qik_2s12v10_registers::get_motor_m0_current;
-        while (!usart_bus.available()) {
-            hwlib::wait_ms(50);
-        }
+        wait_for_bus(qik_2s12v10_bus_state::unavailable);
         return usart_bus.receive();
     }
 
     uint8_t qik_2s12v10_c::get_m1_current() {
-        while (usart_bus.available() > 0) { // clear buffer
-            usart_bus.receive();
-            hwlib::wait_ms(0.05);
-        }
+        wait_for_bus(qik_2s12v10_bus_state::available);
         usart_bus << qik_2s12v10_registers::get_motor_m1_current;
-        while (!usart_bus.available()) {
-            hwlib::wait_ms(50);
-        }
+        wait_for_bus(qik_2s12v10_bus_state::unavailable);
         return usart_bus.receive();
     }
 
