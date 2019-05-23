@@ -61,16 +61,17 @@ namespace r2d2::moving_platform {
         }
         return out;
     }
+
     qik_2s12v10_c::qik_2s12v10_c(r2d2::usart::usart_ports &usart_port,
                                  unsigned int baud_rate,
                                  hwlib::pin_out &reset_pin)
         : reset_pin(reset_pin), usart_bus(baud_rate, usart_port) {
     }
 
-    void qik_2s12v10_c::wait_for_bus(const qik_2s12v10_bus_state &required_state, uint8_t wait_length){
+    void qik_2s12v10_c::wait_for_bus(const qik_2s12v10_bus_state &required_state, uint8_t wait_ms_length){
         while (usart_bus.available() != static_cast<uint8_t>(required_state)) {
             usart_bus.receive();
-            hwlib::wait_ms(wait_length);
+            hwlib::wait_ms(wait_ms_length);
         } 
     }
 

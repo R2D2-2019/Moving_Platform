@@ -55,10 +55,7 @@ namespace r2d2::moving_platform {
         get_error = 0x82
     };
 
-    enum class qik_2s12v10_bus_state : uint8_t{
-        unavailable = 0,
-        available
-    };
+    enum class qik_2s12v10_bus_state : uint8_t { unavailable = 0, available };
 
     /* @brief
      * Class that represents a qik2s12v10 motor controller.
@@ -76,7 +73,19 @@ namespace r2d2::moving_platform {
     private:
         hwlib::pin_out &reset_pin;
         r2d2::usart::hardware_usart_c<> usart_bus;
-        void wait_for_bus(const qik_2s12v10_bus_state &required_state, uint8_t wait_length = 5);
+
+        /*
+         * @brief
+         * Qik2x12v10 wait for bus function
+         * @details
+         * Waits for the usart bus to be free or busy, so that we know if we can
+         * read/write.
+         * @param required_state the state we want the usart to be in.
+         * @param wait_ms_length the length of the waits between the checks
+         */
+        void wait_for_bus(const qik_2s12v10_bus_state &required_state,
+                          uint8_t wait_ms_length = 5);
+
     public:
         /* @brief
          * Qik2s12v10 constructor.
@@ -140,7 +149,7 @@ namespace r2d2::moving_platform {
          * Returns the errors that the qik2s12v10 has detected since this
          * function was last used. The meaning of each bit can be found here:
          * https://www.pololu.com/docs/0J29/5.c
-         * 
+         *
          * @return Returns the error if any.
          */
         qik_2s12v10_error get_error();
@@ -151,7 +160,7 @@ namespace r2d2::moving_platform {
          * @param parameter Specifies the parameter that should be returned.
          * The parameters can be found here:
          * https://www.pololu.com/docs/0J29/5.a
-         * 
+         *
          * @return Returns the value of the requested parameter.
          */
         uint8_t get_configuration_parameter(uint8_t parameter);
@@ -162,10 +171,10 @@ namespace r2d2::moving_platform {
          * the parameter was set or if there was an error while setting the
          * parameter
          * @param parameter specifies the parameter that should be changed.
-         * @param value specifies what the parameter should be set to in the chip
-         * The parameters can be found here:
+         * @param value specifies what the parameter should be set to in the
+         * chip The parameters can be found here:
          * https://www.pololu.com/docs/0J29/5.a
-         * 
+         *
          * @return returns a parameter_return wich is linked to an error.
          * eror codes can be found here:
          * https://www.pololu.com/docs/0J29/5.d
@@ -178,7 +187,7 @@ namespace r2d2::moving_platform {
          * Returns the raw reading from motor M0 that indicates how much
          * current flows through the motor at average over the last 5ms.
          * This reading is raw, so not converted to milliampere.
-         * 
+         *
          * @return Returns the raw current value of the 0 motor.
          */
         uint8_t get_m0_current();
@@ -187,7 +196,7 @@ namespace r2d2::moving_platform {
          * Returns the raw reading from motor M1 that indicates how much
          * current flows through the motor at average over the last 5ms. This
          * reading is raw, so not converted to milliampere.
-         * 
+         *
          * @return Returns the raw current value of the 1 motor.
          */
         uint8_t get_m1_current();
@@ -198,7 +207,7 @@ namespace r2d2::moving_platform {
          * value returned by this function can differ from the actual current
          * by as much as 20% and according to the datasheet the values needs to
          * be multiplied by 150.
-         * 
+         *
          * @return Returns the calculated current of the m0 motor in milliamps
          */
         uint16_t get_m0_current_milliamps();
@@ -209,9 +218,10 @@ namespace r2d2::moving_platform {
          * value returned by this function can differ from the actual current
          * by as much as 20% and according to the datasheet the values needs to
          * be multiplied by 150.
-         * 
+         *
          * @return Returns the calculated current of the m1 motor in milliamps
          */
         uint16_t get_m1_current_milliamps();
+        
     };
 } // namespace r2d2::moving_platform
