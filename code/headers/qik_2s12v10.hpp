@@ -46,6 +46,8 @@ namespace r2d2::moving_platform {
         set_motor_m0_reverse = 0x8A,
         set_motor_m1_forward = 0x8C,
         set_motor_m1_reverse = 0x8E,
+        get_motor_m0_speed = 0x92;
+        get_motor_m1_speed = 0x93;
         get_config_parameter = 0x83,
         set_config_parameter = 0x84,
         get_motor_m0_current = 0x90,
@@ -222,6 +224,9 @@ namespace r2d2::moving_platform {
          * @return Returns the calculated current of the m1 motor in milliamps
          */
         uint16_t get_m1_current_milliamps();
-        
+
+        uint8_t get_m0_speed();
+
+        uint8_t get_m1_speed();
     };
 } // namespace r2d2::moving_platform

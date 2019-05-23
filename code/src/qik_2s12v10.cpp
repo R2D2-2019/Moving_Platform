@@ -172,4 +172,16 @@ namespace r2d2::moving_platform {
         return get_m0_current() * 150;
     }
 
+    uint8_t qik_2s12v10_c::get_m0_speed(){
+        wait_for_bus(qik_2s12v10_bus_state::available);
+        usart_bus << qik_2s12v10_registers::get_motor_m1_speed;
+        wait_for_bus(qik_2s12v10_bus_state::unavailable);
+        return usart_bus.receive();
+    }
+    uint8_t qik_2s12v10_c::get_m1_speed(){
+        wait_for_bus(qik_2s12v10_bus_state::available);
+        usart_bus << qik_2s12v10_registers::get_motor_m1_speed;
+        wait_for_bus(qik_2s12v10_bus_state::unavailable);
+        return usart_bus.receive();
+    }
 } // namespace r2d2::moving_platform
