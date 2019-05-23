@@ -24,6 +24,9 @@ namespace r2d2::moving_platform {
                const qik_2s12v10_registers &rhs) {
         return out << static_cast<uint8_t>(rhs);
     }
+    r2d2::usart::usart_connection_c &operator<< (r2d2::usart::usart_connection_c &out, const qik_2s12v10_configuration_parameter &rhs){
+        return out << static_cast<uint8_t>(rhs);
+    }
 
     hwlib::ostream &operator<<(hwlib::ostream &out,
                                const qik_2s12v10_error &rhs) {
@@ -127,7 +130,7 @@ namespace r2d2::moving_platform {
             usart_bus.receive()); // return answer
     }
 
-    qik_2s12v10_configuration_parameter_return
+    uint8_t
     qik_2s12v10_c::get_configuration_parameter(uint8_t parameter) {
         while (usart_bus.available() > 0) {
             usart_bus.receive();
@@ -138,8 +141,11 @@ namespace r2d2::moving_platform {
         while (!usart_bus.available()) {
             hwlib::wait_ms(50); // don't use all time
         }                       // wait for answer
-        return static_cast<qik_2s12v10_configuration_parameter_return>(
-            usart_bus.receive()); // return answer
+        return usart_bus.receive(); // return answer
+    }
+    
+    qik_2s12v10_set_configuration_parameter_return qik_2s12v10::set_configuration_parameter(qik_2s12v10_configuration_parameter parameter, uint8_t value){
+        
     }
 
     uint8_t qik_2s12v10_c::get_m0_current() {

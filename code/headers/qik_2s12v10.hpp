@@ -7,10 +7,25 @@
 /// @file
 namespace r2d2::moving_platform {
 
-    enum class qik_2s12v10_configuration_parameter_return : uint8_t {
+    enum class qik_2s12v10_set_configuration_parameter_return : uint8_t {
         command_ok = 0,
         bad_parameter,
         bad_value
+    };
+
+    enum class qik_2s12v10_configuration_parameter : uint8_t {
+        device_id = 0,
+        PWM_parameter,
+        shut_down_motors_on_error,
+        serial_timeout,
+        motor_m0_acceleration,
+        motor_m1_acceleration,
+        motor_m0_brake_duration,
+        motor_m1_brake_duration,
+        motor_m0_current_limit,
+        motor_m1_current_limit,
+        motor_m0_current_limit_response,
+        motor_m1_current_limit_response,
     };
 
     enum class qik_2s12v10_error : uint8_t {
@@ -25,18 +40,18 @@ namespace r2d2::moving_platform {
     };
 
     enum class qik_2s12v10_registers : uint8_t {
-        qik_autodetect_baudrate = 0xAA,
-        qik_request_firmwareversion = 0x81,
-        qik_motor_m0_set_forward = 0x88,
-        qik_motor_m0_set_reverse = 0x8A,
-        qik_motor_m1_set_forward = 0x8C,
-        qik_motor_m1_set_reverse = 0x8E,
-        qik_get_config_parameter = 0x83,
-        qik_get_error = 0x82,
-        qik_get_motor_m0_current = 0x90,
-        qik_get_motor_m1_current = 0x91,
-        qik_motor_m0_brake = 0x86,
-        qik_motor_m1_brake = 0x87
+        autodetect_baudrate = 0xAA,
+        request_firmwareversion = 0x81,
+        motor_m0_set_forward = 0x88,
+        motor_m0_set_reverse = 0x8A,
+        motor_m1_set_forward = 0x8C,
+        motor_m1_set_reverse = 0x8E,
+        get_config_parameter = 0x83,
+        get_error = 0x82,
+        get_motor_m0_current = 0x90,
+        get_motor_m1_current = 0x91,
+        motor_m0_brake = 0x86,
+        motor_m1_brake = 0x87
     };
 
     /* @brief
@@ -119,6 +134,8 @@ namespace r2d2::moving_platform {
          * Returns the errors that the qik2s12v10 has detected since this
          * function was last used. The meaning of each bit can be found here:
          * https://www.pololu.com/docs/0J29/5.c
+         * 
+         * @return Returns the error if any.
          */
         qik_2s12v10_error get_error();
 
@@ -128,15 +145,35 @@ namespace r2d2::moving_platform {
          * @param parameter Specifies the parameter that should be returned.
          * The parameters can be found here:
          * https://www.pololu.com/docs/0J29/5.a
+         * 
+         * @return Returns the value of the requested parameter.
          */
+        uint8_t get_configuration_parameter(uint8_t parameter);
 
-        qik_2s12v10_configuration_parameter_return
-        get_configuration_parameter(uint8_t parameter);
+        /*
+         * @brief
+         * Sets the configuration parameter to the given value and returns if
+         * the parameter was set or if there was an error while setting the
+         * parameter
+         * @param parameter specifies the parameter that should be changed.
+         * @param value specifies what the parameter should be set to in the chip
+         * The parameters can be found here:
+         * https://www.pololu.com/docs/0J29/5.a
+         * 
+         * @return returns a parameter_return wich is linked to an error.
+         * eror codes can be found here:
+         * https://www.pololu.com/docs/0J29/5.d
+         */
+        qik_2s12v10_set_configuration_parameter_return
+        qik_2s12v10::set_configuration_parameter(
+            qik_2s12v10_configuration_parameter parameter, uint8_t value);
 
         /* @brief
          * Returns the raw reading from motor M0 that indicates how much
-         * current flows through the motor at average over the last 5ms. This
-         * reading is raw, so not converted to milliampere.
+         * current flows through the motor at average over the last 5ms.
+         * This reading is raw, so not converted to milliampere.
+         * 
+         * @return Returns the raw current value of the 0 motor.
          */
         uint8_t get_m0_current();
 
@@ -144,6 +181,8 @@ namespace r2d2::moving_platform {
          * Returns the raw reading from motor M1 that indicates how much
          * current flows through the motor at average over the last 5ms. This
          * reading is raw, so not converted to milliampere.
+         * 
+         * @return Returns the raw current value of the 1 motor.
          */
         uint8_t get_m1_current();
 
@@ -153,6 +192,8 @@ namespace r2d2::moving_platform {
          * value returned by this function can differ from the actual current
          * by as much as 20% and according to the datasheet the values needs to
          * be multiplied by 150.
+         * 
+         * @return Returns the calculated current of the m0 motor in milliamps
          */
         uint16_t get_m0_current_milliamps();
 
@@ -162,6 +203,8 @@ namespace r2d2::moving_platform {
          * value returned by this function can differ from the actual current
          * by as much as 20% and according to the datasheet the values needs to
          * be multiplied by 150.
+         * 
+         * @return Returns the calculated current of the m1 motor in milliamps
          */
         uint16_t get_m1_current_milliamps();
     };
