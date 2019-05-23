@@ -41,17 +41,18 @@ namespace r2d2::moving_platform {
 
     enum class qik_2s12v10_registers : uint8_t {
         autodetect_baudrate = 0xAA,
-        request_firmwareversion = 0x81,
-        motor_m0_set_forward = 0x88,
-        motor_m0_set_reverse = 0x8A,
-        motor_m1_set_forward = 0x8C,
-        motor_m1_set_reverse = 0x8E,
+        request_firmware_version = 0x81,
+        set_motor_m0_forward = 0x88,
+        set_motor_m0_reverse = 0x8A,
+        set_motor_m1_forward = 0x8C,
+        set_motor_m1_reverse = 0x8E,
         get_config_parameter = 0x83,
-        get_error = 0x82,
+        set_config_parameter = 0x84,
         get_motor_m0_current = 0x90,
         get_motor_m1_current = 0x91,
-        motor_m0_brake = 0x86,
-        motor_m1_brake = 0x87
+        set_motor_m0_brake = 0x86,
+        set_motor_m1_brake = 0x87,
+        get_error = 0x82
     };
 
     /* @brief
@@ -165,7 +166,7 @@ namespace r2d2::moving_platform {
          * https://www.pololu.com/docs/0J29/5.d
          */
         qik_2s12v10_set_configuration_parameter_return
-        qik_2s12v10::set_configuration_parameter(
+        set_configuration_parameter(
             qik_2s12v10_configuration_parameter parameter, uint8_t value);
 
         /* @brief

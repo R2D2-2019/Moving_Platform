@@ -4,14 +4,14 @@ namespace r2d2::moving_platform {
 
     hwlib::ostream &
     operator<<(hwlib::ostream &out,
-               const qik_2s12v10_configuration_parameter_return &rhs) {
-        if (rhs == qik_2s12v10_configuration_parameter_return::command_ok) {
+               const qik_2s12v10_set_configuration_parameter_return &rhs) {
+        if (rhs == qik_2s12v10_set_configuration_parameter_return::command_ok) {
             out << "command ok";
         } else if (rhs ==
-                   qik_2s12v10_configuration_parameter_return::bad_parameter) {
+                   qik_2s12v10_set_configuration_parameter_return::bad_parameter) {
             out << "bad parameter";
         } else if (rhs ==
-                   qik_2s12v10_configuration_parameter_return::bad_value) {
+                   qik_2s12v10_set_configuration_parameter_return::bad_value) {
             out << "bad value";
         } else {
             out << "unknown return";
@@ -72,11 +72,11 @@ namespace r2d2::moving_platform {
         // Todo: depending on the motor configuration, 127 may not be the
         // maximum value
         if (new_speed >= 0) {
-            usart_bus << qik_2s12v10_registers::qik_motor_m0_set_forward
+            usart_bus << qik_2s12v10_registers::set_motor_m0_forward
                       << new_speed;
         } else {
             usart_bus << static_cast<uint8_t>(
-                             qik_2s12v10_registers::qik_motor_m0_set_reverse)
+                             qik_2s12v10_registers::set_motor_m0_reverse)
                       << (-1 * new_speed);
         }
     }
@@ -84,10 +84,10 @@ namespace r2d2::moving_platform {
         // Todo: depending on the motor configuration, 127 may not be the
         // maximum value
         if (new_speed >= 0) {
-            usart_bus << qik_2s12v10_registers::qik_motor_m1_set_forward
+            usart_bus << qik_2s12v10_registers::set_motor_m1_forward
                       << new_speed;
         } else {
-            usart_bus << qik_2s12v10_registers::qik_motor_m1_set_reverse
+            usart_bus << qik_2s12v10_registers::set_motor_m1_reverse
                       << (-1 * new_speed);
         }
     }
@@ -100,20 +100,20 @@ namespace r2d2::moving_platform {
         hwlib::wait_ms(10);
 
         // setup the uart communication
-        usart_bus << qik_2s12v10_registers::qik_autodetect_baudrate;
+        usart_bus << qik_2s12v10_registers::autodetect_baudrate;
     }
 
     void qik_2s12v10_c::brake(const int8_t brake_amount) {
-        usart_bus << qik_2s12v10_registers::qik_motor_m0_brake << brake_amount;
-        usart_bus << qik_2s12v10_registers::qik_motor_m1_brake << brake_amount;
+        usart_bus << qik_2s12v10_registers::set_motor_m0_brake << brake_amount;
+        usart_bus << qik_2s12v10_registers::set_motor_m1_brake << brake_amount;
     }
 
     void qik_2s12v10_c::brake_m0(const int8_t brake_amount) {
-        usart_bus << qik_2s12v10_registers::qik_motor_m0_brake << brake_amount;
+        usart_bus << qik_2s12v10_registers::set_motor_m0_brake << brake_amount;
     }
 
     void qik_2s12v10_c::brake_m1(const int8_t brake_amount) {
-        usart_bus << qik_2s12v10_registers::qik_motor_m1_brake << brake_amount;
+        usart_bus << qik_2s12v10_registers::set_motor_m1_brake << brake_amount;
     }
 
     qik_2s12v10_error qik_2s12v10_c::get_error() {
@@ -122,7 +122,7 @@ namespace r2d2::moving_platform {
             usart_bus.receive();
             hwlib::wait_ms(0.05);
         }                                                  // clear the buffer
-        usart_bus << qik_2s12v10_registers::qik_get_error; // send request
+        usart_bus << qik_2s12v10_registers::get_error; // send request
         while (!usart_bus.available()) {
             hwlib::wait_ms(50); // don't use all time
         }                       // wait for answer
@@ -136,7 +136,7 @@ namespace r2d2::moving_platform {
             usart_bus.receive();
             hwlib::wait_ms(0.05);
         } // clear the buffer
-        usart_bus << qik_2s12v10_registers::qik_get_config_parameter
+        usart_bus << qik_2s12v10_registers::get_config_parameter
                   << parameter; // send request
         while (!usart_bus.available()) {
             hwlib::wait_ms(50); // don't use all time
@@ -144,8 +144,18 @@ namespace r2d2::moving_platform {
         return usart_bus.receive(); // return answer
     }
     
-    qik_2s12v10_set_configuration_parameter_return qik_2s12v10::set_configuration_parameter(qik_2s12v10_configuration_parameter parameter, uint8_t value){
-        
+    qik_2s12v10_set_configuration_parameter_return qik_2s12v10_c::set_configuration_parameter(qik_2s12v10_configuration_parameter parameter, uint8_t value){
+        while (usart_bus.available() > 0) {
+            usart_bus.receive();
+            hwlib::wait_ms(0.05);
+        } // clear the buffer
+        usart_bus << parameter
+                  << parameter
+                  << value; // send request
+        while (!usart_bus.available()) {
+            hwlib::wait_ms(50); // don't use all time
+        }                       // wait for answer
+        return static_cast<qik_2s12v10_set_configuration_parameter_return>(usart_bus.receive()); // return answer
     }
 
     uint8_t qik_2s12v10_c::get_m0_current() {
@@ -153,7 +163,7 @@ namespace r2d2::moving_platform {
             usart_bus.receive();
             hwlib::wait_ms(0.05);
         }
-        usart_bus << qik_2s12v10_registers::qik_get_motor_m0_current;
+        usart_bus << qik_2s12v10_registers::get_motor_m0_current;
         while (!usart_bus.available()) {
             hwlib::wait_ms(50);
         }
@@ -165,7 +175,7 @@ namespace r2d2::moving_platform {
             usart_bus.receive();
             hwlib::wait_ms(0.05);
         }
-        usart_bus << qik_2s12v10_registers::qik_get_motor_m1_current;
+        usart_bus << qik_2s12v10_registers::get_motor_m1_current;
         while (!usart_bus.available()) {
             hwlib::wait_ms(50);
         }
