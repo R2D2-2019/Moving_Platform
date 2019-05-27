@@ -2,6 +2,7 @@
 
 namespace r2d2::moving_platform {
 
+
     hwlib::ostream &
     operator<<(hwlib::ostream &out,
                const qik_2s12v10_set_configuration_parameter_return &rhs) {
@@ -62,10 +63,13 @@ namespace r2d2::moving_platform {
         return out;
     }
 
-    qik_2s12v10_c::qik_2s12v10_c(r2d2::usart::usart_ports &usart_port,
-                                 unsigned int baud_rate,
-                                 hwlib::pin_out &reset_pin)
-        : reset_pin(reset_pin), usart_bus(baud_rate, usart_port) {
+
+    qik_2s12v10_c::qik_2s12v10_c(r2d2::usart::usart_connection_c &usart_bus,
+                      hwlib::pin_out &reset_pin)
+        : reset_pin(reset_pin), 
+        usart_bus(usart_bus)  {
+            init();
+            get_configuration_parameter(1);
     }
 
     void qik_2s12v10_c::wait_for_bus(const qik_2s12v10_bus_state &required_state, uint8_t wait_ms_length){

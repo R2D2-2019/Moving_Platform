@@ -1,7 +1,7 @@
 /*
  * This main is used to test the canbus or beetle class.
  */
-
+#include <hardware_usart.hpp>
 #include <beetle.hpp>
 #include <comm.hpp>
 #include <hwlib.hpp>
@@ -18,11 +18,11 @@ int main(void) {
     bool test_set_speed = true;
 
     auto qik_2s12v10_reset_pin = hwlib::target::pin_out(2, 25); // digital pin 5
-    r2d2::usart::usart_ports usart_port = r2d2::usart::usart_ports::uart1;
+    r2d2::usart::hardware_usart_c usart_port(9600, r2d2::usart::usart_ports::uart1);
+    r2d2::moving_platform::qik_2s12v10_c qik = r2d2::moving_platform::qik_2s12v10_c(usart_port, qik_2s12v10_reset_pin);
 
     r2d2::comm_c comm;
-    auto beetle = r2d2::moving_platform::beetle_c(usart_port, 9600u,
-                                                  qik_2s12v10_reset_pin, comm);
+    auto beetle = r2d2::moving_platform::beetle_c(qik, comm);
 
     if (beetle_canbus) {
         while (1) {
