@@ -2,10 +2,10 @@
 
 namespace r2d2::moving_platform {
 
-    qik_2s12v10_c::qik_2s12v10_c(r2d2::uart_ports_c &uart_port, unsigned int baud_rate,
+    qik_2s12v10_c::qik_2s12v10_c(r2d2::usart::usart_connection_c &usart_bus,
                       hwlib::pin_out &reset_pin)
         : reset_pin(reset_pin), 
-        usart_bus(baud_rate, uart_port)  {
+        usart_bus(usart_bus)  {
             hwlib::cout << "i work now\n";
             hwlib::cout<<"qik made \n";
             init();

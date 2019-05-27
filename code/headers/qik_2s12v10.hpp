@@ -1,6 +1,7 @@
 #pragma once
 
-#include <hardware_usart.hpp>
+
+#include <usart_connection.hpp>
 #include <hwlib.hpp>
 #include <motor_control.hpp>
 
@@ -32,7 +33,7 @@ namespace r2d2::moving_platform {
         const uint8_t qik_get_error = 0x82;
 
         hwlib::pin_out &reset_pin;
-        r2d2::hardware_usart_c usart_bus;
+        r2d2::usart::usart_connection_c &usart_bus;
 
     public:
         /// @brief
@@ -44,7 +45,7 @@ namespace r2d2::moving_platform {
         /// @param baudrate The baud rate that the Qik2s12v10 will use in its
         /// UART TTL serial communication in bps.
         /// @param _reset_pin Pin that can be used to reset the qik2s12v10.
-        qik_2s12v10_c(r2d2::uart_ports_c &uart_port, unsigned int baud_rate,
+        qik_2s12v10_c(r2d2::usart::usart_connection_c &uart_port,
                       hwlib::pin_out &reset_pin);
 
         /// @brief

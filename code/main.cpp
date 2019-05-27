@@ -1,7 +1,7 @@
 /*
  * This main is used to test the canbus or beetle class.
  */
-
+#include <hardware_usart.hpp>
 #include <beetle.hpp>
 #include <comm.hpp>
 #include <hwlib.hpp>
@@ -18,13 +18,12 @@ int main(void) {
     bool test_set_speed = true;
 
     auto qik_2s12v10_reset_pin = hwlib::target::pin_out(2, 25); // digital pin 5
-    r2d2::uart_ports_c uart_port_one = r2d2::uart_ports_c::uart1;
+    r2d2::usart::hardware_usart_c usart_port(9600, r2d2::usart::usart_ports::uart1);
     //r2d2::moving_platform::qik_2s12v10_c motor_controller(usart_bus, qik_2s12v10_reset_pin);
-    r2d2::moving_platform::qik_2s12v10_c qik = r2d2::moving_platform::qik_2s12v10_c(uart_port_one, 9600u, qik_2s12v10_reset_pin);
-    r2d2::moving_platform::qik_2s12v10_c *qik_2s12v10_motorcontroller = &qik;
+    r2d2::moving_platform::qik_2s12v10_c qik = r2d2::moving_platform::qik_2s12v10_c(usart_port, qik_2s12v10_reset_pin);
 
     r2d2::comm_c comm;
-    auto beetle = r2d2::moving_platform::beetle_c(qik_2s12v10_motorcontroller, comm);
+    auto beetle = r2d2::moving_platform::beetle_c(qik, comm);
     
     hwlib::cout<< "up to code\n";
 
