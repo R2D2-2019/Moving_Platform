@@ -118,10 +118,12 @@ namespace r2d2::moving_platform {
 
     void qik_2s12v10_c::brake_m0(const int8_t brake_amount) {
         usart_bus << qik_2s12v10_registers::set_motor_m0_brake << brake_amount;
+        usart_bus << qik_2s12v10_registers::set_motor_m0_speed << 0x00;
     }
 
     void qik_2s12v10_c::brake_m1(const int8_t brake_amount) {
         usart_bus << qik_2s12v10_registers::set_motor_m1_brake << brake_amount;
+        usart_bus << qik_2s12v10_registers::set_motor_m1_speed << 0x00;
     }
 
     qik_2s12v10_error qik_2s12v10_c::get_error() {
