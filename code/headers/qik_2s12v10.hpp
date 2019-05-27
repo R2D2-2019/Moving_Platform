@@ -1,9 +1,9 @@
 #pragma once
 
-
-#include <usart_connection.hpp>
 #include <hwlib.hpp>
 #include <motor_control.hpp>
+#include <usart_connection.hpp>
+
 
 /// @file
 namespace r2d2::moving_platform {
@@ -47,8 +47,8 @@ namespace r2d2::moving_platform {
         set_motor_m0_reverse = 0x8A,
         set_motor_m1_forward = 0x8C,
         set_motor_m1_reverse = 0x8E,
-        get_motor_m0_speed = 0x92;
-        get_motor_m1_speed = 0x93;
+        get_motor_m0_speed = 0x92,
+        get_motor_m1_speed = 0x93,
         get_config_parameter = 0x83,
         set_config_parameter = 0x84,
         get_motor_m0_current = 0x90,
@@ -57,8 +57,6 @@ namespace r2d2::moving_platform {
         set_motor_m1_brake = 0x87,
         get_error = 0x82
     };
-
-    enum class qik_2s12v10_bus_state : uint8_t { unavailable = 0, available };
 
     /* @brief
      * Class that represents a qik2s12v10 motor controller.
@@ -83,25 +81,11 @@ namespace r2d2::moving_platform {
          * @details
          * Waits for the usart bus to be free or busy, so that we know if we can
          * read/write.
-         * @param required_state the state we want the usart to be in.
          * @param wait_ms_length the length of the waits between the checks
          */
-        void wait_for_bus(const qik_2s12v10_bus_state &required_state,
-                          uint8_t wait_ms_length = 5);
+        void wait_for_bus(uint8_t wait_ms_length = 5);
 
     public:
-        /* @brief
-         * Qik2s12v10 constructor.
-         * @details
-         * Constructs a Qik2s12v10 with the given parameters.
-         * @param uart_port The port that the qik_2s12v10_c class will use to
-         * communicate with the qik 2s12v10 motor controller board.
-         * @param baudrate The baud rate that the Qik2s12v10 will use in its
-         * UART TTL serial communication in bps.
-         * @param _reset_pin Pin that can be used to reset the qik2s12v10.
-         */
-        qik_2s12v10_c(r2d2::usart::usart_ports &usart_port,
-                      unsigned int baudrate, hwlib::pin_out &reset_pin);
         /// @brief
         /// Qik2s12v10 constructor.
         /// @details
@@ -177,7 +161,8 @@ namespace r2d2::moving_platform {
          *
          * @return Returns the value of the requested parameter.
          */
-        uint8_t get_configuration_parameter(uint8_t parameter);
+        uint8_t get_configuration_parameter(
+            qik_2s12v10_configuration_parameter parameter);
 
         /*
          * @brief
