@@ -6,12 +6,8 @@ namespace r2d2::moving_platform {
                       hwlib::pin_out &reset_pin)
         : reset_pin(reset_pin), 
         usart_bus(usart_bus)  {
-            hwlib::cout << "i work now\n";
-            hwlib::cout<<"qik made \n";
             init();
-            hwlib::cout << "init done\n";
             get_configuration_parameter(1);
-            hwlib::cout<<"constructor qik done \n";
     }
 
     void qik_2s12v10_c::set_m0_speed(int8_t new_speed) {

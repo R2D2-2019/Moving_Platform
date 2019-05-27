@@ -24,8 +24,6 @@ int main(void) {
 
     r2d2::comm_c comm;
     auto beetle = r2d2::moving_platform::beetle_c(qik, comm);
-    
-    hwlib::cout<< "up to code\n";
 
     if (beetle_canbus) {
         while (1) {
