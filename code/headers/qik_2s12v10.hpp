@@ -30,14 +30,14 @@ namespace r2d2::moving_platform {
     };
 
     enum class qik_2s12v10_error : uint8_t {
-        motor_0_fault = 0b10000000,
-        motor_1_fault = 0b01000000,
-        motor_0_over_current = 0b00100000,
-        motor_1_over_current = 0b00010000,
-        serial_hardware_error = 0b00001000,
-        crc_error = 0b00000100,
-        format_error = 0b00000010,
-        timeout = 0b00000001
+        motor_0_fault =         0b00000001,
+        motor_1_fault =         0b00000010,
+        motor_0_over_current =  0b00000100,
+        motor_1_over_current =  0b00001000,
+        serial_hardware_error = 0b00010000,
+        crc_error =             0b00100000,
+        format_error =          0b01000000,
+        timeout =               0b10000000
     };
 
     enum class qik_2s12v10_registers : uint8_t {
