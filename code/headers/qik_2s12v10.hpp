@@ -162,7 +162,7 @@ namespace r2d2::moving_platform {
          */
         void print_errors();
 
-        /* @brief
+        /** @brief
          * Returns the value that the parameter specified by parameter
          * currently has.
          * @param parameter Specifies the parameter that should be returned.
@@ -174,7 +174,7 @@ namespace r2d2::moving_platform {
         uint8_t get_configuration_parameter(
             qik_2s12v10_configuration_parameter parameter);
 
-        /*
+        /**
          * @brief
          * Sets the configuration parameter to the given value and returns if
          * the parameter was set or if there was an error while setting the
@@ -192,7 +192,7 @@ namespace r2d2::moving_platform {
         set_configuration_parameter(
             qik_2s12v10_configuration_parameter parameter, uint8_t value);
 
-        /* @brief
+        /** @brief
          * Returns the raw reading from motor M0 that indicates how much
          * current flows through the motor at average over the last 5ms.
          * This reading is raw, so not converted to milliampere.
@@ -201,7 +201,7 @@ namespace r2d2::moving_platform {
          */
         uint8_t get_m0_current();
 
-        /* @brief
+        /** @brief
          * Returns the raw reading from motor M1 that indicates how much
          * current flows through the motor at average over the last 5ms. This
          * reading is raw, so not converted to milliampere.
@@ -210,7 +210,7 @@ namespace r2d2::moving_platform {
          */
         uint8_t get_m1_current();
 
-        /* @brief
+        /** @brief
          * This function uses the raw reading from motor M0 to estimate how
          * much current flows through the motor in milliampere. Note that the
          * value returned by this function can differ from the actual current
@@ -221,7 +221,7 @@ namespace r2d2::moving_platform {
          */
         uint16_t get_m0_current_milliamps();
 
-        /* @brief
+        /** @brief
          * This function uses the raw reading from motor M1 to estimate how
          * much current flows through the motor in milliampere. Note that the
          * value returned by this function can differ from the actual current
@@ -232,8 +232,20 @@ namespace r2d2::moving_platform {
          */
         uint16_t get_m1_current_milliamps();
 
+        /**
+         * @brief
+         * This function returns the speed of the m0 motor by requesting the speed from the motor controller
+         * 
+         * @return Returns the m0 motor speed between 0 - 127
+         */ 
         uint8_t get_m0_speed();
 
+        /**
+         * @brief
+         * This function returns the speed of the m1 motor by requesting the speed from the motor controller
+         * 
+         * @return Returns the m1 motor speed between 0 - 127
+         */ 
         uint8_t get_m1_speed();
     };
 } // namespace r2d2::moving_platform
