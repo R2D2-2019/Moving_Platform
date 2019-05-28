@@ -71,10 +71,6 @@ namespace r2d2::moving_platform {
                                  hwlib::pin_out &reset_pin)
         : reset_pin(reset_pin), usart_bus(usart_bus) {
         init();
-        hwlib::cout << "Device id: "
-                    << get_configuration_parameter(
-                           qik_2s12v10_configuration_parameter::device_id)
-                    << '\n';
     }
 
     void qik_2s12v10_c::wait_for_bus(uint8_t wait_ms_length) {
