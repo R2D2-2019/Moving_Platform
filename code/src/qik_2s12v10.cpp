@@ -34,34 +34,34 @@ namespace r2d2::moving_platform {
                                const qik_2s12v10_error &rhs) {
         switch (rhs) {
         case qik_2s12v10_error::motor_0_fault:
-            out << "motor_0_fault";
+            out << "Motor_0_fault";
             break;
         case qik_2s12v10_error::motor_1_fault:
-            out << "motor_1_fault";
+            out << "Motor_1_fault";
             break;
         case qik_2s12v10_error::motor_0_over_current:
-            out << "motor_0_over_current";
+            out << "Motor_0_over_current";
             break;
         case qik_2s12v10_error::motor_1_over_current:
-            out << "motor_1_over_current";
+            out << "Motor_1_over_current";
             break;
         case qik_2s12v10_error::serial_hardware_error:
-            out << "serial_hardware_error";
+            out << "Serial_hardware_error";
             break;
         case qik_2s12v10_error::crc_error:
-            out << "crc_error";
+            out << "Crc_error";
             break;
         case qik_2s12v10_error::format_error:
-            out << "format_error";
+            out << "Format_error";
             break;
         case qik_2s12v10_error::timeout:
-            out << "timeout";
+            out << "Timeout";
             break;
         case qik_2s12v10_error::no_error:
             out << "No error";
             break;
         default:
-            out << "unkown error";
+            out << "Unkown error";
             break;
         }
         return out;
