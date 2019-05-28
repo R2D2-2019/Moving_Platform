@@ -57,6 +57,9 @@ namespace r2d2::moving_platform {
         case qik_2s12v10_error::timeout:
             out << "timeout";
             break;
+        case qik_2s12v10_error::no_error:
+            out << "No error";
+            break;
         default:
             out << "unkown error";
             break;
@@ -132,11 +135,28 @@ namespace r2d2::moving_platform {
         usart_bus << qik_2s12v10_registers::set_motor_m1_forward << speed;
     }
 
-    qik_2s12v10_error qik_2s12v10_c::get_error() {
+    uint8_t qik_2s12v10_c::get_error_byte() {
         usart_bus << qik_2s12v10_registers::get_error; // send request
         wait_for_bus();                                // wait for answer
-        return static_cast<qik_2s12v10_error>(
-            usart_bus.receive()); // return answer
+        return usart_bus.receive(); // return answer
+    }
+
+    void qik_2s12v10_c::print_errors(){
+        uint8_t error_byte = get_error_byte();
+        if (error_byte == 0){
+            hwlib::cout << qik_2s12v10_error::no_error << '\n';
+            return;
+        }
+        //check every bit
+        for (size_t i = 0; i < 7; i++){
+            // bitshift blackmagic
+            uint8_t bit = (error_byte & (1 << i));
+            if( bit > 0){
+                hwlib::cout << static_cast<qik_2s12v10_error>(bit) << '\n';
+            }
+        }
+        
+        
     }
 
     uint8_t qik_2s12v10_c::get_configuration_parameter(

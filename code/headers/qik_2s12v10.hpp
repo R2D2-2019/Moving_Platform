@@ -30,14 +30,15 @@ namespace r2d2::moving_platform {
     };
 
     enum class qik_2s12v10_error : uint8_t {
-        motor_0_fault =         0b00000001,
-        motor_1_fault =         0b00000010,
-        motor_0_over_current =  0b00000100,
-        motor_1_over_current =  0b00001000,
+        no_error = 0b00000000,
+        motor_0_fault = 0b00000001,
+        motor_1_fault = 0b00000010,
+        motor_0_over_current = 0b00000100,
+        motor_1_over_current = 0b00001000,
         serial_hardware_error = 0b00010000,
-        crc_error =             0b00100000,
-        format_error =          0b01000000,
-        timeout =               0b10000000
+        crc_error = 0b00100000,
+        format_error = 0b01000000,
+        timeout = 0b10000000
     };
 
     enum class qik_2s12v10_registers : uint8_t {
@@ -86,32 +87,33 @@ namespace r2d2::moving_platform {
         void wait_for_bus(uint8_t wait_ms_length = 5);
 
     public:
-        /// @brief
-        /// Qik2s12v10 constructor.
-        /// @details
-        /// Constructs a Qik2s12v10 with the given parameters.
-        /// @param uart_port The port that the qik_2s12v10_c class will use to
-        /// communicate with the qik 2s12v10 motor controller board.
-        /// @param baudrate The baud rate that the Qik2s12v10 will use in its
-        /// UART TTL serial communication in bps.
-        /// @param _reset_pin Pin that can be used to reset the qik2s12v10.
+        /** @brief
+        * Qik2s12v10 constructor.
+        * @details
+        * Constructs a Qik2s12v10 with the given parameters.
+        * @param uart_port The port that the qik_2s12v10_c class will use to
+        * communicate with the qik 2s12v10 motor controller board.
+        * @param baudrate The baud rate that the Qik2s12v10 will use in its
+        * UART TTL serial communication in bps.
+        * @param _reset_pin Pin that can be used to reset the qik2s12v10.
+        */
         qik_2s12v10_c(r2d2::usart::usart_connection_c &uart_bus,
                       hwlib::pin_out &reset_pin);
 
-        /* @brief
+        /** @brief
          * Initializes the qik2s12v10 by resetting it and then setting the baud
          * rate.
          */
         void init();
 
-        /* @brief
+        /** @brief
          * Sets the speed of the M0 motor.
          * @param speed The speed of the motor. This value can be between -128
          * and 127, where -128 is full power backwards, 0 is no power and 127
          * is full power forward.
          */
         void set_m0_speed(int8_t new_speed);
-        /* @brief
+        /** @brief
          * Sets the speed of the M1 motor.
          * @param speed The speed of the motor. This value can be between -128
          * and 127, where -128 is full power backwards, 0 is no power and 127
@@ -119,7 +121,7 @@ namespace r2d2::moving_platform {
          */
         void set_m1_speed(int8_t new_speed);
 
-        /* @brief
+        /** @brief
          * This function sends a message to the motorcontroller. The
          * motorcontroller then uses the brakes of the motors.
          * @param The parameter is a number between 0 and 127. This number
@@ -127,7 +129,7 @@ namespace r2d2::moving_platform {
          */
         void brake(const int8_t brake_amount);
 
-        /* @brief
+        /** @brief
          * This function sends a message to the motorcontroller. The
          * motorcontroller then uses the brakes of motor 0.
          * @param The parameter is a number between 0 and 127. This number
@@ -135,7 +137,7 @@ namespace r2d2::moving_platform {
          */
         void brake_m0(const int8_t brake_amount);
 
-        /* @brief
+        /** @brief
          * This function sends a message to the motorcontroller. The
          * motorcontroller then uses the brakes of the motor 1.
          * @param The parameter is a number between 0 and 127. This number
@@ -143,14 +145,22 @@ namespace r2d2::moving_platform {
          */
         void brake_m1(const int8_t brake_amount);
 
-        /* @brief
+        /** @brief
          * Returns the errors that the qik2s12v10 has detected since this
          * function was last used. The meaning of each bit can be found here:
          * https://www.pololu.com/docs/0J29/5.c
          *
          * @return Returns the error if any.
          */
-        qik_2s12v10_error get_error();
+        uint8_t get_error_byte();
+
+        /**
+         * @brief
+         * prints the errors returned by the getError function. 
+         * Making debugging easier.
+         * 
+         */
+        void print_errors();
 
         /* @brief
          * Returns the value that the parameter specified by parameter
