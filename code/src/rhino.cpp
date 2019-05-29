@@ -53,14 +53,17 @@ namespace r2d2::moving_platform {
             new_degrees = 0;
         }
         //calculating a percentage of the degrees
+        //90 = turn ratio received from steering wheel
+        //100 = percentage how fast the motor will turn
         int percentage = new_degrees * 100 / 90;
         int new_speed_m0;
         int new_speed_m1;
 
         if (speed == 0){    //this makes sure the platform can still turn if the speed is 0.
-            new_speed_m0 = speed + 100 * (percentage) / 100;
-            new_speed_m1 = speed + 100 * (-percentage) / 100;
+            new_speed_m0 = speed + percentage;
+            new_speed_m1 = speed - percentage;
         }else{
+            //This is a formula used to calculate the new motor speed. More information can be found at: https://docs.google.com/spreadsheets/d/1myfm6gozPoYCiozkIuP1HdAy5hF2_2-RWAHruiikXnc/edit#gid=0
             new_speed_m0 = speed + (((200%(speed + 100)) * percentage) / 100);
             new_speed_m1 = speed + (((200%(speed + 100)) * -percentage) / 100);
         }
