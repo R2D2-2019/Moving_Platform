@@ -42,4 +42,19 @@ namespace R2D2::moving_platform {
         motor_right.set_speed(out);
         prev_error_right = error_right;
     }
+    void turtle_controller::turn(int degree, int8_t direction) {
+        // turning constante from calculation, see dev log 11
+        float turn_constante = .274;
+        // calculates how many thick should be measured with the encoder
+        int ticks_right = turn_constante * degree;
+        // turn speed
+        motor_right.set_speed(-200 * direction);
+        motor_left.set_speed(200 * direction);
+        while (ticks_right > 0) {
+            // makes the wheel rotate until the encoder measured enough thicks
+            ticks_right -= encoder_right.get_speed();
+        }
+        motor_left.set_speed(0);
+        motor_right.set_speed(0);
+    }
 } // namespace R2D2::moving_platform

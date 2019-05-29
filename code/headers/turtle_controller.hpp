@@ -55,6 +55,13 @@ namespace R2D2 {
              *fast as the speed that is set.
              */
             void update();
+            /*@brief
+             *turns the robot after stopping first.
+             *@param degree : the disired turn angle
+             **@param turn_left : if set 1 if will turn left else if set -1 it
+             *will turn right
+             */
+            void turn(int degree, int8_t direction);
         };
     } // namespace moving_platform
 } // namespace R2D2
