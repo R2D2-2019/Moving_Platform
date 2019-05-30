@@ -8,13 +8,9 @@
 # 
 #############################################################################
 
-#add USART_library
-USART               ?= ../../../libraries/USART_library
-include              $(USART)/Makefile.inc
-
 # settings for Arduino Due projects
 TARGET            ?= arduino_due
-SERIAL_PORT       ?= COM8
+SERIAL_PORT       ?= COM2
 CONSOLE_BAUDRATE  ?= 2400
 STACK_SIZE        ?= 81920
 HEAP              ?= BMPTK
