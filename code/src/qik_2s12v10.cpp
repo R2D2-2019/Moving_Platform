@@ -19,13 +19,13 @@ namespace r2d2::moving_platform {
         return out;
     };
 
-    r2d2::usart::usart_connection_c &
-    operator<<(r2d2::usart::usart_connection_c &out,
+    hwlib::ostream &
+    operator<<(hwlib::ostream &out,
                const qik_2s12v10_registers &rhs) {
         return out << static_cast<uint8_t>(rhs);
     }
-    r2d2::usart::usart_connection_c &
-    operator<<(r2d2::usart::usart_connection_c &out,
+    hwlib::ostream &
+    operator<<(hwlib::ostream &out,
                const qik_2s12v10_configuration_parameter &rhs) {
         return out << static_cast<uint8_t>(rhs);
     }
