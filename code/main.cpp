@@ -40,14 +40,14 @@ int main(void) {
 
     if (test_set_speed) {
         // motor tests:
-        hwlib::cout << "Testing both motors, 31% power forward.\n";
+        hwlib::cout << "Testing both motors, "<<beetle.get_speed() << "% power forward.\n";
         beetle.set_speed(80);
-        hwlib::cout << beetle.get_speed();
+        hwlib::cout << "Testing both motors, "<<beetle.get_speed() << "% power forward.\n";
         beetle.turn(0);
         hwlib::wait_ms(1000);
         beetle.set_speed(0);
 
-        hwlib::cout << "Testing both motors, 31% power backward.\n";
+        hwlib::cout << "Testing both motors, "<<beetle.get_speed() << "% power forward.\n";
         beetle.set_speed(-80);
         beetle.turn(0);
         hwlib::wait_ms(2000);
