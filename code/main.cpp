@@ -18,8 +18,12 @@ int main(void) {
     bool test_set_speed = true;
 
     auto qik_2s12v10_reset_pin = hwlib::target::pin_out(2, 25); // digital pin 5
-    auto usart = r2d2::usart::hardware_usart_c<r2d2::usart::usart1>(9600);
+    auto usart = r2d2::usart::hardware_usart_c<r2d2::usart::usart0>(9600);
     r2d2::moving_platform::qik_2s12v10_c qik = r2d2::moving_platform::qik_2s12v10_c(usart, qik_2s12v10_reset_pin);
+
+    for (uint8_t i = 0; i < 200; i++) {
+        usart.send(0xAA);
+    }
 
     r2d2::comm_c comm;
     auto beetle = r2d2::moving_platform::beetle_c(qik, comm);
@@ -31,15 +35,17 @@ int main(void) {
         }
     }
 
+
+    
+
     if (test_set_speed) {
         // motor tests:
         hwlib::cout << "Testing both motors, 31% power forward.\n";
         beetle.set_speed(80);
+        hwlib::cout << beetle.get_speed();
         beetle.turn(0);
         hwlib::wait_ms(1000);
         beetle.set_speed(0);
-
-        hwlib::wait_ms(500);
 
         hwlib::cout << "Testing both motors, 31% power backward.\n";
         beetle.set_speed(-80);

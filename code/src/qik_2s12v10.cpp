@@ -22,12 +22,12 @@ namespace r2d2::moving_platform {
     hwlib::ostream &
     operator<<(hwlib::ostream &out,
                const qik_2s12v10_registers &rhs) {
-        return out << static_cast<uint8_t>(rhs);
+        return out << static_cast<char>(rhs);
     }
     hwlib::ostream &
     operator<<(hwlib::ostream &out,
                const qik_2s12v10_configuration_parameter &rhs) {
-        return out << static_cast<uint8_t>(rhs);
+        return out << static_cast<char>(rhs);
     }
 
     hwlib::ostream &operator<<(hwlib::ostream &out,
