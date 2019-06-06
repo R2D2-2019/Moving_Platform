@@ -36,34 +36,19 @@ int main(void) {
     }
 
 
-    
+    hwlib::wait_ms(100);
 
     if (test_set_speed) {
         // motor tests:
-        hwlib::cout << "Testing both motors, "<<beetle.get_speed() << "% power forward.\n";
-        beetle.set_speed(80);
-        hwlib::cout << "Testing both motors, "<<beetle.get_speed() << "% power forward.\n";
+        hwlib::cout << "start \n";
+        beetle.set_speed(100);
         beetle.turn(0);
         hwlib::wait_ms(1000);
-        beetle.set_speed(0);
-
-        hwlib::cout << "Testing both motors, "<<beetle.get_speed() << "% power forward.\n";
-        beetle.set_speed(-80);
-        beetle.turn(0);
-        hwlib::wait_ms(2000);
-        beetle.set_speed(0);
-
-        hwlib::wait_ms(500);
-        hwlib::cout << "Testing turning 60 degrees left.\n";
-        beetle.set_speed(40);
-        beetle.turn(60);
-        hwlib::wait_ms(3000);
-        beetle.set_speed(0);
-
-        hwlib::wait_ms(500);
+        beetle.set_speed(50);
+        hwlib::cout << "Testing both motors, "<< qik.get_m0_speed() << "% ." <<  qik.get_m1_speed() << "% power forward.\n";
+        hwlib::wait_ms(5000);
         beetle.set_speed(0);
     }
-
     hwlib::cout << "All tests have been completed\n";
 
     return 0;

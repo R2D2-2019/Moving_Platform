@@ -29,7 +29,7 @@ namespace r2d2::moving_platform {
                const qik_2s12v10_configuration_parameter &rhs) {
         return out << static_cast<char>(rhs);
     }
-
+    
     hwlib::ostream &operator<<(hwlib::ostream &out,
                                const qik_2s12v10_error &rhs) {
         switch (rhs) {
@@ -72,6 +72,7 @@ namespace r2d2::moving_platform {
         : reset_pin(reset_pin), usart_bus(usart_bus) {
         init();
     }
+    
 
     void qik_2s12v10_c::wait_for_bus(uint8_t wait_ms_length) {
         while (usart_bus.available() < 1) {
@@ -84,22 +85,22 @@ namespace r2d2::moving_platform {
         // maximum value
         if (new_speed >= 0) {
             usart_bus << qik_2s12v10_registers::set_motor_m0_forward
-                      << new_speed;
+                      << static_cast<char>(new_speed);
         } else {
-            usart_bus << static_cast<uint8_t>(
-                             qik_2s12v10_registers::set_motor_m0_reverse)
-                      << (-1 * new_speed);
+            usart_bus << qik_2s12v10_registers::set_motor_m0_reverse
+                      << static_cast<char>(-1 * new_speed);
         }
     }
     void qik_2s12v10_c::set_m1_speed(int8_t new_speed) {
+    
         // Todo: depending on the motor configuration, 127 may not be the
         // maximum value
         if (new_speed >= 0) {
             usart_bus << qik_2s12v10_registers::set_motor_m1_forward
-                      << new_speed;
+                      << static_cast<char>(new_speed);
         } else {
             usart_bus << qik_2s12v10_registers::set_motor_m1_reverse
-                      << (-1 * new_speed);
+                      << static_cast<char>(-1 * new_speed);
         }
     }
 
@@ -164,7 +165,7 @@ namespace r2d2::moving_platform {
     qik_2s12v10_set_configuration_parameter_return
     qik_2s12v10_c::set_configuration_parameter(
         qik_2s12v10_configuration_parameter parameter, uint8_t value) {
-        usart_bus << parameter << value << 0x55 << 0x2A;
+        usart_bus << parameter << static_cast<char>(value) << 0x55 << 0x2A;
         wait_for_bus();
         return static_cast<qik_2s12v10_set_configuration_parameter_return>(
             usart_bus.receive());
