@@ -10,7 +10,7 @@
 // Qik motorcontroller tests
 TEST_CASE("Get error tests", "[qik_2s12v10]") {
     hwlib::pin_out_test reset_pin_test;
-    auto usart = r2d2::usart::test_usart_c<>();
+    auto usart = r2d2::usart::test_usart_c();
     auto motor_controller =
         r2d2::moving_platform::qik_2s12v10_c(usart, reset_pin_test);
 
