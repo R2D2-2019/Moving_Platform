@@ -55,8 +55,7 @@ namespace r2d2::moving_platform {
         void move(int8_t distance) override;
         /**
          * @brief
-         * This function will move the platform following a forwards and a
-         * backwards
+         * This function Will move the platform x forward and than y backwards
          * @param    int: distance
          */
         void move(int8_t x, int8_t y) override;
