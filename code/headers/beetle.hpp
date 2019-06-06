@@ -30,7 +30,7 @@ namespace r2d2::moving_platform {
          * @param    int: new speed percentage
          */
         void set_speed(int8_t new_speed) override;
-        
+
         /**
          * @brief
          * This function will set the steering between -90 and 90 degrees
@@ -55,7 +55,8 @@ namespace r2d2::moving_platform {
         void move(int8_t distance) override;
         /**
          * @brief
-         * This function will move the platform following a forwards and a backwards
+         * This function will move the platform following a forwards and a
+         * backwards
          * @param    int: distance
          */
         void move(int8_t x, int8_t y) override;

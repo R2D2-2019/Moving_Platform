@@ -19,17 +19,15 @@ namespace r2d2::moving_platform {
         return out;
     };
 
-    hwlib::ostream &
-    operator<<(hwlib::ostream &out,
-               const qik_2s12v10_registers &rhs) {
+    hwlib::ostream &operator<<(hwlib::ostream &out,
+                               const qik_2s12v10_registers &rhs) {
         return out << static_cast<char>(rhs);
     }
-    hwlib::ostream &
-    operator<<(hwlib::ostream &out,
-               const qik_2s12v10_configuration_parameter &rhs) {
+    hwlib::ostream &operator<<(hwlib::ostream &out,
+                               const qik_2s12v10_configuration_parameter &rhs) {
         return out << static_cast<char>(rhs);
     }
-    
+
     hwlib::ostream &operator<<(hwlib::ostream &out,
                                const qik_2s12v10_error &rhs) {
         switch (rhs) {
@@ -72,7 +70,6 @@ namespace r2d2::moving_platform {
         : reset_pin(reset_pin), usart_bus(usart_bus) {
         init();
     }
-    
 
     void qik_2s12v10_c::wait_for_bus(uint8_t wait_ms_length) {
         while (usart_bus.available() < 1) {
@@ -92,7 +89,7 @@ namespace r2d2::moving_platform {
         }
     }
     void qik_2s12v10_c::set_m1_speed(int8_t new_speed) {
-    
+
         // Todo: depending on the motor configuration, 127 may not be the
         // maximum value
         if (new_speed >= 0) {
@@ -133,31 +130,28 @@ namespace r2d2::moving_platform {
     uint8_t qik_2s12v10_c::get_error_byte() {
         usart_bus << qik_2s12v10_registers::get_error; // send request
         wait_for_bus();                                // wait for answer
-        return usart_bus.receive(); // return answer
+        return usart_bus.receive();                    // return answer
     }
 
-    void qik_2s12v10_c::print_errors(){
+    void qik_2s12v10_c::print_errors() {
         uint8_t error_byte = get_error_byte();
-        if (error_byte == 0){
+        if (error_byte == 0) {
             hwlib::cout << qik_2s12v10_error::no_error << '\n';
             return;
         }
-        //check every bit
-        for (size_t i = 0; i < 7; i++){
+        // check every bit
+        for (size_t i = 0; i < 7; i++) {
             // bitshift blackmagic
             uint8_t bit = (error_byte & (1 << i));
-            if( bit > 0){
+            if (bit > 0) {
                 hwlib::cout << static_cast<qik_2s12v10_error>(bit) << '\n';
             }
         }
-        
-        
     }
 
     uint8_t qik_2s12v10_c::get_configuration_parameter(
         qik_2s12v10_configuration_parameter parameter) {
-        usart_bus << qik_2s12v10_registers::get_config_parameter
-                  << parameter;
+        usart_bus << qik_2s12v10_registers::get_config_parameter << parameter;
         wait_for_bus();
         return usart_bus.receive();
     }

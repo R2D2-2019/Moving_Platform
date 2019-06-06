@@ -2,7 +2,9 @@
 
 namespace r2d2::moving_platform {
 
-    beetle_c::beetle_c(r2d2::moving_platform::qik_2s12v10_c &qik_2s12v10_motorcontroller, base_comm_c &comm)
+    beetle_c::beetle_c(
+        r2d2::moving_platform::qik_2s12v10_c &qik_2s12v10_motorcontroller,
+        base_comm_c &comm)
         : moving_platform_c(comm),
           qik_2s12v10_motorcontroller(qik_2s12v10_motorcontroller) {
     }
