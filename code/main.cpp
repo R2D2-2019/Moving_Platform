@@ -1,11 +1,10 @@
 /*
  * This main is used to test the canbus or beetle class.
  */
-#include <hardware_usart.hpp>
 #include <beetle.hpp>
 #include <comm.hpp>
+#include <hardware_usart.hpp>
 #include <hwlib.hpp>
-
 
 int main(void) {
     // kill the watchdog
@@ -19,11 +18,8 @@ int main(void) {
 
     auto qik_2s12v10_reset_pin = hwlib::target::pin_out(2, 25); // digital pin 5
     auto usart = r2d2::usart::hardware_usart_c<r2d2::usart::usart0>(9600);
-    r2d2::moving_platform::qik_2s12v10_c qik = r2d2::moving_platform::qik_2s12v10_c(usart, qik_2s12v10_reset_pin);
-
-    for (uint8_t i = 0; i < 200; i++) {
-        usart.send(0xAA);
-    }
+    r2d2::moving_platform::qik_2s12v10_c qik =
+        r2d2::moving_platform::qik_2s12v10_c(usart, qik_2s12v10_reset_pin);
 
     r2d2::comm_c comm;
     auto beetle = r2d2::moving_platform::beetle_c(qik, comm);
@@ -35,7 +31,6 @@ int main(void) {
         }
     }
 
-
     hwlib::wait_ms(100);
 
     if (test_set_speed) {
@@ -45,7 +40,8 @@ int main(void) {
         beetle.turn(0);
         hwlib::wait_ms(1000);
         beetle.set_speed(50);
-        hwlib::cout << "Testing both motors, "<< qik.get_m0_speed() << "% ." <<  qik.get_m1_speed() << "% power forward.\n";
+        hwlib::cout << "Testing both motors, " << qik.get_m0_speed() << "% ."
+                    << qik.get_m1_speed() << "% power forward.\n";
         hwlib::wait_ms(5000);
         beetle.set_speed(0);
     }
