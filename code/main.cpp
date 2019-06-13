@@ -17,7 +17,6 @@ int main(void) {
     auto usart = r2d2::usart::hardware_usart_c<r2d2::usart::usart0>(9600);
     r2d2::moving_platform::qik_2s12v10_c qik =
         r2d2::moving_platform::qik_2s12v10_c(usart, qik_2s12v10_reset_pin);
-
     /*
      * Test to turn the beetle 90 degrees.
      * code needs a go to the right class(beetle and rhino)
@@ -33,9 +32,10 @@ int main(void) {
     int counter_m1 = 0;
     // The adc input. is between 3000 and 3800.
     unsigned int adc_voltage = 3500;
-    // Encode frequency for 1 turn of the wheel. the encoder has 48 point per
-    // rotation 16.6. the total is then 796.8
-    int encode_1_full_turn = 797;
+    // Encode frequency for 1 turn of the wheel. the encoder has 64 point per
+    // over 2 pins we count when de adc goes from low to high of 1 pin. The gear
+    // ratio from the motor is 50:1 64/4*50 = 800
+    int encode_1_full_turn = 800;
     // Motor speed
     int motor_speed = 20;
     // motor tests strats motors.
@@ -51,7 +51,7 @@ int main(void) {
             }
             low_m0 = false;
         } else {
-            low_m0 = true;
+            low_m0 = false;
         }
         if (counter_m0 == (int(encode_1_full_turn * turn))) {
             qik.brake_m0(motor_speed);
