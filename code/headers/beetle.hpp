@@ -9,6 +9,8 @@ namespace r2d2::moving_platform {
     class beetle_c : public moving_platform_c {
     private:
         qik_2s12v10_c &qik_2s12v10_motorcontroller;
+        hwlib::target::pin_adc &encode_m0;
+        hwlib::target::pin_adc &encode_m1;
 
     public:
         /**
@@ -19,7 +21,9 @@ namespace r2d2::moving_platform {
          * @param    reset_pin: hwlib::pin_out &
          * @param    comm:      base_comm_c &
          */
-        beetle_c(qik_2s12v10_c &qik_2s12v10_motorcontroller, base_comm_c &comm);
+        beetle_c(qik_2s12v10_c &qik_2s12v10_motorcontroller, base_comm_c &comm,
+                 hwlib::target::pin_adc &encode_m0,
+                 hwlib::target::pin_adc &encode_m1);
 
         /**
          * @brief
