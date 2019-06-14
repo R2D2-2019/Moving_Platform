@@ -51,7 +51,7 @@ int main(void) {
             }
             low_m0 = false;
         } else {
-            low_m0 = false;
+            low_m0 = true;
         }
         if (counter_m0 == (int(encode_1_full_turn * turn))) {
             qik.brake_m0(motor_speed);
