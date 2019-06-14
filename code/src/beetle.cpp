@@ -43,7 +43,14 @@ namespace r2d2::moving_platform {
         // control will give a number beween -10 and 10 Just to make sure the
         // robot will move forward and not react to quickly, a theshold is made
         // for -15 till 15.
-        float turn = 2.6;
+        if (degrees >= 15 && degrees <= 90) {
+            degrees = degrees;
+        } else if (degrees <= -15 && degrees >= -90) {
+            degrees = degrees;
+        } else {
+            degrees = 0;
+        }
+        float turn = 2.40;
         // The puls. Its starts low.
         bool low_m0 = false;
         int counter_m0 = 0;
@@ -56,12 +63,21 @@ namespace r2d2::moving_platform {
         // The gear ratio from the motor is 50:1 64/4*50 = 800
         int encode_1_full_turn = 800;
         // Motor speed
-        int motor_speed = 20;
+        int motor_speed;
+        // Turn the right way.
+        if (degrees > 0) {
+            // turn right
+            motor_speed = 20;
+        } else if (degrees < 0) {
+            // turn left
+            motor_speed = -20;
+            degrees = -degrees;
+        }
         // motor tests strats motors.
         qik_2s12v10_motorcontroller.set_m0_speed(motor_speed);
         qik_2s12v10_motorcontroller.set_m1_speed(motor_speed);
 
-        while (true) {
+        while (true && degrees != 0) {
             if (encode_m0.read() > adc_voltage) {
                 if (low_m0 == true) {
                     counter_m0++;
@@ -72,7 +88,7 @@ namespace r2d2::moving_platform {
             }
             if (counter_m0 ==
                 (int(encode_1_full_turn * turn / 360 * degrees))) {
-                qik_2s12v10_motorcontroller.brake_m0(motor_speed);
+                qik_2s12v10_motorcontroller.brake_m0(20);
             }
 
             if (encode_m1.read() > adc_voltage) {
@@ -85,11 +101,10 @@ namespace r2d2::moving_platform {
             }
             if (counter_m1 ==
                 (int(encode_1_full_turn * turn / 360 * degrees))) {
-                qik_2s12v10_motorcontroller.brake_m1(motor_speed);
+                qik_2s12v10_motorcontroller.brake_m1(20);
             }
             if (counter_m0 > (encode_1_full_turn * turn / 360 * degrees) &&
                 counter_m1 > (encode_1_full_turn * turn / 360 * degrees)) {
-                hwlib::cout << "Turn done \n";
                 break;
             }
             // wait so the while loop aint blocking

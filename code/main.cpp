@@ -27,30 +27,9 @@ int main(void) {
      * code needs a go to the right class(beetle and rhino)
      */
     hwlib::cout << "start test Round \n";
-    beetle.set_speed(20);
-    hwlib::wait_ms(5000);
-    beetle.set_speed(0);
-    hwlib::wait_ms(10);
     beetle.turn(90);
-    hwlib::wait_ms(100);
-    beetle.set_speed(20);
-    hwlib::wait_ms(5000);
-    beetle.set_speed(0);
     hwlib::wait_ms(10);
-    beetle.turn(90);
-    hwlib::wait_ms(100);
-    beetle.set_speed(20);
-    hwlib::wait_ms(5000);
-    beetle.set_speed(0);
-    hwlib::wait_ms(10);
-    beetle.turn(90);
-    hwlib::wait_ms(100);
-    beetle.set_speed(20);
-    hwlib::wait_ms(5000);
-    beetle.set_speed(0);
-    hwlib::wait_ms(10);
-    beetle.turn(90);
-    hwlib::wait_ms(100);
+    beetle.turn(-90);
 
     hwlib::cout << "All tests have been completed\n";
 
