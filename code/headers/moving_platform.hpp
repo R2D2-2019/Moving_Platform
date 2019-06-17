@@ -11,7 +11,7 @@ namespace r2d2::moving_platform {
      * provided with.
      */
     class moving_platform_c : public base_module_c {
-    protected:
+    private:
         /**
          * this speed represents a throtle in percentages (%)
          * This means that 100 is max and forward, -100 is backwards
@@ -86,10 +86,9 @@ namespace r2d2::moving_platform {
         int16_t get_steering() const;
 
         /**
-         * functiuons for testing purpose
-         * !not te be implemented or used in final product!
+         *
+         * Function to move a distance in cm.
          */
-        virtual void move(int8_t distance) = 0;
-        virtual void move(int8_t x, int8_t y) = 0;
+        virtual void move(uint16_t distance);
     };
 } // namespace r2d2::moving_platform

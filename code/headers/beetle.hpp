@@ -50,17 +50,5 @@ namespace r2d2::moving_platform {
          * @param    int: new degrees
          */
         void turn(int16_t degrees) override;
-        /**
-         * @brief
-         * This function will move the platform a certain distance
-         * @param    int: distance
-         */
-        void move(int8_t distance) override;
-        /**
-         * @brief
-         * This function Will move the platform x forward and than y backwards
-         * @param    int: distance
-         */
-        void move(int8_t x, int8_t y) override;
     };
 } // namespace r2d2::moving_platform

@@ -12,24 +12,27 @@ namespace r2d2::moving_platform {
     }
     void beetle_c::set_speed(int8_t new_speed) {
         // the speed is given in percentage (-100 (backward) till 100
-        // (foreward))
-        speed = new_speed;
+        // (forward))
+
         // do not go out of range
-        if (speed > 100) {
-            speed = 100;
-        } else if (speed < -100) {
-            speed = -100;
+        if (new_speed > 100) {
+            set_speed(100);
+        } else if (new_speed < -100) {
+            set_speed(-100);
         }
         // because of inaccuracies, when not touching the pendals of manual
-        // control, a number beween -3 and 8 can be given Just to make sure the
-        // robot will not move forward then and not react to quickly, a theshold
-        // is made for -10 till 10.
-        else if (speed < 10 && speed > -10) {
-            speed = 0;
+        // control, a number beween -3 and 8 can be given Just to make sure
+        // the robot will not move forward then and not react to quickly, a
+        // theshold is made for -10 till 10.
+
+        else if (new_speed < 10 && new_speed > -10) {
+            set_speed(0);
+        } else {
+            set_speed(new_speed);
         }
-        qik_2s12v10_motorcontroller.set_m0_speed(speed);
-        qik_2s12v10_motorcontroller.set_m1_speed(-speed);
-    }
+        qik_2s12v10_motorcontroller.set_m0_speed(new_speed);
+        qik_2s12v10_motorcontroller.set_m1_speed(-new_speed);
+    } // namespace r2d2::moving_platform
 
     void beetle_c::set_steering(int16_t degrees) {
     }
@@ -102,9 +105,5 @@ namespace r2d2::moving_platform {
             // wait so the while loop aint blocking
             hwlib::wait_ms(0.1);
         }
-    } // namespace r2d2::moving_platform
-    void beetle_c::move(int8_t distance) {
-    }
-    void beetle_c::move(int8_t x, int8_t y) {
     }
 } // namespace r2d2::moving_platform
