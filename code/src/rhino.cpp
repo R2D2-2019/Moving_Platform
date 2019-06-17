@@ -11,10 +11,6 @@ namespace r2d2::moving_platform {
           encode_m1(encode_m1) {
     }
     void rhino_c::set_speed(int8_t new_speed) {
-        // Todo: depending on the motor configuration, 127 may not be the
-        // maximum value
-        // Todo: change the speed variable to the actual speed.
-
         // the speed is given in percentage (-100 (backward) till 100
         // (foreward))
         speed = new_speed;
@@ -30,9 +26,9 @@ namespace r2d2::moving_platform {
         // is made for -10 till 10.
         else if (speed < 10 && speed > -10) {
             speed = 0;
-            qik_2s12v10_motorcontroller.set_m0_speed(0);
-            qik_2s12v10_motorcontroller.set_m1_speed(0);
         }
+        qik_2s12v10_motorcontroller.set_m0_speed(-1 * speed);
+        qik_2s12v10_motorcontroller.set_m1_speed(speed);
     }
 
     void rhino_c::set_steering(int16_t degrees) {
@@ -70,7 +66,7 @@ namespace r2d2::moving_platform {
             new_speed_m1 =
                 speed + (((200 % (speed + 100)) * -percentage) / 100);
         }
-        qik_2s12v10_motorcontroller.set_m0_speed(new_speed_m0);
+        qik_2s12v10_motorcontroller.set_m0_speed(-1 * new_speed_m0);
         qik_2s12v10_motorcontroller.set_m1_speed(new_speed_m1);
     }
 
