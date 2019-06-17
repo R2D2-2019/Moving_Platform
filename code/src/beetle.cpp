@@ -11,10 +11,6 @@ namespace r2d2::moving_platform {
           encode_m1(encode_m1) {
     }
     void beetle_c::set_speed(int8_t new_speed) {
-        // Todo: depending on the motor configuration, 127 may not be the
-        // maximum value
-        // Todo: change the speed variable to the actual speed.
-
         // the speed is given in percentage (-100 (backward) till 100
         // (foreward))
         speed = new_speed;
@@ -61,6 +57,7 @@ namespace r2d2::moving_platform {
         // The gear ratio from the motor is 50:1 64/4*50 = 800
         int encode_1_full_turn = 800;
         // Motor speed
+        // Default turn speed.
         int motor_speed = 20;
         // Turn the right way.
         if (degrees < 0) {
