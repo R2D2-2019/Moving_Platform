@@ -4,15 +4,13 @@ namespace r2d2::moving_platform {
 
     beetle_c::beetle_c(
         r2d2::moving_platform::qik_2s12v10_c &qik_2s12v10_motorcontroller,
-        base_comm_c &comm)
+        base_comm_c &comm, hwlib::adc &encode_m0, hwlib::adc &encode_m1)
         : moving_platform_c(comm),
-          qik_2s12v10_motorcontroller(qik_2s12v10_motorcontroller) {
+          qik_2s12v10_motorcontroller(qik_2s12v10_motorcontroller),
+          encode_m0(encode_m0),
+          encode_m1(encode_m1) {
     }
     void beetle_c::set_speed(int8_t new_speed) {
-        // Todo: depending on the motor configuration, 127 may not be the
-        // maximum value
-        // Todo: change the speed variable to the actual speed.
-
         // the speed is given in percentage (-100 (backward) till 100
         // (foreward))
         speed = new_speed;
@@ -28,47 +26,83 @@ namespace r2d2::moving_platform {
         // is made for -10 till 10.
         else if (speed < 10 && speed > -10) {
             speed = 0;
-            qik_2s12v10_motorcontroller.set_m0_speed(0);
-            qik_2s12v10_motorcontroller.set_m1_speed(0);
         }
+        qik_2s12v10_motorcontroller.set_m0_speed(speed);
+        qik_2s12v10_motorcontroller.set_m1_speed(-speed);
     }
 
     void beetle_c::set_steering(int16_t degrees) {
     }
     void beetle_c::turn(int16_t degrees) {
-        int new_degrees = degrees;
         // because of inaccuracies, when moving forward, the steer of manual
         // control will give a number beween -10 and 10 Just to make sure the
         // robot will move forward and not react to quickly, a theshold is made
         // for -15 till 15.
-        if (new_degrees < 15 && new_degrees > -15) {
-            new_degrees = 0;
+        int min_degrees = 15;
+        int max_degrees = 90;
+        if ((degrees < min_degrees && degrees > -min_degrees) ||
+            degrees > max_degrees || degrees < -max_degrees) {
+            degrees = 0;
         }
+        float turn = 2.40;
+        // The puls. Its starts low.
+        bool low_m0 = false;
+        int counter_m0 = 0;
+        bool low_m1 = false;
+        int counter_m1 = 0;
+        // The adc input. is between 3000 and 3800.
+        unsigned int adc_voltage = 3500;
+        // Encode frequency for 1 turn of the wheel. the encoder has 64 point
+        // per over 2 pins we count when de adc goes from low to high of 1 pin.
+        // The gear ratio from the motor is 50:1 64/4*50 = 800
+        int encode_1_full_turn = 800;
+        // Motor speed
+        // Default turn speed.
+        int motor_speed = 20;
+        // Turn the right way.
+        if (degrees < 0) {
+            // turn right
+            motor_speed = -motor_speed;
+            degrees = -degrees;
+        }
+        // motor tests strats motors.
+        qik_2s12v10_motorcontroller.set_m0_speed(motor_speed);
+        qik_2s12v10_motorcontroller.set_m1_speed(motor_speed);
 
-        if (speed != 0) {
-            if (new_degrees == 0) {
-                qik_2s12v10_motorcontroller.set_m0_speed(speed);
-                qik_2s12v10_motorcontroller.set_m1_speed(-speed);
-            } else if (new_degrees > 0) {
-                // turn left
-                // to make the left wheel go slower, we decresed the speed with
-                // factor 4 and 3 (no meaning just gave good output on beetle)
-                qik_2s12v10_motorcontroller.set_m0_speed(
-                    (speed + new_degrees / 4) / 3);
-                qik_2s12v10_motorcontroller.set_m1_speed(
-                    -(speed + new_degrees / 4));
-
+        while (true && degrees != 0) {
+            if (encode_m0.read() > adc_voltage) {
+                if (low_m0 == true) {
+                    counter_m0++;
+                }
+                low_m0 = false;
             } else {
-                // turn right
-                // to make the right wheel go slower, we decresed the speed with
-                // factor 4 and 3 (no meaning just gave good output on beetle)
-                qik_2s12v10_motorcontroller.set_m0_speed(
-                    (speed + new_degrees / 4));
-                qik_2s12v10_motorcontroller.set_m1_speed(
-                    -(speed + new_degrees / 4) / 3);
+                low_m0 = true;
             }
+            if (counter_m0 ==
+                (int(encode_1_full_turn * turn / 360 * degrees))) {
+                qik_2s12v10_motorcontroller.brake_m0(20);
+            }
+
+            if (encode_m1.read() > adc_voltage) {
+                if (low_m1 == true) {
+                    counter_m1++;
+                }
+                low_m1 = false;
+            } else {
+                low_m1 = true;
+            }
+            if (counter_m1 ==
+                (int(encode_1_full_turn * turn / 360 * degrees))) {
+                qik_2s12v10_motorcontroller.brake_m1(20);
+            }
+            if (counter_m0 > (encode_1_full_turn * turn / 360 * degrees) &&
+                counter_m1 > (encode_1_full_turn * turn / 360 * degrees)) {
+                break;
+            }
+            // wait so the while loop aint blocking
+            hwlib::wait_ms(0.1);
         }
-    }
+    } // namespace r2d2::moving_platform
     void beetle_c::move(int8_t distance) {
     }
     void beetle_c::move(int8_t x, int8_t y) {
