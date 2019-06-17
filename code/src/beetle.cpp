@@ -4,9 +4,11 @@ namespace r2d2::moving_platform {
 
     beetle_c::beetle_c(
         r2d2::moving_platform::qik_2s12v10_c &qik_2s12v10_motorcontroller,
-        base_comm_c &comm)
+        base_comm_c &comm, hwlib::adc &encode_m0, hwlib::adc &encode_m1)
         : moving_platform_c(comm),
-          qik_2s12v10_motorcontroller(qik_2s12v10_motorcontroller) {
+          qik_2s12v10_motorcontroller(qik_2s12v10_motorcontroller),
+          encode_m0(encode_m0),
+          encode_m1(encode_m1) {
     }
     void beetle_c::set_speed(int8_t new_speed) {
         // Todo: depending on the motor configuration, 127 may not be the
