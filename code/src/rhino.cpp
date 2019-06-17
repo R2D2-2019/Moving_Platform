@@ -34,40 +34,74 @@ namespace r2d2::moving_platform {
     void rhino_c::set_steering(int16_t degrees) {
     }
     void rhino_c::turn(int16_t degrees) {
-        int new_degrees = degrees;
-        // to make sure the platform is still turning if speed is more than 90,
-        // a speedcap is made at 90.
-        if (speed >= 90) {
-            speed = 90;
-        }
         // because of inaccuracies, when moving forward, the steer of manual
         // control will give a number beween -10 and 10 Just to make sure the
         // robot will move forward and not react to quickly, a theshold is made
         // for -15 till 15.
-        if (new_degrees < 15 && new_degrees > -15) {
-            new_degrees = 0;
+        int min_degrees = 15;
+        int max_degrees = 90;
+        if ((degrees < min_degrees && degrees > -min_degrees) ||
+            degrees > max_degrees || degrees < -max_degrees) {
+            degrees = 0;
         }
-        // calculating a percentage of the degrees
-        // 90 = turn ratio received from steering wheel
-        // 100 = percentage how fast the motor will turn
-        int percentage = new_degrees * 100 / 90;
-        int new_speed_m0;
-        int new_speed_m1;
+        float turn = 70;
+        // The puls. Its starts low.
+        bool low_m0 = false;
+        int counter_m0 = 0;
+        bool low_m1 = false;
+        int counter_m1 = 0;
+        // The adc input. is between 3000 and 3800.
+        unsigned int adc_voltage = 3500;
+        // Encode frequency for 1 turn of the wheel. the encoder has 64 point
+        // per over 2 pins we count when de adc goes from low to high of 1 pin.
+        // The gear ratio from the motor is 50:1 64/4*50 = 800
+        int encode_1_full_turn = 800;
+        // Motor speed
+        // Default turn speed.
+        int motor_speed = 80;
+        // Turn the right way.
+        if (degrees < 0) {
+            // turn right
+            motor_speed = -motor_speed;
+            degrees = -degrees;
+        }
+        // motor tests strats motors.
+        qik_2s12v10_motorcontroller.set_m0_speed(motor_speed);
+        qik_2s12v10_motorcontroller.set_m1_speed(motor_speed);
 
-        if (speed == 0) { // this makes sure the platform can still turn if the
-                          // speed is 0.
-            new_speed_m0 = speed + percentage;
-            new_speed_m1 = speed - percentage;
-        } else {
-            // This is a formula used to calculate the new motor speed. More
-            // information can be found at:
-            // https://docs.google.com/spreadsheets/d/1myfm6gozPoYCiozkIuP1HdAy5hF2_2-RWAHruiikXnc/edit#gid=0
-            new_speed_m0 = speed + (((200 % (speed + 100)) * percentage) / 100);
-            new_speed_m1 =
-                speed + (((200 % (speed + 100)) * -percentage) / 100);
+        while (true && degrees != 0) {
+            if (encode_m0.read() > adc_voltage) {
+                if (low_m0 == true) {
+                    counter_m0++;
+                }
+                low_m0 = false;
+            } else {
+                low_m0 = true;
+            }
+            if (counter_m0 ==
+                (int(encode_1_full_turn * turn / 360 * degrees))) {
+                qik_2s12v10_motorcontroller.brake_m0(20);
+            }
+
+            if (encode_m1.read() > adc_voltage) {
+                if (low_m1 == true) {
+                    counter_m1++;
+                }
+                low_m1 = false;
+            } else {
+                low_m1 = true;
+            }
+            if (counter_m1 ==
+                (int(encode_1_full_turn * turn / 360 * degrees))) {
+                qik_2s12v10_motorcontroller.brake_m1(20);
+            }
+            if (counter_m0 > (encode_1_full_turn * turn / 360 * degrees) &&
+                counter_m1 > (encode_1_full_turn * turn / 360 * degrees)) {
+                break;
+            }
+            // wait so the while loop aint blocking
+            hwlib::wait_ms(0.1);
         }
-        qik_2s12v10_motorcontroller.set_m0_speed(-1 * new_speed_m0);
-        qik_2s12v10_motorcontroller.set_m1_speed(new_speed_m1);
     }
 
     void rhino_c::move(int8_t distance) {

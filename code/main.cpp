@@ -30,29 +30,28 @@ int main(void) {
     }
 
     if (rhino_motor_test) {
-        hwlib::cout << "Testing both motors, 31% power forward.\n";
-        rhino.set_speed(80);
-        rhino.turn(0);
-        hwlib::wait_ms(1000);
-        rhino.set_speed(0);
+        // hwlib::cout << "Testing both motors, 31% power forward.\n";
+        // rhino.set_speed(80);
+        // rhino.turn(0);
+        // hwlib::wait_ms(1000);
+        // rhino.set_speed(0);
 
-        hwlib::wait_ms(500);
+        // hwlib::wait_ms(500);
 
-        hwlib::cout << "Testing both motors, 31% power backward.\n";
-        rhino.set_speed(-80);
-        rhino.turn(0);
-        hwlib::wait_ms(2000);
-        rhino.set_speed(0);
+        // hwlib::cout << "Testing both motors, 31% power backward.\n";
+        // rhino.set_speed(-80);
+        // rhino.turn(0);
+        // hwlib::wait_ms(1000);
+        // rhino.set_speed(0);
 
         hwlib::wait_ms(500);
         hwlib::cout << "Testing turning 90 degrees left.\n";
-        rhino.set_speed(40);
+        //        rhino.set_speed(40);
+        rhino.turn(-90);
+        hwlib::wait_ms(3000);
+
         rhino.turn(90);
         hwlib::wait_ms(3000);
-        rhino.set_speed(0);
-
-        hwlib::wait_ms(500);
-        rhino.set_speed(0);
     }
 
     hwlib::cout << "All tests have been completed\n";
