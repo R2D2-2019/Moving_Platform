@@ -64,4 +64,4 @@ namespace r2d2 {
             void turn(int degree, int8_t direction);
         };
     } // namespace moving_platform
-} // namespace R2D2
+} // namespace r2d2

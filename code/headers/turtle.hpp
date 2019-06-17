@@ -4,7 +4,7 @@
 #include <hwlib.hpp>
 #include <rotary_encoder_turtle.hpp>
 
-namespace r2r2 {
+namespace r2d2 {
     namespace moving_platform {
         class turtle {
         private:

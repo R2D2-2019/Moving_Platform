@@ -7,7 +7,7 @@
 #include <hwlib.hpp>
 #include <pwm.hpp>
 #include <l9110.hpp>
-#include <motory_encoder_turtle.hpp>
+#include <rotary_encoder_turtle.hpp>
 
 
 int main(void) {
@@ -31,8 +31,8 @@ int main(void) {
 	auto turtle_motor_left	=	r2d2::moving_platform::l9110(pwm_channel_0, pwm_channel_1);
     auto turtle_motor_right =	r2d2::moving_platform::l9110(pwm_channel_2, pwm_channel_3);
 
-	auto left_rotary_encoder	=	r2d2::moving_platform::motory_encoder_turtle(pin_d2);
-    auto right_rotary_encoder	=	r2d2::moving_platform::motory_encoder_turtle(pin_d3);
+	auto left_rotary_encoder	=	r2d2::moving_platform::rotary_encoder_turtle(pin_d2);
+    auto right_rotary_encoder	=	r2d2::moving_platform::rotary_encoder_turtle(pin_d3);
 
 	auto turtle = r2d2::moving_platform::turtle_controller(turtle_motor_left, turtle_motor_right, 
 														   left_rotary_encoder, right_rotary_encoder);

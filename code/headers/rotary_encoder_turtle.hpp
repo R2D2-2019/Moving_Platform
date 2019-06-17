@@ -23,4 +23,4 @@ namespace r2d2 {
             uint8_t get_speed();
         };
     } // namespace moving_platform
-} // namespace R2D2
+} // namespace r2d2
