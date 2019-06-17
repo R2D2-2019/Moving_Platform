@@ -4,8 +4,7 @@ namespace r2d2::moving_platform {
 
     beetle_c::beetle_c(
         r2d2::moving_platform::qik_2s12v10_c &qik_2s12v10_motorcontroller,
-        base_comm_c &comm, hwlib::target::pin_adc &encode_m0,
-        hwlib::target::pin_adc &encode_m1)
+        base_comm_c &comm, hwlib::adc &encode_m0, hwlib::adc &encode_m1)
         : moving_platform_c(comm),
           qik_2s12v10_motorcontroller(qik_2s12v10_motorcontroller),
           encode_m0(encode_m0),
@@ -43,11 +42,10 @@ namespace r2d2::moving_platform {
         // control will give a number beween -10 and 10 Just to make sure the
         // robot will move forward and not react to quickly, a theshold is made
         // for -15 till 15.
-        if (degrees >= 15 && degrees <= 90) {
-            degrees = degrees;
-        } else if (degrees <= -15 && degrees >= -90) {
-            degrees = degrees;
-        } else {
+        int min_degrees = 15;
+        int max_degrees = 90;
+        if ((degrees < min_degrees && degrees > -min_degrees) ||
+            degrees > max_degrees || degrees < -max_degrees) {
             degrees = 0;
         }
         float turn = 2.40;
@@ -63,14 +61,11 @@ namespace r2d2::moving_platform {
         // The gear ratio from the motor is 50:1 64/4*50 = 800
         int encode_1_full_turn = 800;
         // Motor speed
-        int motor_speed;
+        int motor_speed = 20;
         // Turn the right way.
-        if (degrees > 0) {
+        if (degrees < 0) {
             // turn right
-            motor_speed = 20;
-        } else if (degrees < 0) {
-            // turn left
-            motor_speed = -20;
+            motor_speed = -motor_speed;
             degrees = -degrees;
         }
         // motor tests strats motors.
