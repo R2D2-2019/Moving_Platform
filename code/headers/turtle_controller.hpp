@@ -2,15 +2,15 @@
 
 #include "hwlib.hpp"
 #include "l9110.hpp"
-#include <motory_encoder_turtle.hpp>
+#include <rotary_encoder_turtle.hpp>
 #include <pwm.hpp>
-#include <turtle.hpp>
-namespace R2D2 {
+//#include <turtle.hpp>
+namespace r2d2 {
     namespace moving_platform {
         class turtle_controller {
         private:
             l9110 &motor_left, &motor_right;
-            motory_encoder_turtle &encoder_left, &encoder_right;
+            rotary_encoder_turtle &encoder_left, &encoder_right;
 
             int16_t speed = 0; // speed of the robot
 
@@ -39,8 +39,8 @@ namespace R2D2 {
              @param encoder_left : left encoder if  the turtle
              */
             turtle_controller(l9110 &motor_left, l9110 &motor_right,
-                              motory_encoder_turtle &encoder_left,
-                              motory_encoder_turtle &encoder_right);
+                              rotary_encoder_turtle &encoder_left,
+                              rotary_encoder_turtle &encoder_right);
             /*@brief
             *set the speed of how fast the turtle should drive
             *@detail

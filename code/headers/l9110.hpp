@@ -3,9 +3,9 @@
 #include <hwlib.hpp>
 #include <pwm.hpp>
 
-using namespace R2D2::pwm_lib;
+using namespace r2d2::pwm_lib;
 
-namespace R2D2 {
+namespace r2d2 {
     namespace moving_platform {
         /* @brief
          *this class controls the l9110 2dc channel motor driver to controll the
@@ -41,4 +41,4 @@ namespace R2D2 {
             int16_t get_speed();
         };
     } // namespace moving_platform
-} // namespace R2D2
+} // namespace r2d2

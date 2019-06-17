@@ -1,10 +1,10 @@
 #include <turtle_controller.hpp>
 
-namespace R2D2::moving_platform {
+namespace r2d2::moving_platform {
 
     turtle_controller::turtle_controller(l9110 &motor_left, l9110 &motor_right,
-                                         motory_encoder_turtle &encoder_left,
-                                         motory_encoder_turtle &encoder_right)
+                                         rotary_encoder_turtle &encoder_left,
+                                         rotary_encoder_turtle &encoder_right)
         : motor_left(motor_left),
           motor_right(motor_right),
           encoder_left(encoder_left),
@@ -57,4 +57,4 @@ namespace R2D2::moving_platform {
         motor_left.set_speed(0);
         motor_right.set_speed(0);
     }
-} // namespace R2D2::moving_platform
+} // namespace r2d2::moving_platform

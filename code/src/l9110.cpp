@@ -1,7 +1,7 @@
 #include <l9110.hpp>
 
-using namespace R2D2::pwm_lib;
-namespace R2D2::moving_platform {
+using namespace r2d2::pwm_lib;
+namespace r2d2::moving_platform {
 
     l9110::l9110(pwm_c &channel_fowrard, pwm_c &channel_backward)
         : channel_fowrard(channel_fowrard), channel_backward(channel_backward) {
@@ -23,4 +23,4 @@ namespace R2D2::moving_platform {
         return speed;
     }
 
-} // namespace R2D2::moving_platform
+} // namespace r2d2::moving_platform
