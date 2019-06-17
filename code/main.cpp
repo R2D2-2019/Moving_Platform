@@ -26,10 +26,15 @@ int main(void) {
     auto beetle =
         r2d2::moving_platform::beetle_c(qik, comm, encode_m0, encode_m1);
 
-    while (true) {
-        beetle.process();
-        hwlib::wait_ms(100);
-    }
+    // Turn Test
+    hwlib::cout << "beetle will turn 90 degrees right. \n";
+    beetle.turn(90);
+    hwlib::cout << "beetle has turned 90 degrees right. \n";
+    hwlib::wait_ms(3000);
+    hwlib::cout << "beetle will turn 90 degrees left. \n";
+    beetle.turn(-90);
+    hwlib::cout << "beetle has turned 90 degrees left. \n";
+    hwlib::cout << "the test are done";
 
     return 0;
 }
