@@ -1,10 +1,13 @@
 /*
- * This main is used to test the canbus or beetle class.
+ * This main is used to test the turtle class.
  */
 
-#include <beetle.hpp>
+#include <turtle_controller.hpp>
 #include <comm.hpp>
 #include <hwlib.hpp>
+#include <pwm.hpp>
+#include <l9110.hpp>
+#include <motory_encoder_turtle.hpp>
 
 
 int main(void) {
@@ -12,53 +15,42 @@ int main(void) {
     WDT->WDT_MR = WDT_MR_WDDIS;
     hwlib::wait_ms(1000);
 
-    // canbus beetle testing
-    bool beetle_canbus = false;
-    // beetle testing
-    bool test_set_speed = true;
+	auto pin_d2 = hwlib::target::pin_in(hwlib::target::pins::d2);
+    auto pin_d3 = hwlib::target::pin_in(hwlib::target::pins::d3);
 
-    auto qik_2s12v10_reset_pin = hwlib::target::pin_out(2, 25); // digital pin 5
-    r2d2::usart::usart_ports usart_port = r2d2::usart::usart_ports::uart1;
+	// Motor left forward channel
+	auto pwm_channel_0 = pwm_c(0);
+	// Motor left backward channel
+    auto pwm_channel_1 = pwm_c(1);
 
-    r2d2::comm_c comm;
-    auto beetle = r2d2::moving_platform::beetle_c(usart_port, 9600u,
-                                                  qik_2s12v10_reset_pin, comm);
+	// Motor right forward channel
+    auto pwm_channel_2 = pwm_c(2);
+	// Motor right backward channel
+    auto pwm_channel_3 = pwm_c(3);
 
-    if (beetle_canbus) {
-        while (1) {
-            beetle.process();
-            hwlib::wait_ms(100);
-        }
-    }
+	auto turtle_motor_left	=	r2d2::moving_platform::l9110(pwm_channel_0, pwm_channel_1);
+    auto turtle_motor_right =	r2d2::moving_platform::l9110(pwm_channel_2, pwm_channel_3);
 
-    if (test_set_speed) {
-        // motor tests:
-        hwlib::cout << "Testing both motors, 31% power forward.\n";
-        beetle.set_speed(80);
-        beetle.turn(0);
-        hwlib::wait_ms(1000);
-        beetle.set_speed(0);
+	auto left_rotary_encoder	=	r2d2::moving_platform::motory_encoder_turtle(pin_d2);
+    auto right_rotary_encoder	=	r2d2::moving_platform::motory_encoder_turtle(pin_d3);
 
-        hwlib::wait_ms(500);
+	auto turtle = r2d2::moving_platform::turtle_controller(turtle_motor_left, turtle_motor_right, 
+														   left_rotary_encoder, right_rotary_encoder);
 
-        hwlib::cout << "Testing both motors, 31% power backward.\n";
-        beetle.set_speed(-80);
-        beetle.turn(0);
-        hwlib::wait_ms(2000);
-        beetle.set_speed(0);
+	hwlib::cout << "Testing turtle driving forward\n";
+	turtle.set_speed(10);
+	hwlib::wait_ms(500);
+    turtle.update();
+    hwlib::wait_ms(3000);
 
-        hwlib::wait_ms(500);
-        hwlib::cout << "Testing turning 60 degrees left.\n";
-        beetle.set_speed(40);
-        beetle.turn(60);
-        hwlib::wait_ms(3000);
-        beetle.set_speed(0);
+	hwlib::cout << "Testing turtle driving backwards\n";
+    turtle.set_speed(-10);
+    hwlib::wait_ms(500);
+    turtle.update();
+    hwlib::wait_ms(3000);
 
-        hwlib::wait_ms(500);
-        beetle.set_speed(0);
-    }
-
-    hwlib::cout << "All tests have been completed\n";
-
-    return 0;
+	hwlib::cout << "Stopping the turtle\n";
+	turtle.set_speed(0);
+    hwlib::wait_ms(500);
+    turtle.update();
 }
