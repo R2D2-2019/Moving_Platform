@@ -36,13 +36,6 @@ namespace r2d2::moving_platform {
 
         /**
          * @brief
-         * This function will set the steering between -90 and 90 degrees
-         * @param    int: new degrees
-         */
-        void set_steering(int16_t degrees) override;
-
-        /**
-         * @brief
          * This function will turn the beetle between -90 and 90
          * @detail
          * The degrees set must not exceed -90 of 90, if it is, it will set back
