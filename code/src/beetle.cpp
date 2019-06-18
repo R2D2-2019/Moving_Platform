@@ -45,10 +45,11 @@ namespace r2d2::moving_platform {
             degrees = 0;
         }
         float turn = 2.40;
-        // The puls. Its starts low.
-        bool low_m0 = false;
+        // The encoder code checks if the pulse go's from low to high. This is
+        // why we start the bool low.
+        bool low_m0 = true;
         int counter_m0 = 0;
-        bool low_m1 = false;
+        bool low_m1 = true;
         int counter_m1 = 0;
         // The adc input. is between 3000 and 3800.
         unsigned int adc_voltage = 3500;
