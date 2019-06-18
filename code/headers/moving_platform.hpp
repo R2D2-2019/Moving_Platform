@@ -11,15 +11,9 @@ namespace r2d2::moving_platform {
      * provided with.
      */
     class moving_platform_c : public base_module_c {
-    private:
-        /**
-         * this speed represents a throtle in percentages (%)
-         * This means that 100 is max and forward, -100 is backwards
-         */
-        int8_t speed;
 
     public:
-        moving_platform_c(base_comm_c &comm) : base_module_c(comm), speed(0) {
+        moving_platform_c(base_comm_c &comm) : base_module_c(comm) {
 
             comm.listen_for_frames({r2d2::frame_type::MOVEMENT_CONTROL});
         }
@@ -65,7 +59,7 @@ namespace r2d2::moving_platform {
         /**
          *	turns the moving platform
          */
-        virtual void turn(int16_t degrees) = 0;
+        virtual void turn(int8_t degrees) = 0;
 
         /**
          * returns the speed value
