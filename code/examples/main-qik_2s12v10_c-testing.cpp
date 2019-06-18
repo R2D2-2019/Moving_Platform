@@ -35,7 +35,7 @@ int main(void) {
                 << qik_2s12v10_motorcontroller.get_configuration_parameter(
                        r2d2::moving_platform::
                            qik_2s12v10_configuration_parameter::device_id);
-    hwlib::cout << "Initialization compleet.\n";
+    hwlib::cout << "Initialization complete.\n";
 
     if (test_set_speed) {
         // error_test:

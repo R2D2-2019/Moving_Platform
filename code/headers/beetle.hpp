@@ -42,6 +42,6 @@ namespace r2d2::moving_platform {
          * to -90 or 90
          * @param    int: new degrees
          */
-        void turn(int16_t degrees) override;
+        void turn(int8_t degrees) override;
     };
 } // namespace r2d2::moving_platform

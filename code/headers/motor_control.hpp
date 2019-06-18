@@ -11,7 +11,7 @@ namespace r2d2::moving_platform {
     class motor_control_c {
     private:
         /**
-         * this speed represents a throtle in percentages (%)
+         * this speed represents a throttle in percentages (%)
          * This means that 100 is max and forward, -100 is backwards
          */
         int8_t speed;

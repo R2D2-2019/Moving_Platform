@@ -92,8 +92,6 @@ namespace r2d2::moving_platform {
          * Constructs a Qik2s12v10 with the given parameters.
          * @param uart_port The port that the qik_2s12v10_c class will use to
          * communicate with the qik 2s12v10 motor controller board.
-         * @param baudrate The baud rate that the Qik2s12v10 will use in its
-         * UART TTL serial communication in bps.
          * @param _reset_pin Pin that can be used to reset the qik2s12v10.
          */
         qik_2s12v10_c(r2d2::usart::usart_connection_c &uart_bus,
@@ -213,8 +211,7 @@ namespace r2d2::moving_platform {
          * This function uses the raw reading from motor M0 to estimate how
          * much current flows through the motor in milliampere. Note that the
          * value returned by this function can differ from the actual current
-         * by as much as 20% and according to the datasheet the values needs to
-         * be multiplied by 150.
+         * by as much as 20% according to the datasheet.
          *
          * @return Returns the calculated current of the m0 motor in milliamps
          */
@@ -224,8 +221,7 @@ namespace r2d2::moving_platform {
          * This function uses the raw reading from motor M1 to estimate how
          * much current flows through the motor in milliampere. Note that the
          * value returned by this function can differ from the actual current
-         * by as much as 20% and according to the datasheet the values needs to
-         * be multiplied by 150.
+         * by as much as 20% according to the datasheet.
          *
          * @return Returns the calculated current of the m1 motor in milliamps
          */

@@ -17,9 +17,9 @@ namespace r2d2::moving_platform {
 
         // do not go out of range
         if (new_speed > 100) {
-            set_speed(100);
+            new_speed = 100;
         } else if (new_speed < -100) {
-            set_speed(-100);
+            new_speed = -100;
         }
         // because of inaccuracies, when not touching the pendals of manual
         // control, a number beween -3 and 8 can be given Just to make sure
@@ -27,15 +27,13 @@ namespace r2d2::moving_platform {
         // theshold is made for -10 till 10.
 
         else if (new_speed < 10 && new_speed > -10) {
-            set_speed(0);
-        } else {
-            set_speed(new_speed);
+            new_speed = 0;
         }
         qik_2s12v10_motorcontroller.set_m0_speed(new_speed);
         qik_2s12v10_motorcontroller.set_m1_speed(-new_speed);
     } // namespace r2d2::moving_platform
 
-    void beetle_c::turn(int16_t degrees) {
+    void beetle_c::turn(int8_t degrees) {
         // because of inaccuracies, when moving forward, the steer of manual
         // control will give a number beween -10 and 10 Just to make sure the
         // robot will move forward and not react to quickly, a theshold is made
@@ -47,10 +45,11 @@ namespace r2d2::moving_platform {
             degrees = 0;
         }
         float turn = 2.40;
-        // The puls. Its starts low.
-        bool low_m0 = false;
+        // The encoder code checks if the pulse goes from low to high. This is
+        // why we start the bool low.
+        bool low_m0 = true;
         int counter_m0 = 0;
-        bool low_m1 = false;
+        bool low_m1 = true;
         int counter_m1 = 0;
         // The adc input. is between 3000 and 3800.
         unsigned int adc_voltage = 3500;
