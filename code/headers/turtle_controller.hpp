@@ -2,8 +2,9 @@
 
 #include "hwlib.hpp"
 #include "l9110.hpp"
-#include <rotary_encoder_turtle.hpp>
 #include <pwm.hpp>
+#include <rotary_encoder_turtle.hpp>
+
 //#include <turtle.hpp>
 namespace r2d2 {
     namespace moving_platform {
