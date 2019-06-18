@@ -45,7 +45,7 @@ namespace r2d2::moving_platform {
             degrees = 0;
         }
         float turn = 2.40;
-        // The encoder code checks if the pulse go's from low to high. This is
+        // The encoder code checks if the pulse goes from low to high. This is
         // why we start the bool low.
         bool low_m0 = true;
         int counter_m0 = 0;
