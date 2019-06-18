@@ -4,7 +4,6 @@
 #include <motor_control.hpp>
 #include <usart_connection.hpp>
 
-
 /// @file
 namespace r2d2::moving_platform {
 
@@ -88,15 +87,15 @@ namespace r2d2::moving_platform {
 
     public:
         /** @brief
-        * Qik2s12v10 constructor.
-        * @details
-        * Constructs a Qik2s12v10 with the given parameters.
-        * @param uart_port The port that the qik_2s12v10_c class will use to
-        * communicate with the qik 2s12v10 motor controller board.
-        * @param baudrate The baud rate that the Qik2s12v10 will use in its
-        * UART TTL serial communication in bps.
-        * @param _reset_pin Pin that can be used to reset the qik2s12v10.
-        */
+         * Qik2s12v10 constructor.
+         * @details
+         * Constructs a Qik2s12v10 with the given parameters.
+         * @param uart_port The port that the qik_2s12v10_c class will use to
+         * communicate with the qik 2s12v10 motor controller board.
+         * @param baudrate The baud rate that the Qik2s12v10 will use in its
+         * UART TTL serial communication in bps.
+         * @param _reset_pin Pin that can be used to reset the qik2s12v10.
+         */
         qik_2s12v10_c(r2d2::usart::usart_connection_c &uart_bus,
                       hwlib::pin_out &reset_pin);
 
@@ -156,9 +155,9 @@ namespace r2d2::moving_platform {
 
         /**
          * @brief
-         * prints the errors returned by the getError function. 
+         * prints the errors returned by the getError function.
          * Making debugging easier.
-         * 
+         *
          */
         void print_errors();
 
@@ -234,18 +233,20 @@ namespace r2d2::moving_platform {
 
         /**
          * @brief
-         * This function returns the speed of the m0 motor by requesting the speed from the motor controller
-         * 
+         * This function returns the speed of the m0 motor by requesting the
+         * speed from the motor controller
+         *
          * @return Returns the m0 motor speed between 0 - 127
-         */ 
+         */
         uint8_t get_m0_speed();
 
         /**
          * @brief
-         * This function returns the speed of the m1 motor by requesting the speed from the motor controller
-         * 
+         * This function returns the speed of the m1 motor by requesting the
+         * speed from the motor controller
+         *
          * @return Returns the m1 motor speed between 0 - 127
-         */ 
+         */
         uint8_t get_m1_speed();
     };
 } // namespace r2d2::moving_platform
