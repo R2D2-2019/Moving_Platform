@@ -4,35 +4,37 @@ namespace r2d2::moving_platform {
 
     beetle_c::beetle_c(
         r2d2::moving_platform::qik_2s12v10_c &qik_2s12v10_motorcontroller,
-        base_comm_c &comm, hwlib::adc &encode_m0, hwlib::adc &encode_m1)
+        base_comm_c &comm, hwlib::adc &motor_encoder_m0,
+        hwlib::adc &motor_encoder_m1)
         : moving_platform_c(comm),
           qik_2s12v10_motorcontroller(qik_2s12v10_motorcontroller),
-          encode_m0(encode_m0),
-          encode_m1(encode_m1) {
+          motor_encoder_m0(motor_encoder_m0),
+          motor_encoder_m1(motor_encoder_m1) {
     }
     void beetle_c::set_speed(int8_t new_speed) {
         // the speed is given in percentage (-100 (backward) till 100
-        // (foreward))
-        speed = new_speed;
+        // (forward))
+
         // do not go out of range
-        if (speed > 100) {
-            speed = 100;
-        } else if (speed < -100) {
-            speed = -100;
+        if (new_speed > 100) {
+            set_speed(100);
+        } else if (new_speed < -100) {
+            set_speed(-100);
         }
         // because of inaccuracies, when not touching the pendals of manual
-        // control, a number beween -3 and 8 can be given Just to make sure the
-        // robot will not move forward then and not react to quickly, a theshold
-        // is made for -10 till 10.
-        else if (speed < 10 && speed > -10) {
-            speed = 0;
-        }
-        qik_2s12v10_motorcontroller.set_m0_speed(speed);
-        qik_2s12v10_motorcontroller.set_m1_speed(-speed);
-    }
+        // control, a number beween -3 and 8 can be given Just to make sure
+        // the robot will not move forward then and not react to quickly, a
+        // theshold is made for -10 till 10.
 
-    void beetle_c::set_steering(int16_t degrees) {
-    }
+        else if (new_speed < 10 && new_speed > -10) {
+            set_speed(0);
+        } else {
+            set_speed(new_speed);
+        }
+        qik_2s12v10_motorcontroller.set_m0_speed(new_speed);
+        qik_2s12v10_motorcontroller.set_m1_speed(-new_speed);
+    } // namespace r2d2::moving_platform
+
     void beetle_c::turn(int16_t degrees) {
         // because of inaccuracies, when moving forward, the steer of manual
         // control will give a number beween -10 and 10 Just to make sure the
@@ -70,7 +72,7 @@ namespace r2d2::moving_platform {
         qik_2s12v10_motorcontroller.set_m1_speed(motor_speed);
 
         while (true && degrees != 0) {
-            if (encode_m0.read() > adc_voltage) {
+            if (motor_encoder_m0.read() > adc_voltage) {
                 if (low_m0 == true) {
                     counter_m0++;
                 }
@@ -83,7 +85,7 @@ namespace r2d2::moving_platform {
                 qik_2s12v10_motorcontroller.brake_m0(20);
             }
 
-            if (encode_m1.read() > adc_voltage) {
+            if (motor_encoder_m1.read() > adc_voltage) {
                 if (low_m1 == true) {
                     counter_m1++;
                 }
@@ -102,9 +104,5 @@ namespace r2d2::moving_platform {
             // wait so the while loop aint blocking
             hwlib::wait_ms(0.1);
         }
-    } // namespace r2d2::moving_platform
-    void beetle_c::move(int8_t distance) {
-    }
-    void beetle_c::move(int8_t x, int8_t y) {
     }
 } // namespace r2d2::moving_platform

@@ -11,19 +11,15 @@ namespace r2d2::moving_platform {
      * provided with.
      */
     class moving_platform_c : public base_module_c {
-    protected:
+    private:
         /**
          * this speed represents a throtle in percentages (%)
          * This means that 100 is max and forward, -100 is backwards
-         *
-         * the angle is represented in degrees
          */
         int8_t speed;
-        int16_t steering_angle;
 
     public:
-        moving_platform_c(base_comm_c &comm)
-            : base_module_c(comm), speed(0), steering_angle(0) {
+        moving_platform_c(base_comm_c &comm) : base_module_c(comm), speed(0) {
 
             comm.listen_for_frames({r2d2::frame_type::MOVEMENT_CONTROL});
         }
@@ -67,10 +63,6 @@ namespace r2d2::moving_platform {
         virtual void set_speed(int8_t speed) = 0;
 
         /**
-         * set the angle to the given value
-         */
-        virtual void set_steering(int16_t degrees) = 0;
-        /**
          *	turns the moving platform
          */
         virtual void turn(int16_t degrees) = 0;
@@ -81,15 +73,9 @@ namespace r2d2::moving_platform {
         int8_t get_speed() const;
 
         /**
-         * returns the angle value
+         *
+         * Function to move a distance in cm.
          */
-        int16_t get_steering() const;
-
-        /**
-         * functiuons for testing purpose
-         * !not te be implemented or used in final product!
-         */
-        virtual void move(int8_t distance) = 0;
-        virtual void move(int8_t x, int8_t y) = 0;
+        virtual void move(uint16_t distance);
     };
 } // namespace r2d2::moving_platform
