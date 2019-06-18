@@ -211,8 +211,7 @@ namespace r2d2::moving_platform {
          * This function uses the raw reading from motor M0 to estimate how
          * much current flows through the motor in milliampere. Note that the
          * value returned by this function can differ from the actual current
-         * by as much as 20% and according to the datasheet the values needs to
-         * be multiplied by 150.
+         * by as much as 20% and according to the datasheet.
          *
          * @return Returns the calculated current of the m0 motor in milliamps
          */
@@ -222,8 +221,7 @@ namespace r2d2::moving_platform {
          * This function uses the raw reading from motor M1 to estimate how
          * much current flows through the motor in milliampere. Note that the
          * value returned by this function can differ from the actual current
-         * by as much as 20% and according to the datasheet the values needs to
-         * be multiplied by 150.
+         * by as much as 20% and according to the datasheet.
          *
          * @return Returns the calculated current of the m1 motor in milliamps
          */
