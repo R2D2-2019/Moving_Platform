@@ -35,7 +35,7 @@ namespace r2d2::moving_platform {
         qik_2s12v10_motorcontroller.set_m1_speed(-new_speed);
     } // namespace r2d2::moving_platform
 
-    void beetle_c::turn(int16_t degrees) {
+    void beetle_c::turn(int8_t degrees) {
         // because of inaccuracies, when moving forward, the steer of manual
         // control will give a number beween -10 and 10 Just to make sure the
         // robot will move forward and not react to quickly, a theshold is made
