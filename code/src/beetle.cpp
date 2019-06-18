@@ -17,9 +17,9 @@ namespace r2d2::moving_platform {
 
         // do not go out of range
         if (new_speed > 100) {
-            set_speed(100);
+            new_speed = 100;
         } else if (new_speed < -100) {
-            set_speed(-100);
+            new_speed = -100;
         }
         // because of inaccuracies, when not touching the pendals of manual
         // control, a number beween -3 and 8 can be given Just to make sure
@@ -27,9 +27,7 @@ namespace r2d2::moving_platform {
         // theshold is made for -10 till 10.
 
         else if (new_speed < 10 && new_speed > -10) {
-            set_speed(0);
-        } else {
-            set_speed(new_speed);
+            new_speed = 0;
         }
         qik_2s12v10_motorcontroller.set_m0_speed(new_speed);
         qik_2s12v10_motorcontroller.set_m1_speed(-new_speed);
