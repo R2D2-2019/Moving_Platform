@@ -92,8 +92,6 @@ namespace r2d2::moving_platform {
          * Constructs a Qik2s12v10 with the given parameters.
          * @param uart_port The port that the qik_2s12v10_c class will use to
          * communicate with the qik 2s12v10 motor controller board.
-         * @param baudrate The baud rate that the Qik2s12v10 will use in its
-         * UART TTL serial communication in bps.
          * @param _reset_pin Pin that can be used to reset the qik2s12v10.
          */
         qik_2s12v10_c(r2d2::usart::usart_connection_c &uart_bus,
