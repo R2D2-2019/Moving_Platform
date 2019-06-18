@@ -1,6 +1,5 @@
 #include <ostream>
 
-
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
 #include <hwlib.hpp>
@@ -28,7 +27,7 @@ TEST_CASE("Get error tests", "[qik_2s12v10]") {
     SECTION("Multiple errors") {
         test_error_code = 2;
     }
-    
+
     usart.add_receive_byte(test_error_code);
     REQUIRE(motor_controller.get_error_byte() == test_error_code);
 }
