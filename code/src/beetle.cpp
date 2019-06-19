@@ -11,6 +11,7 @@ namespace r2d2::moving_platform {
           motor_encoder_m0(motor_encoder_m0),
           motor_encoder_m1(motor_encoder_m1) {
     }
+
     void beetle_c::set_speed(int8_t new_speed) {
         // the speed is given in percentage (-100 (backward) till 100
         // (forward))
@@ -40,8 +41,9 @@ namespace r2d2::moving_platform {
         // for -15 till 15.
         int min_degrees = 15;
         int max_degrees = 90;
-        if ((degrees < min_degrees && degrees > -min_degrees) ||
-            degrees > max_degrees || degrees < -max_degrees) {
+        if (degrees < -max_degrees ||
+            (degrees < min_degrees && degrees > -min_degrees) ||
+            degrees > max_degrees) {
             degrees = 0;
         }
         float turn = 2.40;
@@ -79,6 +81,7 @@ namespace r2d2::moving_platform {
             } else {
                 low_m0 = true;
             }
+
             if (counter_m0 ==
                 (int(encode_1_full_turn * turn / 360 * degrees))) {
                 qik_2s12v10_motorcontroller.brake_m0(20);
@@ -92,6 +95,7 @@ namespace r2d2::moving_platform {
             } else {
                 low_m1 = true;
             }
+
             if (counter_m1 ==
                 (int(encode_1_full_turn * turn / 360 * degrees))) {
                 qik_2s12v10_motorcontroller.brake_m1(20);
