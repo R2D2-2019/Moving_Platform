@@ -104,4 +104,71 @@ namespace r2d2::moving_platform {
             hwlib::wait_ms(0.1);
         }
     }
+    void beetle_c::move(int16_t distance) {
+        // wheel has a circumference of 39 cm
+        // Encode frequency for 1 turn of the wheel. the encoder has 64 point
+        // per over 2 pins we count when de adc goes from low to high of 1 pin.
+        // The gear ratio from the motor is 50:1 64/4*50 = 800
+        int rotation = distance / 39 * 800;
+        // The encoder code checks if the pulse goes from low to high. This is
+        // why we start the bool low.
+        bool low_m0 = true;
+        int counter_m0 = 0;
+        bool low_m1 = true;
+        int counter_m1 = 0;
+        // The adc input. is between 3000 and 3800.
+        unsigned int adc_voltage = 3500;
+        int speed = 20;
+        qik_2s12v10_motorcontroller.set_m0_speed(speed);
+        qik_2s12v10_motorcontroller.set_m1_speed(-speed);
+        // PID
+        int error = 0;
+        int kp = 1;
+        int gas = 0;
+
+        while (true) {
+            if (motor_encoder_m0.read() > adc_voltage) {
+                if (low_m0 == true) {
+                    counter_m0++;
+                }
+                low_m0 = false;
+            } else {
+                low_m0 = true;
+            }
+            if (counter_m0 == rotation) {
+                qik_2s12v10_motorcontroller.set_m0_speed(-50);
+                hwlib::wait_ms(5);
+                qik_2s12v10_motorcontroller.set_m0_speed(speed + gas);
+                qik_2s12v10_motorcontroller.brake_m0(0);
+            } else if (counter_m0 < rotation && counter_m0 % 100) {
+                qik_2s12v10_motorcontroller.set_m0_speed(speed + gas);
+            }
+
+            if (motor_encoder_m1.read() > adc_voltage) {
+                if (low_m1 == true) {
+                    counter_m1++;
+                }
+                low_m1 = false;
+            } else {
+                low_m1 = true;
+            }
+
+            if (counter_m1 == rotation) {
+                qik_2s12v10_motorcontroller.set_m1_speed(50);
+                hwlib::wait_ms(5);
+                qik_2s12v10_motorcontroller.set_m0_speed(0);
+                qik_2s12v10_motorcontroller.brake_m1(0);
+            } else if (counter_m1 < rotation && counter_m0 % 100) {
+                qik_2s12v10_motorcontroller.set_m1_speed(-speed - gas);
+            }
+
+            if (counter_m0 > rotation && counter_m1 > rotation) {
+                hwlib::cout << gas;
+                break;
+            } else {
+                error = counter_m0 - counter_m1;
+                gas = error * kp;
+            }
+        }
+    }
 } // namespace r2d2::moving_platform

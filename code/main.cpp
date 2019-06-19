@@ -26,10 +26,7 @@ int main(void) {
     auto beetle =
         r2d2::moving_platform::beetle_c(qik, comm, encode_m0, encode_m1);
 
-    while (true) {
-        beetle.process();
-        hwlib::wait_ms(100);
-    }
+    beetle.move(61);
 
     return 0;
 }
