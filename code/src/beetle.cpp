@@ -30,7 +30,7 @@ namespace r2d2::moving_platform {
             new_speed = 0;
         }
         qik_2s12v10_motorcontroller.set_m0_speed(new_speed);
-        qik_2s12v10_motorcontroller.set_m1_speed(-new_speed);
+        qik_2s12v10_motorcontroller.set_m1_speed(new_speed);
     } // namespace r2d2::moving_platform
 
     void beetle_c::turn(int8_t degrees) {
@@ -68,7 +68,7 @@ namespace r2d2::moving_platform {
         }
         // motor tests strats motors.
         qik_2s12v10_motorcontroller.set_m0_speed(motor_speed);
-        qik_2s12v10_motorcontroller.set_m1_speed(motor_speed);
+        qik_2s12v10_motorcontroller.set_m1_speed(-motor_speed);
 
         while (true && degrees != 0) {
             if (motor_encoder_m0.read() > adc_voltage) {
@@ -118,9 +118,9 @@ namespace r2d2::moving_platform {
         int counter_m1 = 0;
         // The adc input. is between 3000 and 3800.
         unsigned int adc_voltage = 3500;
-        int speed = 20;
+        int speed = -50;
         qik_2s12v10_motorcontroller.set_m0_speed(speed);
-        qik_2s12v10_motorcontroller.set_m1_speed(-speed);
+        qik_2s12v10_motorcontroller.set_m1_speed(speed);
         // PID
         int error = 0;
         int kp = 1;
@@ -136,10 +136,7 @@ namespace r2d2::moving_platform {
                 low_m0 = true;
             }
             if (counter_m0 == rotation) {
-                qik_2s12v10_motorcontroller.set_m0_speed(-50);
-                hwlib::wait_ms(5);
-                qik_2s12v10_motorcontroller.set_m0_speed(speed + gas);
-                qik_2s12v10_motorcontroller.brake_m0(0);
+                qik_2s12v10_motorcontroller.brake_m0(100);
             } else if (counter_m0 < rotation && counter_m0 % 100) {
                 qik_2s12v10_motorcontroller.set_m0_speed(speed + gas);
             }
@@ -154,12 +151,9 @@ namespace r2d2::moving_platform {
             }
 
             if (counter_m1 == rotation) {
-                qik_2s12v10_motorcontroller.set_m1_speed(50);
-                hwlib::wait_ms(5);
-                qik_2s12v10_motorcontroller.set_m0_speed(0);
-                qik_2s12v10_motorcontroller.brake_m1(0);
+                qik_2s12v10_motorcontroller.brake_m1(100);
             } else if (counter_m1 < rotation && counter_m0 % 100) {
-                qik_2s12v10_motorcontroller.set_m1_speed(-speed - gas);
+                qik_2s12v10_motorcontroller.set_m1_speed(speed + gas);
             }
 
             if (counter_m0 > rotation && counter_m1 > rotation) {
