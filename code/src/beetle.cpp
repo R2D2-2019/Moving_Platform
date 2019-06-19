@@ -11,6 +11,7 @@ namespace r2d2::moving_platform {
           motor_encoder_m0(motor_encoder_m0),
           motor_encoder_m1(motor_encoder_m1) {
     }
+
     void beetle_c::set_speed(int8_t new_speed) {
         // the speed is given in percentage (-100 (backward) till 100
         // (forward))
