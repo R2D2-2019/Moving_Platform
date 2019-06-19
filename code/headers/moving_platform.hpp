@@ -40,12 +40,8 @@ namespace r2d2::moving_platform {
                 if (data.brake) {
                     set_speed(0);
                     break;
-                }
-
-                if (data.speed) {
+                } else {
                     set_speed(data.speed);
-                }
-                if (data.rotation) {
                     turn(data.rotation);
                 }
             }
