@@ -30,7 +30,7 @@ namespace r2d2::moving_platform {
          * @detail
          * the speed set must not exceed -100 of 100, if it is, it will set back
          * to 100 or -100
-         * @param    int: new speed percentage
+         * @param    int8_t: new speed percentage
          */
         void set_speed(int8_t new_speed) override;
 
@@ -40,7 +40,7 @@ namespace r2d2::moving_platform {
          * @detail
          * The degrees set must not exceed -90 of 90, if it is, it will set back
          * to -90 or 90
-         * @param    int: new degrees
+         * @param    int8_t: new degrees
          */
         void turn(int8_t degrees) override;
     };
