@@ -13,25 +13,25 @@ namespace r2d2::moving_platform {
     void rhino_c::set_speed(int8_t new_speed) {
         // the speed is given in percentage (-100 (backward) till 100
         // (foreward))
-        speed = new_speed;
+
         // do not go out of range
-        if (speed > 127) {
-            speed = 127;
-        } else if (speed < -127) {
-            speed = -127;
+        if (new_speed > 127) {
+            new_speed = 127;
+        } else if (new_speed < -127) {
+            new_speed = -127;
         }
         // because of inaccuracies, when not touching the pendals of manual
         // control, a number beween -3 and 8 can be given Just to make sure the
         // robot will not move forward then and not react to quickly, a theshold
         // is made for -10 till 10.
-        else if (speed < 10 && speed > -10) {
-            speed = 0;
+        else if (new_speed < 10 && new_speed > -10) {
+            new_speed = 0;
         }
-        qik_2s12v10_motorcontroller.set_m0_speed(speed);
-        qik_2s12v10_motorcontroller.set_m1_speed(speed);
+        qik_2s12v10_motorcontroller.set_m0_speed(new_speed);
+        qik_2s12v10_motorcontroller.set_m1_speed(new_speed);
     }
 
-    void rhino_c::turn(int16_t degrees) {
+    void rhino_c::turn(int8_t degrees) {
 
         // The puls. Its starts low.
         bool low_m0 = false;

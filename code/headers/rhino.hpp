@@ -44,12 +44,12 @@ namespace r2d2::moving_platform {
          * tested to be accurate.
          * @param   degrees
          */
-        void turn(int16_t degrees) override;
+        void turn(int8_t degrees) override;
         /**
          * @brief
          * This function will move the platform a certain distance
          * @param    distance
          */
-        void move(int8_t distance) override;
+        void move(int8_t distance);
     };
 } // namespace r2d2::moving_platform
