@@ -6,7 +6,6 @@
 #include <hwlib.hpp>
 #include <qik_2s12v10.hpp>
 
-
 int main(void) {
     // kill the watchdog
     WDT->WDT_MR = WDT_MR_WDDIS;
@@ -27,19 +26,23 @@ int main(void) {
 
     hwlib::cout << "Initializing qik 2s12v10.\n";
     qik_2s12v10_motorcontroller.init();
-    qik_2s12v10_motorcontroller.print_errors(); // checking errors and printing errors, because
+    qik_2s12v10_motorcontroller
+        .print_errors(); // checking errors and printing errors, because
                          // somtimes the qik goes into a random error state and
                          // this will clear it and if there are any erros it
                          // displays them.
-    hwlib::cout << "Device id: " << qik_2s12v10_motorcontroller.get_configuration_parameter(r2d2::moving_platform::qik_2s12v10_configuration_parameter::device_id);
-    hwlib::cout << "Initialization compleet.\n";
+    hwlib::cout << "Device id: "
+                << qik_2s12v10_motorcontroller.get_configuration_parameter(
+                       r2d2::moving_platform::
+                           qik_2s12v10_configuration_parameter::device_id);
+    hwlib::cout << "Initialization complete.\n";
 
     if (test_set_speed) {
         // error_test:
         hwlib::cout << "Testing the get_error function.\n";
         hwlib::cout << "Error byte: " << hwlib::bin
-                    << qik_2s12v10_motorcontroller.get_error_byte() << hwlib::dec
-                    << '\n';
+                    << qik_2s12v10_motorcontroller.get_error_byte()
+                    << hwlib::dec << '\n';
 
         // motor tests:
         hwlib::cout << "Testing both motors, full power forward.\n";
@@ -88,7 +91,8 @@ int main(void) {
         hwlib::cout << "Testing the get_configuration_parameter function.\n";
         hwlib::cout << "Current PWM configuration (should be 0): "
                     << qik_2s12v10_motorcontroller.get_configuration_parameter(
-                           r2d2::moving_platform::qik_2s12v10_configuration_parameter::device_id)
+                           r2d2::moving_platform::
+                               qik_2s12v10_configuration_parameter::device_id)
                     << '\n';
         hwlib::wait_ms(500);
     }
@@ -103,8 +107,8 @@ int main(void) {
     if (test_get_error) {
         hwlib::cout << "Testing the get_error function.\n";
         hwlib::cout << "Error byte: " << hwlib::bin
-                    << qik_2s12v10_motorcontroller.get_error_byte() << hwlib::dec
-                    << '\n';
+                    << qik_2s12v10_motorcontroller.get_error_byte()
+                    << hwlib::dec << '\n';
     }
     if (test_brake_motor) {
 
@@ -129,7 +133,6 @@ int main(void) {
         hwlib::wait_ms(1000);
         qik_2s12v10_motorcontroller.brake_m1(127);
         hwlib::wait_ms(5000);
-
 
         hwlib::cout << "brake tests done\n";
     }
