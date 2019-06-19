@@ -23,6 +23,7 @@ namespace r2d2::moving_platform {
                                const qik_2s12v10_registers &rhs) {
         return out << static_cast<char>(rhs);
     }
+
     hwlib::ostream &operator<<(hwlib::ostream &out,
                                const qik_2s12v10_configuration_parameter &rhs) {
         return out << static_cast<char>(rhs);
@@ -88,6 +89,7 @@ namespace r2d2::moving_platform {
                       << static_cast<char>(-1 * new_speed);
         }
     }
+
     void qik_2s12v10_c::set_m1_speed(int8_t new_speed) {
 
         // Todo: depending on the motor configuration, 127 may not be the
@@ -190,9 +192,11 @@ namespace r2d2::moving_platform {
         wait_for_bus();
         return usart_bus.receive();
     }
+
     uint8_t qik_2s12v10_c::get_m1_speed() {
         usart_bus << qik_2s12v10_registers::get_motor_m1_speed;
         wait_for_bus();
         return usart_bus.receive();
     }
+
 } // namespace r2d2::moving_platform

@@ -80,6 +80,7 @@ namespace r2d2::moving_platform {
             } else {
                 low_m0 = true;
             }
+
             if (counter_m0 ==
                 (int(encode_1_full_turn * turn / 360 * degrees))) {
                 qik_2s12v10_motorcontroller.brake_m0(20);
@@ -93,6 +94,7 @@ namespace r2d2::moving_platform {
             } else {
                 low_m1 = true;
             }
+
             if (counter_m1 ==
                 (int(encode_1_full_turn * turn / 360 * degrees))) {
                 qik_2s12v10_motorcontroller.brake_m1(20);
