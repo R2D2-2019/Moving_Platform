@@ -40,8 +40,9 @@ namespace r2d2::moving_platform {
         // for -15 till 15.
         int min_degrees = 15;
         int max_degrees = 90;
-        if ((degrees < min_degrees && degrees > -min_degrees) ||
-            degrees > max_degrees || degrees < -max_degrees) {
+        if (degrees < -max_degrees ||
+            (degrees < min_degrees && degrees > -min_degrees) ||
+            degrees > max_degrees) {
             degrees = 0;
         }
         float turn = 2.40;
