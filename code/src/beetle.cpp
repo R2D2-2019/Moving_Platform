@@ -114,54 +114,66 @@ namespace r2d2::moving_platform {
         // why we start the bool low.
         bool low_m0 = true;
         int counter_m0 = 0;
+        int counter_m0_totaal = 0;
         bool low_m1 = true;
         int counter_m1 = 0;
+        int counter_m1_totaal = 0;
         // The adc input. is between 3000 and 3800.
         unsigned int adc_voltage = 3500;
-        int speed = -50;
-        qik_2s12v10_motorcontroller.set_m0_speed(speed);
-        qik_2s12v10_motorcontroller.set_m1_speed(speed);
+        int master_speed = -50;
+        int slave_speed = master_speed + 5;
+        qik_2s12v10_motorcontroller.set_m0_speed(master_speed);
+        qik_2s12v10_motorcontroller.set_m1_speed(slave_speed);
         // PID
         int error = 0;
-        int kp = 1;
-        int gas = 0;
+        int kp = 10;
+        int tick = hwlib::now_us();
 
         while (true) {
             if (motor_encoder_m0.read() > adc_voltage) {
                 if (low_m0 == true) {
                     counter_m0++;
+                    counter_m0_totaal++;
                 }
                 low_m0 = false;
             } else {
                 low_m0 = true;
             }
-            if (counter_m0 == rotation) {
+            if (counter_m0_totaal == rotation) {
                 qik_2s12v10_motorcontroller.brake_m0(100);
-            } else if (counter_m0 < rotation && counter_m0 % 100) {
-                qik_2s12v10_motorcontroller.set_m0_speed(speed + gas);
             }
 
             if (motor_encoder_m1.read() > adc_voltage) {
                 if (low_m1 == true) {
                     counter_m1++;
+                    counter_m1_totaal++;
                 }
                 low_m1 = false;
             } else {
                 low_m1 = true;
             }
 
-            if (counter_m1 == rotation) {
+            if (counter_m1_totaal == rotation) {
                 qik_2s12v10_motorcontroller.brake_m1(100);
-            } else if (counter_m1 < rotation && counter_m0 % 100) {
-                qik_2s12v10_motorcontroller.set_m1_speed(speed + gas);
+            } else if (counter_m1_totaal < rotation) {
+                slave_speed = ((slave_speed <= -10) ? slave_speed : -10);
+                qik_2s12v10_motorcontroller.set_m1_speed(slave_speed);
             }
 
-            if (counter_m0 > rotation && counter_m1 > rotation) {
-                hwlib::cout << gas;
+            if (counter_m0_totaal > rotation && counter_m1_totaal > rotation) {
+                hwlib::cout << "Done \n";
                 break;
+
+                // Master slave method
             } else {
-                error = counter_m0 - counter_m1;
-                gas = error * kp;
+                if (hwlib::now_us() - tick > 10000) {
+                    error = counter_m0 - counter_m1;
+                    slave_speed -= error / kp;
+                    counter_m0 = 0;
+                    counter_m1 = 0;
+
+                    tick = hwlib::now_us();
+                }
             }
         }
     }
