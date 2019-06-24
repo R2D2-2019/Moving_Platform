@@ -35,11 +35,10 @@ namespace r2d2::moving_platform {
 
         // The puls. Its starts low.
         bool low_m0 = false;
-        int counter_m0 = 0;
+        unsigned int counter_m0 = 0;
         bool low_m1 = false;
-        int counter_m1 = 0;
-        // The adc input. is between 3000 and 3800.
-        unsigned int adc_voltage = 3500;
+        unsigned int counter_m1 = 0;
+
         // Encode frequency for 1 turn of the wheel. the encoder has 64 point
         // per over 2 pins we count when de adc goes from low to high of 1 pin.
         // The gear ratio from the motor is 50:1 64/4*50 = 800
@@ -47,7 +46,6 @@ namespace r2d2::moving_platform {
 
         // Invert the motor speed and degrees if its a negative value.
         if (degrees < 0) {
-            // turn right
             turn_speed = turn_speed * -1;
             degrees = degrees * -1;
         }
