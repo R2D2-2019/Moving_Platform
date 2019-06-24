@@ -13,39 +13,14 @@ namespace r2d2::moving_platform {
     class moving_platform_c : public base_module_c {
 
     public:
-        moving_platform_c(base_comm_c &comm) : base_module_c(comm) {
+        moving_platform_c(base_comm_c &comm);
 
-            comm.listen_for_frames({r2d2::frame_type::MOVEMENT_CONTROL});
-        }
         /**
          * @brief
          * This function will process the frames from the canbus. only reads
          * from canbus
          */
-        void process() override {
-            comm.request(r2d2::frame_type::MOVEMENT_CONTROL);
-            while (comm.has_data()) {
-
-                auto frame = comm.get_data();
-                // Process the frame
-
-                // Don't handle requests
-                if (frame.request) {
-                    continue;
-                }
-
-                const auto data =
-                    frame.as_frame_type<frame_type::MOVEMENT_CONTROL>();
-
-                if (data.brake) {
-                    set_speed(0);
-                    break;
-                } else {
-                    set_speed(data.speed);
-                    turn(data.rotation);
-                }
-            }
-        }
+        void process() override;
 
         /**
          * set the speed to the given value
