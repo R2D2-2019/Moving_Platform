@@ -59,7 +59,7 @@ namespace r2d2::moving_platform {
         qik_2s12v10_motorcontroller.set_m0_speed(turn_speed);
         qik_2s12v10_motorcontroller.set_m1_speed(-1 * turn_speed);
 
-        while (true && degrees != 0) {
+        while (degrees != 0) {
             if (encode_m0.read() > adc_voltage) {
                 if (low_m0 == true) {
                     counter_m0++;
