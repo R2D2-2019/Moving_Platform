@@ -39,8 +39,6 @@ namespace r2d2::moving_platform {
         // control will give a number beween -10 and 10 Just to make sure the
         // robot will move forward and not react to quickly, a theshold is made
         // for -15 till 15.
-        int min_degrees = 15;
-        int max_degrees = 90;
         if (degrees < -max_degrees ||
             (degrees < min_degrees && degrees > -min_degrees) ||
             degrees > max_degrees) {

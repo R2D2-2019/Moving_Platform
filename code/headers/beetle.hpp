@@ -11,6 +11,8 @@ namespace r2d2::moving_platform {
         qik_2s12v10_c &qik_2s12v10_motorcontroller;
         hwlib::adc &motor_encoder_m0;
         hwlib::adc &motor_encoder_m1;
+        constexpr static uint8_t min_degrees = 15;
+        constexpr static uint8_t max_degrees = 90;
 
     public:
         /**
