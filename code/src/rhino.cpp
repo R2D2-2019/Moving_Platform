@@ -44,6 +44,12 @@ namespace r2d2::moving_platform {
         // The gear ratio from the motor is 50:1 64/4*50 = 800
         int encode_1_full_turn = 800;
 
+        // The encoder_target_svalue is the value the encoder needs to reach so
+        // that the revolutions of the axle matches with the set degrees of the
+        // rhino.
+        unsigned int encoder_target_value =
+            encode_1_full_turn * turn_factor / 360 * degrees;
+
         // Invert the motor speed and degrees if its a negative value.
         if (degrees < 0) {
             turn_speed = turn_speed * -1;
@@ -72,18 +78,14 @@ namespace r2d2::moving_platform {
                 low_m1 = true;
             }
 
-            if (counter_m0 ==
-                (int(encode_1_full_turn * turn_factor / 360 * degrees))) {
+            if (counter_m0 >= encoder_target_value) {
                 qik_2s12v10_motorcontroller.set_m0_speed(0);
             }
-            if (counter_m1 ==
-                (int(encode_1_full_turn * turn_factor / 360 * degrees))) {
+            if (counter_m1 >= encoder_target_value) {
                 qik_2s12v10_motorcontroller.set_m1_speed(0);
             }
-            if (counter_m0 >
-                    (encode_1_full_turn * turn_factor / 360 * degrees) &&
-                counter_m1 >
-                    (encode_1_full_turn * turn_factor / 360 * degrees)) {
+            if (counter_m0 >= encoder_target_value &&
+                counter_m1 >= encoder_target_value) {
                 break;
             }
         }
