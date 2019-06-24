@@ -33,7 +33,10 @@ namespace r2d2::moving_platform {
 
     void rhino_c::turn(int8_t degrees) {
 
-        // The puls. Its starts low.
+        // These booleans will be used to check wether the voltage is high or
+        // low.These booleans are also to prevent the issue of multiple times
+        // seeing the encoder value is high when it has actually not dropped
+        // back down again.
         bool low_m0 = false;
         unsigned int counter_m0 = 0;
         bool low_m1 = false;
