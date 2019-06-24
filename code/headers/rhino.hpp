@@ -13,7 +13,7 @@ namespace r2d2::moving_platform {
         hwlib::adc &encode_m1;
         constexpr static uint8_t turn_factor = 66;
         uint8_t turn_speed = 80;
-        constexpr unsigned int adc_voltage = 3500;
+        constexpr static unsigned int adc_voltage = 3500;
 
     public:
         /**
