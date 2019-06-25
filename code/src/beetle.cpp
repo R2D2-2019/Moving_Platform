@@ -138,7 +138,7 @@ namespace r2d2::moving_platform {
         // on embeded is not that fast.
         const uint_fast8_t kp = 2;
         // sets the tick.
-        int tick = hwlib::now_us();
+        uint_fast64_t tick = hwlib::now_us();
 
         while (counter_m0_total <= encoder_rotations ||
                counter_m1_total <= encoder_rotations) {
