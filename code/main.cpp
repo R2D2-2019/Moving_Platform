@@ -16,10 +16,9 @@ int main(void) {
 
     // Create reset pin for the qik board
     auto qik_2s12v10_reset_pin = hwlib::target::pin_out(2, 25); // digital pin 5
-    auto usart = r2d2::usart::hardware_usart_c<r2d2::usart::usart0>(115200);
 
     // Create usart object.
-    auto usart = r2d2::usart::hardware_usart_c<r2d2::usart::usart0>(11500);
+        auto usart = r2d2::usart::hardware_usart_c<r2d2::usart::usart0>(115200);
 
     // Create qik_controller for robot
     r2d2::moving_platform::qik_2s12v10_c qik =

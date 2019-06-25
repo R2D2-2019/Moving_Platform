@@ -11,7 +11,6 @@ namespace r2d2::moving_platform {
         qik_2s12v10_c &qik_2s12v10_motorcontroller;
         hwlib::adc &motor_encoder_m0;
         hwlib::adc &motor_encoder_m1;
-        feature-move_certain_distance_beetle
         constexpr static float turn_factor = 2.4;
         constexpr static uint8_t move_speed = 25;
         constexpr static uint16_t adc_voltage = 3500;
