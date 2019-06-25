@@ -33,21 +33,28 @@ namespace r2d2::moving_platform {
 
     void rhino_c::turn(int8_t degrees) {
 
-        // The puls. Its starts low.
+        // These booleans will be used to check wether the voltage is high or
+        // low.These booleans are also to prevent the issue of multiple times
+        // seeing the encoder value is high when it has actually not dropped
+        // back down again.
         bool low_m0 = false;
-        int counter_m0 = 0;
+        unsigned int counter_m0 = 0;
         bool low_m1 = false;
-        int counter_m1 = 0;
-        // The adc input. is between 3000 and 3800.
-        unsigned int adc_voltage = 3500;
+        unsigned int counter_m1 = 0;
+
         // Encode frequency for 1 turn of the wheel. the encoder has 64 point
         // per over 2 pins we count when de adc goes from low to high of 1 pin.
         // The gear ratio from the motor is 50:1 64/4*50 = 800
         int encode_1_full_turn = 800;
 
+        // The encoder_target_svalue is the value the encoder needs to reach so
+        // that the revolutions of the axle matches with the set degrees of the
+        // rhino.
+        unsigned int encoder_target_value =
+            encode_1_full_turn * turn_factor / 360 * degrees;
+
         // Invert the motor speed and degrees if its a negative value.
         if (degrees < 0) {
-            // turn right
             turn_speed = turn_speed * -1;
             degrees = degrees * -1;
         }
@@ -55,7 +62,8 @@ namespace r2d2::moving_platform {
         qik_2s12v10_motorcontroller.set_m0_speed(turn_speed);
         qik_2s12v10_motorcontroller.set_m1_speed(-1 * turn_speed);
 
-        while (true && degrees != 0) {
+        while (counter_m0 < encoder_target_value &&
+               counter_m1 < encoder_target_value) {
             if (encode_m0.read() > adc_voltage) {
                 if (low_m0 == true) {
                     counter_m0++;
@@ -74,19 +82,11 @@ namespace r2d2::moving_platform {
                 low_m1 = true;
             }
 
-            if (counter_m0 ==
-                (int(encode_1_full_turn * turn_factor / 360 * degrees))) {
+            if (counter_m0 >= encoder_target_value) {
                 qik_2s12v10_motorcontroller.set_m0_speed(0);
             }
-            if (counter_m1 ==
-                (int(encode_1_full_turn * turn_factor / 360 * degrees))) {
+            if (counter_m1 >= encoder_target_value) {
                 qik_2s12v10_motorcontroller.set_m1_speed(0);
-            }
-            if (counter_m0 >
-                    (encode_1_full_turn * turn_factor / 360 * degrees) &&
-                counter_m1 >
-                    (encode_1_full_turn * turn_factor / 360 * degrees)) {
-                break;
             }
         }
     }

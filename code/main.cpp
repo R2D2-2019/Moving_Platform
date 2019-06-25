@@ -10,9 +10,6 @@ int main(void) {
     WDT->WDT_MR = WDT_MR_WDDIS;
     hwlib::wait_ms(1000);
 
-    // Bool to change between process function and rhino turn test.
-    bool rhino_motor_test = true;
-
     // Create two encode pins for the motors.
     auto encode_m0 = hwlib::target::pin_adc(hwlib::target::ad_pins::a0);
     auto encode_m1 = hwlib::target::pin_adc(hwlib::target::ad_pins::a1);
@@ -34,20 +31,10 @@ int main(void) {
     auto rhino =
         r2d2::moving_platform::rhino_c(qik, comm, encode_m0, encode_m1);
 
-    if (!rhino_motor_test) {
-        while (1) {
-            rhino.process();
-            hwlib::wait_ms(100);
-        }
-    }
-
-    if (rhino_motor_test) {
-        hwlib::cout << "Testing the rhino to turn 90 degrees left and right.\n";
-        hwlib::wait_ms(500);
-        rhino.turn(90);
-        hwlib::wait_ms(1'000);
-        rhino.turn(-90);
-        hwlib::wait_ms(1'000);
+    // process loop
+    while (true) {
+        rhino.process();
+        hwlib::wait_ms(100);
     }
 
     return 0;
