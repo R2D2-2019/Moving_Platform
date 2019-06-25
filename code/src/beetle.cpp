@@ -98,7 +98,7 @@ namespace r2d2::moving_platform {
 
                 qik_2s12v10_motorcontroller.brake_m1(20);
             }
-            
+
             if (counter_m0 >
                     (encode_1_full_turn * turn_factor / 360 * degrees) &&
                 counter_m1 >
@@ -121,10 +121,10 @@ namespace r2d2::moving_platform {
         // why we start the bool low.
         bool m0_state = false;
         uint_fast8_t counter_m0 = 0;
-        uint_fast16_t counter_m0_total = 0;
+        uint_fast32_t counter_m0_total = 0;
         bool m1_state = false;
         uint_fast8_t counter_m1 = 0;
-        uint_fast16_t counter_m1_total = 0;
+        uint_fast32_t counter_m1_total = 0;
         // The speed of the beetle while moving in a staight line.
         uint_fast8_t master_power = move_speed;
         // Initialise slavePower as masterPower - 5 so we don’t get huge error
