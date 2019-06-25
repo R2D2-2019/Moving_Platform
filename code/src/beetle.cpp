@@ -40,10 +40,9 @@ namespace r2d2::moving_platform {
         // robot will move forward and not react to quickly, a theshold is made
         // for -15 till 15.
 
-        const uint8_t min_degrees = 15;
-        const uint8_t max_degrees = 90;
-        if ((degrees < min_degrees && degrees > -min_degrees) ||
-            degrees > max_degrees || degrees < -max_degrees) {
+        if (degrees < -max_degrees ||
+            (degrees < min_degrees && degrees > -min_degrees) ||
+            degrees > max_degrees) {
             degrees = 0;
         }
         // The encoder code checks if the pulse goes from low to high. This is

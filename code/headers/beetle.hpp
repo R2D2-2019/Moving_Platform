@@ -11,6 +11,7 @@ namespace r2d2::moving_platform {
         qik_2s12v10_c &qik_2s12v10_motorcontroller;
         hwlib::adc &motor_encoder_m0;
         hwlib::adc &motor_encoder_m1;
+        feature-move_certain_distance_beetle
         constexpr static float turn_factor = 2.4;
         constexpr static uint8_t move_speed = 25;
         constexpr static uint16_t adc_voltage = 3500;
@@ -18,7 +19,8 @@ namespace r2d2::moving_platform {
         constexpr static uint8_t stopping_distance = 3;
         constexpr static uint8_t wheel_circumference = 39;
         constexpr static uint64_t interval = 50000;
-
+        constexpr static uint8_t min_degrees = 15;
+        constexpr static uint8_t max_degrees = 90;
     public:
         /**
          * @brief
