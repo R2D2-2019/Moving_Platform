@@ -38,28 +38,25 @@ namespace r2d2::moving_platform {
         // control will give a number beween -10 and 10 Just to make sure the
         // robot will move forward and not react to quickly, a theshold is made
         // for -15 till 15.
-        int min_degrees = 15;
-        int max_degrees = 90;
+        const uint8_t min_degrees = 15;
+        const uint8_t max_degrees = 90;
         if ((degrees < min_degrees && degrees > -min_degrees) ||
             degrees > max_degrees || degrees < -max_degrees) {
             degrees = 0;
         }
-        float turn = 2.40;
         // The encoder code checks if the pulse goes from low to high. This is
         // why we start the bool low.
-        bool low_m0 = true;
-        int counter_m0 = 0;
-        bool low_m1 = true;
-        int counter_m1 = 0;
-        // The adc input. is between 3000 and 3800.
-        unsigned int adc_voltage = 3500;
+        bool m0_state = false;
+        uint_fast16_t counter_m0 = 0;
+        bool m1_state = false;
+        uint_fast16_t counter_m1 = 0;
         // Encode frequency for 1 turn of the wheel. the encoder has 64 point
         // per over 2 pins we count when de adc goes from low to high of 1 pin.
         // The gear ratio from the motor is 50:1 64/4*50 = 800
-        int encode_1_full_turn = 800;
+
         // Motor speed
         // Default turn speed.
-        int motor_speed = 20;
+        uint8_t motor_speed = move_speed;
         // Turn the right way.
         if (degrees < 0) {
             // turn right
@@ -72,83 +69,83 @@ namespace r2d2::moving_platform {
 
         while (true && degrees != 0) {
             if (motor_encoder_m0.read() > adc_voltage) {
-                if (low_m0 == true) {
+                if (m0_state == false) {
                     counter_m0++;
                 }
-                low_m0 = false;
+                m0_state = true;
             } else {
-                low_m0 = true;
+                m0_state = false;
             }
-            if (counter_m0 ==
-                (int(encode_1_full_turn * turn / 360 * degrees))) {
+            if (counter_m0 == (uint_fast16_t(encode_1_full_turn * turn_factor /
+                                             360 * degrees))) {
                 qik_2s12v10_motorcontroller.brake_m0(20);
             }
 
             if (motor_encoder_m1.read() > adc_voltage) {
-                if (low_m1 == true) {
+                if (m1_state == false) {
                     counter_m1++;
                 }
-                low_m1 = false;
+                m1_state = true;
             } else {
-                low_m1 = true;
+                m1_state = false;
             }
-            if (counter_m1 ==
-                (int(encode_1_full_turn * turn / 360 * degrees))) {
+            if (counter_m1 == (uint_fast16_t(encode_1_full_turn * turn_factor /
+                                             360 * degrees))) {
                 qik_2s12v10_motorcontroller.brake_m1(20);
             }
-            if (counter_m0 > (encode_1_full_turn * turn / 360 * degrees) &&
-                counter_m1 > (encode_1_full_turn * turn / 360 * degrees)) {
+            if (counter_m0 >
+                    (encode_1_full_turn * turn_factor / 360 * degrees) &&
+                counter_m1 >
+                    (encode_1_full_turn * turn_factor / 360 * degrees)) {
                 break;
             }
         }
     }
-    void beetle_c::move(int16_t distance) {
-        // wheel has a circumference of 39 cm
+    void beetle_c::move(uint16_t distance) {
         // Encode frequency for 1 turn of the wheel. the encoder has 64 point
         // per over 2 pins we count when de adc goes from low to high of 1 pin.
-        // The gear ratio from the motor is 50:1 64/4*50 = 800
-        // The wheel has a circumference of 39 cm
-        //  it cost 3 cm to stop the beetle
-        const int16_t encoder_rotations = (distance - 3) * 800 / 39;
+        uint_fast16_t encoder_rotations;
+        if (distance >= 10) {
+            encoder_rotations = (distance - stopping_distance) *
+                                encode_1_full_turn / wheel_circumference;
+        } else {
+            encoder_rotations = 0;
+        }
         // The encoder code checks if the pulse goes from low to high. This is
         // why we start the bool low.
-        bool low_m0 = true;
-        int counter_m0 = 0;
-        int16_t counter_m0_total = 0;
-        bool low_m1 = true;
-        int counter_m1 = 0;
-        int16_t counter_m1_total = 0;
-        // The adc input. is between 3000 and 3800.
-        unsigned int adc_voltage = 3500;
+        bool m0_state = false;
+        uint_fast8_t counter_m0 = 0;
+        uint_fast16_t counter_m0_total = 0;
+        bool m1_state = false;
+        uint_fast8_t counter_m1 = 0;
+        uint_fast16_t counter_m1_total = 0;
         // The speed of the beetle while moving in a staight line.
-        int master_power = 25;
+        uint_fast8_t master_power = move_speed;
         // Initialise slavePower as masterPower - 5 so we don’t get huge error
         // for the first few iterations
-        int slave_power = master_power - 5;
+        uint_fast8_t slave_power = master_power - 5;
         qik_2s12v10_motorcontroller.set_m1_speed(-slave_power);
         qik_2s12v10_motorcontroller.set_m0_speed(-master_power);
         // proportional control setup
-        int error = 0;
+        int_fast8_t error = 0;
         // kp 2 workt te best. we only using integers because calculation floats
         // on embeded is not that fast.
-        int kp = 2;
-        // interval between proportional control updates in mircosecond.
-        uint_fast64_t interval = 50000;
+        const uint_fast8_t kp = 2;
         // sets the tick.
         int tick = hwlib::now_us();
 
-        while (counter_m0_total < encoder_rotations ||
-               counter_m1_total < encoder_rotations) {
+        while (counter_m0_total <= encoder_rotations ||
+               counter_m1_total <= encoder_rotations) {
 
             // encoder for motor 0
             if (motor_encoder_m0.read() > adc_voltage) {
-                if (low_m0 == true) {
+                if (m0_state == false) {
                     counter_m0++;
                     counter_m0_total++;
                 }
-                low_m0 = false;
+                m0_state = true;
             } else {
-                low_m0 = true;
+                m0_state = false;
             }
             // brake the motor if its has reached the target
             if (counter_m0_total == encoder_rotations) {
@@ -157,17 +154,18 @@ namespace r2d2::moving_platform {
 
             // encoder for motor 1
             if (motor_encoder_m1.read() > adc_voltage) {
-                if (low_m1 == true) {
+                if (m1_state == false) {
                     counter_m1++;
                     counter_m1_total++;
                 }
-                low_m1 = false;
+                m1_state = true;
             } else {
-                low_m1 = true;
+                m1_state = false;
             }
 
             // brake the motor if its has reached the target
-            
+            // Moter0 has a consistent speed and motor1 has adjustble speed so
+            // it can minimize the error.
             if (counter_m1_total == encoder_rotations) {
                 qik_2s12v10_motorcontroller.brake_m1(0);
             } else if (counter_m1_total < encoder_rotations) {
@@ -176,7 +174,7 @@ namespace r2d2::moving_platform {
                 qik_2s12v10_motorcontroller.set_m1_speed(-slave_power);
             }
 
-            // Master slave method 
+            // Master slave method
             // update every interval
             if (hwlib::now_us() - tick > interval) {
                 error = counter_m0 - counter_m1;
