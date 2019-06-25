@@ -134,7 +134,7 @@ namespace r2d2::moving_platform {
         qik_2s12v10_motorcontroller.set_m0_speed(-master_power);
         // proportional control setup
         int_fast8_t error = 0;
-        // kp 2 workt te best. we only using integers because calculation floats
+        // kp 2 worked te best. we only using integers because calculation with floats
         // on embeded is not that fast.
         const uint_fast8_t kp = 2;
         // sets the tick.
