@@ -32,14 +32,22 @@ TEST_CASE("Get error tests", "[qik_2s12v10]") {
     REQUIRE(motor_controller.get_error_byte() == test_error_code);
 }
 
-TEST_CASE("Setting motor speed","[qik_2s12v10]") {
+TEST_CASE("Setting motor speed", "[qik_2s12v10]") {
     hwlib::pin_out_test reset_pin_test;
     auto usart = r2d2::usart::test_usart_c();
     auto motor_controller =
         r2d2::moving_platform::qik_2s12v10_c(usart, reset_pin_test);
-    uint8_t speed =10; 
-    
-    //motor_controller.set_m0_speed(speed);
-    usart.send(speed);
-    REQUIRE(usart.get_send_byte()==speed); 
+
+    // Check init function if the correct value was send to usart.
+    REQUIRE(usart.get_send_byte() == 170);
+
+    // set variable for motorspeed.
+    uint8_t speed = 100;
+
+    motor_controller.set_m0_speed(speed);
+    // Check if first byte send is m0 motor forward register.
+    REQUIRE(usart.get_send_byte() == 136);
+
+    // Check second byte is equal to the speed
+    REQUIRE(usart.get_send_byte() == speed);
 }
