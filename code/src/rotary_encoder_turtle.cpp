@@ -7,20 +7,30 @@ namespace r2d2::moving_platform {
         : input_encoder(input_encoder) {
     }
 
-    uint8_t rotary_encoder_turtle::get_speed() {
-        uint8_t counter;
-        bool encoder_previus_measurement, encoder_current_measument;
-        uint_fast64_t time_start_measurement;
+    bool rotary_encoder_turtle::read_encoder_data() {
+        input_encoder.refresh();
+        return input_encoder.read();
+    }
 
-        time_start_measurement = hwlib::now_us();
-        encoder_previus_measurement = input_encoder.read();
-        while (hwlib::now_us() - time_start_measurement <= interval) {
-            encoder_current_measument = input_encoder.read();
-            if (encoder_current_measument != encoder_previus_measurement) {
-                counter++;
-                encoder_previus_measurement = encoder_current_measument;
+    uint8_t rotary_encoder_turtle::get_speed() {
+        // Encoder data state swap counter
+        uint16_t encoder_step_counter = 0;
+
+        // Track initial time
+        uint_fast64_t time_start_measurement = hwlib::now_us();
+
+        // Initial measurement of the encoder
+        bool encoder_initial_measurement = read_encoder_data();
+
+        while (interval <= (hwlib::now_us() - time_start_measurement)) {
+
+            if (read_encoder_data() != encoder_initial_measurement) {
+                encoder_step_counter++;
+                encoder_initial_measurement = !encoder_initial_measurement;
             }
         }
-        return counter;
+
+        // Returns number of times the encoder read switched states
+        return encoder_step_counter;
     }
 } // namespace r2d2::moving_platform

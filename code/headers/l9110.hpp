@@ -14,16 +14,16 @@ namespace r2d2 {
         class l9110 {
         private:
             int16_t speed = 0; // motor is idle by default
-            pwm_c &channel_fowrard, &channel_backward;
+            pwm_c &channel_forward, &channel_backward;
 
         public:
             /*
              *@brief
              *constucts l9110
-             *@param  pwm_c: pwm channel_fowrard for pin IA
+             *@param  pwm_c: pwm channel_forward for pin IA
              *@param  pwm_c: pwm channel_backward for pin IB
              */
-            l9110(pwm_c &channel_fowrard, pwm_c &channel_backward);
+            l9110(pwm_c &channel_forward, pwm_c &channel_backward);
 
             /*
              *@brief

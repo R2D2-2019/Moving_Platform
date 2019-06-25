@@ -42,18 +42,22 @@ int main(void) {
         right_rotary_encoder);
 
     hwlib::cout << "Testing turtle driving forward\n";
-    turtle.set_speed(10);
+    hwlib::wait_ms(1);
+    turtle.set_speed(50);
     hwlib::wait_ms(500);
     turtle.update();
     hwlib::wait_ms(3000);
 
     hwlib::cout << "Testing turtle driving backwards\n";
-    turtle.set_speed(-10);
+    hwlib::wait_ms(1);
+    turtle.set_speed(-50);
     hwlib::wait_ms(500);
+    hwlib::cout << "Driving backwards test now!\n";
     turtle.update();
     hwlib::wait_ms(3000);
 
     hwlib::cout << "Stopping the turtle\n";
+    hwlib::wait_ms(1);
     turtle.set_speed(0);
     hwlib::wait_ms(500);
     turtle.update();

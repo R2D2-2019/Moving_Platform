@@ -29,7 +29,8 @@ namespace r2d2::moving_platform {
         }
         /**
          * @brief
-         * This function will process the frames from the canbus. only reads from canbus
+         * This function will process the frames from the canbus. only reads
+         * from canbus
          */
         void process() override {
             comm.request(r2d2::frame_type::MOVEMENT_CONTROL);

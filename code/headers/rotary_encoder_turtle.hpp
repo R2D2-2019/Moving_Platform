@@ -16,6 +16,13 @@ namespace r2d2 {
              @param pin_in: pin to connect to DO of the encoder
              */
             rotary_encoder_turtle(hwlib::target::pin_in &input_encoder);
+
+            /*
+             *@brief
+             * Returns data received from the encoder, (on/off)
+             */
+            bool read_encoder_data();
+
             /*@brief
             *measure the speed of the encoder
             @return returns the speed of the speed measured by the encoder
