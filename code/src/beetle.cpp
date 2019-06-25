@@ -153,7 +153,7 @@ namespace r2d2::moving_platform {
             } else {
                 m0_state = false;
             }
-            // brake the motor if its has reached the target
+            // brake the motor if it has reached the target
             if (counter_m0_total == encoder_rotations) {
                 qik_2s12v10_motorcontroller.brake_m0(0);
             }
