@@ -169,7 +169,7 @@ namespace r2d2::moving_platform {
                 m1_state = false;
             }
 
-            // brake the motor if its has reached the target
+            // brake the motor if it has reached the target
             // Moter0 has a consistent speed and motor1 has adjustble speed so
             // it can minimize the error.
             if (counter_m1_total == encoder_rotations) {
