@@ -31,7 +31,7 @@ int main(void) {
     auto beetle =
         r2d2::moving_platform::beetle_c(qik, comm, encode_m0, encode_m1);
 
-    beetle.turn(-90);
+    beetle.turn(-45);
 
     return 0;
 }
