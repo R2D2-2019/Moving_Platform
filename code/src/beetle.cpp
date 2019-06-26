@@ -191,7 +191,7 @@ namespace r2d2::moving_platform {
     }
 
     void beetle_c::set_steer(int8_t new_angle) {
-        if (new_angle > -90 && new_angle > 90) {
+        if (new_angle > -90 && new_angle < 90) {
             steering_angle = new_angle;
             int8_t power_m0 = speed;
             int8_t power_m1 = speed;
