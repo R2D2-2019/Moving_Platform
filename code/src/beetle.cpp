@@ -174,7 +174,7 @@ namespace r2d2::moving_platform {
             if (counter_m1_total == encoder_rotations) {
                 qik_2s12v10_motorcontroller.brake_m1(0);
             } else if (counter_m1_total < encoder_rotations) {
-                // the lowest the motor can power de motor can revieve is 10
+                // the lowest power level that the motor can receive is 10
                 slave_power = ((slave_power > 10) ? slave_power : 10);
                 qik_2s12v10_motorcontroller.set_m1_speed(-slave_power);
             }
