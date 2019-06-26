@@ -133,9 +133,9 @@ namespace r2d2::moving_platform {
         qik_2s12v10_motorcontroller.set_m0_speed(-master_power);
         // proportional control setup
         int_fast8_t error = 0;
-        // kp 2 worked te best. we only using integers because calculation with floats
-        // on embeded is not that fast.
-        constexpr uint_fast8_t kp = 2;
+        // proportional_gain 2 worked te best. we only using integers because
+        // calculation with floats on embeded is not that fast.
+        constexpr uint_fast8_t proportional_gain = 2;
         // sets the tick.
         uint_fast64_t tick = hwlib::now_us();
 
@@ -183,7 +183,7 @@ namespace r2d2::moving_platform {
             // update every interval
             if (hwlib::now_us() - tick > interval) {
                 error = counter_m0 - counter_m1;
-                slave_power += error / kp;
+                slave_power += error / proportional_gain;
                 counter_m0 = 0;
                 counter_m1 = 0;
                 tick = hwlib::now_us();
