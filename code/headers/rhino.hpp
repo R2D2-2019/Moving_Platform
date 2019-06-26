@@ -48,8 +48,9 @@ namespace r2d2::moving_platform {
         void turn(int8_t degrees) override;
         /**
          * @brief
-         * This function will move the platform a certain distance
-         * @param    distance
+         * This function will move the platform a certain distance in cm
+         * @param    uint16_t: distance
+         * Minimal moving distance is 10 cm.
          */
         void move(int8_t distance);
     };
