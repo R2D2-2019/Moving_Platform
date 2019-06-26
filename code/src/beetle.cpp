@@ -65,8 +65,8 @@ namespace r2d2::moving_platform {
             degrees = -degrees;
         }
         // motor tests strats motors.
-        qik_2s12v10_motorcontroller.set_m0_speed(motor_speed);
-        qik_2s12v10_motorcontroller.set_m1_speed(-motor_speed);
+        qik_2s12v10_motorcontroller.set_m0_speed(-motor_speed);
+        qik_2s12v10_motorcontroller.set_m1_speed(motor_speed);
 
         while (true && degrees != 0) {
             if (motor_encoder_m0.read() > adc_voltage) {
