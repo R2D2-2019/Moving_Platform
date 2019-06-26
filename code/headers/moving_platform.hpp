@@ -42,5 +42,9 @@ namespace r2d2::moving_platform {
          * Function to move a distance in cm.
          */
         virtual void move(uint16_t distance);
+        /**
+         * Function set steer angle.
+         */
+        virtual void set_steer(int8_t new_angle) = 0;
     };
 } // namespace r2d2::moving_platform

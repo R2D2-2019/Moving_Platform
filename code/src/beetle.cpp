@@ -30,8 +30,7 @@ namespace r2d2::moving_platform {
         else if (new_speed < 10 && new_speed > -10) {
             new_speed = 0;
         }
-        qik_2s12v10_motorcontroller.set_m0_speed(new_speed);
-        qik_2s12v10_motorcontroller.set_m1_speed(new_speed);
+        speed = new_speed;
     } // namespace r2d2::moving_platform
 
     void beetle_c::turn(int8_t degrees) {
@@ -190,4 +189,24 @@ namespace r2d2::moving_platform {
             }
         }
     }
+
+    void beetle_c::set_steer(int8_t new_angle) {
+        if (new_angle > -90 && new_angle > 90) {
+            steering_angle = new_angle;
+            int8_t power_m0 = speed;
+            int8_t power_m1 = speed;
+
+            if (steering_angle < 0) {
+                power_m0 = ((speed > 0) ? speed - (100 / 90 * -steering_angle)
+                                        : speed + (100 / 90 * -steering_angle));
+            } else if (steering_angle > 0) {
+                power_m1 = ((speed > 0) ? speed - (100 / 90 * steering_angle)
+                                        : speed + (100 / 90 * steering_angle));
+            }
+
+            qik_2s12v10_motorcontroller.set_m0_speed(power_m0);
+            qik_2s12v10_motorcontroller.set_m1_speed(power_m1);
+        }
+    }
+
 } // namespace r2d2::moving_platform

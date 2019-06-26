@@ -28,12 +28,12 @@ int main(void) {
     r2d2::comm_c comm;
 
     // Construct rhino object
-    auto rhino =
-        r2d2::moving_platform::rhino_c(qik, comm, encode_m0, encode_m1);
+    auto beetle =
+        r2d2::moving_platform::beetle_c(qik, comm, encode_m0, encode_m1);
  
     // process loop
     while (true) {
-        rhino.process();
+        beetle.process();
         hwlib::wait_ms(100);
     }
 

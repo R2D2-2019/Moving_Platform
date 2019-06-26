@@ -20,6 +20,8 @@ namespace r2d2::moving_platform {
         constexpr static uint64_t interval = 50000;
         constexpr static uint8_t min_degrees = 15;
         constexpr static uint8_t max_degrees = 90;
+        int8_t speed = 0;
+        int8_t steering_angle = 0;
     public:
         /**
          * @brief
@@ -58,5 +60,7 @@ namespace r2d2::moving_platform {
          * Minimal moving distance is 10 cm.
          */
         void move(uint16_t distance);
+
+        void set_steer(int8_t new_angle);
     };
 } // namespace r2d2::moving_platform
