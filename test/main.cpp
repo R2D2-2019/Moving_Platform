@@ -187,7 +187,7 @@ TEST_CASE("Testing brake functions", "[qik_2s12v10]") {
         REQUIRE(usart.get_send_byte() == speed);
 
         send_buffer = usart.get_send_bytes();
-        // Check if send buffer is empty, which should be after these 2 bytes.
+        // Check if send buffer is empty, which should be after these 4 bytes.
         REQUIRE(send_buffer.size() == 0);
 
         motor_controller.brake_m1(brake_amount);
@@ -201,7 +201,7 @@ TEST_CASE("Testing brake functions", "[qik_2s12v10]") {
         REQUIRE(usart.get_send_byte() == speed);
 
         send_buffer = usart.get_send_bytes();
-        // Check if send buffer is empty, which should be after these 2 bytes.
+        // Check if send buffer is empty, which should be after these 4 bytes.
         REQUIRE(send_buffer.size() == 0);
     }
     SECTION("Testing brake on seperate motors with negative value") {
@@ -218,7 +218,7 @@ TEST_CASE("Testing brake functions", "[qik_2s12v10]") {
         REQUIRE(usart.get_send_byte() == speed);
 
         send_buffer = usart.get_send_bytes();
-        // Check if send buffer is empty, which should be after these 2 bytes.
+        // Check if send buffer is empty, which should be after these 4 bytes.
         REQUIRE(send_buffer.size() == 0);
 
         motor_controller.brake_m1(brake_amount);
@@ -232,7 +232,7 @@ TEST_CASE("Testing brake functions", "[qik_2s12v10]") {
         REQUIRE(usart.get_send_byte() == speed);
 
         send_buffer = usart.get_send_bytes();
-        // Check if send buffer is empty, which should be after these 2 bytes.
+        // Check if send buffer is empty, which should be after these 4 bytes.
         REQUIRE(send_buffer.size() == 0);
     }
 }
