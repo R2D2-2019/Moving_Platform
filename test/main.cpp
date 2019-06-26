@@ -38,13 +38,22 @@ TEST_CASE("Setting motor speed", "[qik_2s12v10]") {
     auto motor_controller =
         r2d2::moving_platform::qik_2s12v10_c(usart, reset_pin_test);
 
+    std::vector<uint8_t> send_buffer = usart.get_send_bytes();
+
     // The init function will be called inside the constructor. This will write
     // the value of 0xAA in hex or 170 in decimal.
     REQUIRE(usart.get_send_byte() == 170);
 
+    send_buffer = usart.get_send_bytes();
+    // Testing if send buffer is empty.
+    REQUIRE(send_buffer.size() == 0);
+
     SECTION("Testing motor_m0") {
         // set variable for motorspeed.
         int speed = 100;
+
+        // Testing if send buffer is empty.
+        REQUIRE(send_buffer.size() == 0);
 
         motor_controller.set_m0_speed(speed);
         // The first byte that has to be send on the usart bus, is the register
@@ -55,9 +64,18 @@ TEST_CASE("Setting motor speed", "[qik_2s12v10]") {
         // Check second byte is equal to the speed
         REQUIRE(usart.get_send_byte() == speed);
 
+        // Testing if send buffer is empty. Which should be since these are the
+        // only USART commands that were sent.
+        REQUIRE(send_buffer.size() == 0);
+
         // Set the speed as a negative number, it should respond as going in
         // reverse.
         speed = -100;
+
+        send_buffer = usart.get_send_bytes();
+
+        // Testing if send buffer is empty.
+        REQUIRE(send_buffer.size() == 0);
 
         motor_controller.set_m0_speed(speed);
         // The first byte needs to correspond to the register address of
@@ -68,11 +86,15 @@ TEST_CASE("Setting motor speed", "[qik_2s12v10]") {
         // implementation writes 100 instead of -100, thats why the speed was
         // inverted from negative to positive in this test.
         REQUIRE(usart.get_send_byte() == speed * -1);
+
+        // Testing if send buffer is empty.
+        REQUIRE(send_buffer.size() == 0);
     }
 
     SECTION("Testing motor_m1") {
         // set variable for motorspeed.
         int speed = 100;
+        std::vector<uint8_t> send_buffer = usart.get_send_bytes();
 
         motor_controller.set_m1_speed(speed);
         // The first byte that has to be send on the usart bus, is the register
@@ -96,5 +118,41 @@ TEST_CASE("Setting motor speed", "[qik_2s12v10]") {
         // implementation writes 100 instead of -100, thats why the speed was
         // inverted from negative to positive in this test.
         REQUIRE(usart.get_send_byte() == speed * -1);
+
+        // Testing if send buffer is empty. Which should be since these are the
+        // only USART commands that were sent.
+        REQUIRE(send_buffer.size() == 0);
+    }
+}
+
+TEST_CASE("Testing brake functions", "[qik_2s12v10]") {
+    hwlib::pin_out_test reset_pin_test;
+    auto usart = r2d2::usart::test_usart_c();
+    auto motor_controller =
+        r2d2::moving_platform::qik_2s12v10_c(usart, reset_pin_test);
+    // The init function will be called inside the constructor. This will write
+    // the value of 0xAA in hex or 170 in decimal.
+    REQUIRE(usart.get_send_byte() == 170);
+    std::vector<uint8_t> send_buffer = usart.get_send_bytes();
+
+    // Check if send buffer is empty, which should be after getting the init
+    // byte.
+    REQUIRE(send_buffer.size() == 0);
+
+    SECTION("Testing general brake function") {
+        int brake_amount = 50;
+        motor_controller.brake(brake_amount);
+
+        // This should send 4 bytes over the usart bus. First the register of
+        // motor_m0_brake, then the brake amount, then the register of
+        // motor_m1_brake and again the brake amount.
+        CHECK(usart.get_send_byte() == 134);
+        CHECK(usart.get_send_byte() == brake_amount);
+        CHECK(usart.get_send_byte() == 135);
+        CHECK(usart.get_send_byte() == brake_amount);
+
+        send_buffer = usart.get_send_bytes();
+        // Check if send buffer is empty, which should be after these 4 bytes.
+        REQUIRE(send_buffer.size() == 0);
     }
 }
