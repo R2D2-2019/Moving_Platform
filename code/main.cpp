@@ -18,7 +18,7 @@ int main(void) {
     auto qik_2s12v10_reset_pin = hwlib::target::pin_out(2, 25); // digital pin 5
 
     // Create usart object.
-        auto usart = r2d2::usart::hardware_usart_c<r2d2::usart::usart0>(115200);
+    auto usart = r2d2::usart::hardware_usart_c<r2d2::usart::usart0>(115200);
 
     // Create qik_controller for robot
     r2d2::moving_platform::qik_2s12v10_c qik =
@@ -28,14 +28,10 @@ int main(void) {
     r2d2::comm_c comm;
 
     // Construct rhino object
-    auto rhino =
-        r2d2::moving_platform::rhino_c(qik, comm, encode_m0, encode_m1);
- 
-    // process loop
-    while (true) {
-        rhino.process();
-        hwlib::wait_ms(100);
-    }
+    auto beetle =
+        r2d2::moving_platform::beetle_c(qik, comm, encode_m0, encode_m1);
+
+    beetle.turn(-90);
 
     return 0;
 }
