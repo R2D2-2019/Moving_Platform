@@ -7,9 +7,10 @@ namespace r2d2::moving_platform {
         base_comm_c &comm, hwlib::adc &encode_m0, hwlib::adc &encode_m1)
         : moving_platform_c(comm),
           qik_2s12v10_motorcontroller(qik_2s12v10_motorcontroller),
-          encode_m0(encode_m0),
-          encode_m1(encode_m1) {
+          motor_encoder_m0(encode_m0),
+          motor_encoder_m1(encode_m1) {
     }
+
     void rhino_c::set_speed(int8_t new_speed) {
         // the speed is given in percentage (-100 (backward) till 100
         // (foreward))
@@ -64,7 +65,7 @@ namespace r2d2::moving_platform {
 
         while (counter_m0 < encoder_target_value &&
                counter_m1 < encoder_target_value) {
-            if (encode_m0.read() > adc_voltage) {
+            if (motor_encoder_m0.read() > adc_voltage) {
                 if (low_m0 == true) {
                     counter_m0++;
                 }
@@ -73,7 +74,7 @@ namespace r2d2::moving_platform {
                 low_m0 = true;
             }
 
-            if (encode_m1.read() > adc_voltage) {
+            if (motor_encoder_m1.read() > adc_voltage) {
                 if (low_m1 == true) {
                     counter_m1++;
                 }
