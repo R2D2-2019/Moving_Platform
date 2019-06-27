@@ -20,14 +20,15 @@ namespace r2d2::moving_platform {
         constexpr static uint64_t interval = 50000;
         constexpr static uint8_t min_degrees = 15;
         constexpr static uint8_t max_degrees = 90;
+
     public:
         /**
          * @brief
          * Constructor beetle_c
-         * @param    comm
-         * @param    qik_2s12v10_motorcontroller
-         * @param    motor_encoder_m0
-         * @param    motor_encoder_m1
+         * @param    qik_2s12v10_motorcontroller: the qik motorcontroller board.
+         * @param    comm: the internal communication bus.
+         * @param    motor_encoder_m0: this is the encoder for motor_m0
+         * @param    motor_encoder_m1: this is the encoder for motor_m1
          */
         beetle_c(qik_2s12v10_c &qik_2s12v10_motorcontroller, base_comm_c &comm,
                  hwlib::adc &motor_encoder_m0, hwlib::adc &motor_encoder_m1);

@@ -19,10 +19,10 @@ namespace r2d2::moving_platform {
         /**
          * @brief
          * Constructor rhino_c
-         * @param    qik_2s12v10_motorcontroller
-         * @param    comm
-         * @param    motor_encoder_m0
-         * @param    motor_encoder_m1
+         * @param    qik_2s12v10_motorcontroller: the qik motorcontroller board.
+         * @param    comm: the internal communication bus.
+         * @param    motor_encoder_m0: this is the encoder for motor_m0
+         * @param    motor_encoder_m1: this is the encoder for motor_m1
          */
         rhino_c(qik_2s12v10_c &qik_2s12v10_motorcontroller, base_comm_c &comm,
                 hwlib::adc &motor_encoder_m0, hwlib::adc &motor_encoder_m1);
