@@ -7,6 +7,8 @@
                 "${workspaceFolder}/../../libraries/hwlib/library",
                 "${workspaceFolder}/../../programs/bmptk/targets/cortex/atmel",
                 "${workspaceFolder}/../../libraries/USART_library/code/headers",
+                "${workspaceFolder}/../../libraries/internal_communication/code/headers",
+                "${workspaceFolder}/../../libraries/datastructures/code/headers",
                 "${workspaceFolder}/code/headers"
             ],
             "defines": [
