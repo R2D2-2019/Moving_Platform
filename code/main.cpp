@@ -22,15 +22,13 @@ int main(void) {
     // Motor left backward channel
     auto pwm_channel_1 = pwm_c(1);
 
-    // Motor right forward channel
-    auto pwm_channel_2 = pwm_c(2);
-    // Motor right backward channel
-    auto pwm_channel_3 = pwm_c(3);
+	auto direction_pin_0 = hwlib::target::pin_out(hwlib::target::pins::d38);
+	auto direction_pin_1 = hwlib::target::pin_out(hwlib::target::pins::d40);
 
     auto turtle_motor_left =
-        r2d2::moving_platform::l9110(pwm_channel_0, pwm_channel_1);
+        r2d2::moving_platform::l9110(pwm_channel_0, direction_pin_0);
     auto turtle_motor_right =
-        r2d2::moving_platform::l9110(pwm_channel_2, pwm_channel_3);
+        r2d2::moving_platform::l9110(pwm_channel_1, direction_pin_1);
 
     auto left_rotary_encoder =
         r2d2::moving_platform::rotary_encoder_turtle(pin_d2);
@@ -41,27 +39,24 @@ int main(void) {
         turtle_motor_left, turtle_motor_right, left_rotary_encoder,
         right_rotary_encoder);
 
-    hwlib::cout << "Testing turtle driving forward\n";
-    hwlib::wait_ms(1);
-    turtle.set_speed(50);
-    hwlib::wait_ms(500);
-    turtle.update();
-    hwlib::wait_ms(3000);
 
-    hwlib::cout << "Testing turtle driving backwards\n";
-    hwlib::wait_ms(1);
-    turtle.set_speed(-50);
-    hwlib::wait_ms(500);
-    hwlib::cout << "Driving backwards test now!\n";
-    turtle.update();
-    hwlib::wait_ms(3000);
+	
+	hwlib::cout << "TEST: Turtle driving forward\n";
+    for (size_t i = 0; i < 255; i++) {
+        turtle.set_speed(i);
+        turtle.update();
+        hwlib::cout << "Current speed: " << i << '\n';
+        hwlib::wait_ms(100);
+    }
 
-    hwlib::cout << "Stopping the turtle\n";
-    hwlib::wait_ms(1);
-    turtle.set_speed(0);
-    hwlib::wait_ms(500);
-    turtle.update();
-    hwlib::wait_ms(3000);
+	hwlib::cout << "TEST: Turtle driving backwards\n";
+    for (size_t i = 0; i < 255; i++) {
+        turtle.set_speed(-1 * i);
+        turtle.update();
+        hwlib::cout << "Current speed: -" << i << '\n';
+        hwlib::wait_ms(100);
+    }
+
 
     hwlib::cout << "Tests completed\n";
 }

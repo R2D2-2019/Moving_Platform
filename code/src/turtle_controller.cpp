@@ -17,34 +17,37 @@ namespace r2d2::moving_platform {
 
     void turtle_controller::update() {
 
-        // Left motor PID
-        error_left = speed - encoder_left.get_speed();
-        integral_left = integral_left + (error_left * 10);
-        derivative = (error_left - prev_error_left) / 20;
-        out = (KP * error_left + KI * integral_left + KD * derivative);
+		motor_left.set_speed(speed);
+        motor_right.set_speed(speed);
 
-        // If the motors are set below 50 they stop moving
-        // 50 is therefore the minimum speed of the motor
-        if (out < 50) {
-            out = 50;
-        }
+        //// Left motor PID
+        //error_left = speed - encoder_left.get_speed();
+        //integral_left = integral_left + (error_left * 10);
+        //derivative = (error_left - prev_error_left) / 20;
+        //out = (KP * error_left + KI * integral_left + KD * derivative);
 
-        motor_left.set_speed(out);
-        prev_error_left = error_left;
+        //// If the motors are set below 50 they stop moving
+        //// 50 is therefore the minimum speed of the motor
+        //if (out < 50) {
+        //    out = 50;
+        //}
 
-        // Right motor PID
-        error_right = speed - encoder_right.get_speed();
-        integral_right = integral_right + (error_right * 10);
-        derivative = (error_right - prev_error_right) / 20;
-        out = (KP * error_right + KI * integral_right + KD * derivative);
+        //motor_left.set_speed(out);
+        //prev_error_left = error_left;
 
-        // if the motors are set below 50 the stop moving
-        // 50 is therefore the minimum speed of the motor
-        if (out < 50) {
-            out = 50;
-        }
-        motor_right.set_speed(out);
-        prev_error_right = error_right;
+        //// Right motor PID
+        //error_right = speed - encoder_right.get_speed();
+        //integral_right = integral_right + (error_right * 10);
+        //derivative = (error_right - prev_error_right) / 20;
+        //out = (KP * error_right + KI * integral_right + KD * derivative);
+
+        //// if the motors are set below 50 the stop moving
+        //// 50 is therefore the minimum speed of the motor
+        //if (out < 50) {
+        //    out = 50;
+        //}
+        //motor_right.set_speed(out);
+        //prev_error_right = error_right;
     }
 
     void turtle_controller::turn(int degree, int8_t direction) {
