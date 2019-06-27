@@ -137,7 +137,7 @@ namespace r2d2::moving_platform {
         // calculation with floats on embeded is not that fast.
         constexpr uint_fast8_t proportional_gain = 2;
         // sets the tick.
-        uint_fast64_t tick = hwlib::now_us();
+        uint_fast64_t previous_measurement_time = hwlib::now_us();
 
         while (counter_m0_total <= encoder_rotations ||
                counter_m1_total <= encoder_rotations) {
@@ -174,19 +174,19 @@ namespace r2d2::moving_platform {
             if (counter_m1_total == encoder_rotations) {
                 qik_2s12v10_motorcontroller.brake_m1(0);
             } else if (counter_m1_total < encoder_rotations) {
-                // the lowest the motor can power de motor can revieve is 10
+                // the lowest power level that the motor can receive is 10
                 slave_power = ((slave_power > 10) ? slave_power : 10);
                 qik_2s12v10_motorcontroller.set_m1_speed(-slave_power);
             }
 
             // Master slave method
             // update every interval
-            if (hwlib::now_us() - tick > interval) {
+            if (hwlib::now_us() - previous_measurement_time > interval) {
                 error = counter_m0 - counter_m1;
                 slave_power += error / proportional_gain;
                 counter_m0 = 0;
                 counter_m1 = 0;
-                tick = hwlib::now_us();
+                previous_measurement_time = hwlib::now_us();
             }
         }
     }
