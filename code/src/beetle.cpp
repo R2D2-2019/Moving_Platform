@@ -32,7 +32,7 @@ namespace r2d2::moving_platform {
         }
         qik_2s12v10_motorcontroller.set_m0_speed(new_speed);
         qik_2s12v10_motorcontroller.set_m1_speed(new_speed);
-    } // namespace r2d2::moving_platform
+    }
 
     void beetle_c::turn(int8_t degrees) {
         // because of inaccuracies, when moving forward, the steer of manual
@@ -106,6 +106,7 @@ namespace r2d2::moving_platform {
             }
         }
     }
+
     void beetle_c::move(uint16_t distance) {
         // Encode frequency for 1 turn of the wheel. the encoder has 64 point
         // per over 2 pins we count when de adc goes from low to high of 1 pin.
