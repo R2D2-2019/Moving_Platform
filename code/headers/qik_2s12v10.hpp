@@ -122,7 +122,8 @@ namespace r2d2::moving_platform {
          * This function sends a message to the motorcontroller. The
          * motorcontroller then uses the brakes of the motors.
          * @param The parameter is a number between 0 and 127. This number
-         * indicates how quick/powerfull the brakes are.
+         * indicates how quick/powerfull the brakes are. 
+         * If it is not between 0 and 127, it will be limited to 127.
          */
         void brake(uint8_t brake_amount);
 
@@ -131,6 +132,7 @@ namespace r2d2::moving_platform {
          * motorcontroller then uses the brakes of motor 0.
          * @param The parameter is a number between 0 and 127. This number
          * indicates how quick/powerfull the brakes are.
+         * If it is not between 0 and 127, it will be limited to 127.
          */
         void brake_m0(uint8_t brake_amount);
 
@@ -138,7 +140,8 @@ namespace r2d2::moving_platform {
          * This function sends a message to the motorcontroller. The
          * motorcontroller then uses the brakes of the motor 1.
          * @param The parameter is a number between 0 and 127. This number
-         * indicates how quick/powerfull the brakes are.
+         * indicates how quick/powerfull the brakes are. 
+         * If it is not between 0 and 127, it will be limited to 127.
          */
         void brake_m1(uint8_t brake_amount);
 
