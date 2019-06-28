@@ -14,6 +14,7 @@ TEST_CASE("Get error tests", "[qik_2s12v10]") {
         r2d2::moving_platform::qik_2s12v10_c(usart, reset_pin_test);
 
     uint8_t test_error_code;
+
     SECTION("No errors recieved") {
         test_error_code = 0;
     }
@@ -158,21 +159,20 @@ TEST_CASE("Testing brake functions", "[qik_2s12v10]") {
     SECTION("Testing general brake function with negative value") {
         int brake_amount = -50;
         motor_controller.brake(brake_amount);
-
-        // This should send 4 bytes over the usart bus. First the register of
-        // motor_m0_brake, then the brake amount, then the register of
+        // This should send 4 bytes over the usart bus. First the register
+        // of motor_m0_brake, then with 127, because int -50 is
+        // converted to a uint8_t, and limited to max 127m then the register of
         // motor_m1_brake and again the brake amount.
         REQUIRE(usart.get_send_byte() == 134);
-        REQUIRE(static_cast<char>(usart.get_send_byte()) ==
-                static_cast<char>(brake_amount));
+        REQUIRE(usart.get_send_byte() == 127);
         REQUIRE(usart.get_send_byte() == 135);
-        REQUIRE(static_cast<char>(usart.get_send_byte()) ==
-                static_cast<char>(brake_amount));
+        REQUIRE(usart.get_send_byte() == 127);
 
         send_buffer = usart.get_send_bytes();
         // Check if send buffer is empty, which should be after these 4 bytes.
         REQUIRE(send_buffer.size() == 0);
     }
+
     SECTION("Testing brake on seperate motors with positive value") {
         int speed = 0;
         int brake_amount = 50;
@@ -183,37 +183,6 @@ TEST_CASE("Testing brake functions", "[qik_2s12v10]") {
         // motor_m0_forward register, then speed 0.
         REQUIRE(usart.get_send_byte() == 134);
         REQUIRE(usart.get_send_byte() == brake_amount);
-        REQUIRE(usart.get_send_byte() == static_cast<uint8_t>(136));
-        REQUIRE(usart.get_send_byte() == speed);
-
-        send_buffer = usart.get_send_bytes();
-        // Check if send buffer is empty, which should be after these 4 bytes.
-        REQUIRE(send_buffer.size() == 0);
-
-        motor_controller.brake_m1(brake_amount);
-
-        // This should send 4 bytes over the usart bus. First the register of
-        // motor_m1_brake(value of 135), then the brake amount. Then the
-        // motor_m1_forward register, then speed 0.
-        REQUIRE(usart.get_send_byte() == 135);
-        REQUIRE(static_cast<char>(usart.get_send_byte()) == brake_amount);
-        REQUIRE(usart.get_send_byte() == static_cast<uint8_t>(140));
-        REQUIRE(usart.get_send_byte() == speed);
-
-        send_buffer = usart.get_send_bytes();
-        // Check if send buffer is empty, which should be after these 4 bytes.
-        REQUIRE(send_buffer.size() == 0);
-    }
-    SECTION("Testing brake on seperate motors with negative value") {
-        int speed = 0;
-        int brake_amount = -50;
-        motor_controller.brake_m0(brake_amount);
-
-        // This should send 4 bytes over the usart bus. First the register of
-        // motor_m1_brake(value of 134), then the brake amount. Then the
-        // motor_m1_forward register, then speed 0.
-        REQUIRE(usart.get_send_byte() == 134);
-        REQUIRE(static_cast<char>(usart.get_send_byte()) == brake_amount);
         REQUIRE(usart.get_send_byte() == 136);
         REQUIRE(usart.get_send_byte() == speed);
 
@@ -227,8 +196,41 @@ TEST_CASE("Testing brake functions", "[qik_2s12v10]") {
         // motor_m1_brake(value of 135), then the brake amount. Then the
         // motor_m1_forward register, then speed 0.
         REQUIRE(usart.get_send_byte() == 135);
-        REQUIRE(static_cast<char>(usart.get_send_byte()) == brake_amount);
-        REQUIRE(usart.get_send_byte() == static_cast<uint8_t>(140));
+        REQUIRE(usart.get_send_byte() == brake_amount);
+        REQUIRE(usart.get_send_byte() == 140);
+        REQUIRE(usart.get_send_byte() == speed);
+
+        send_buffer = usart.get_send_bytes();
+        // Check if send buffer is empty, which should be after these 4 bytes.
+        REQUIRE(send_buffer.size() == 0);
+    }
+    SECTION("Testing brake on seperate motors with negative value") {
+        int speed = 0;
+        int brake_amount = -50;
+        motor_controller.brake_m0(brake_amount);
+
+        // This should send 4 bytes over the usart bus. First the register of
+        // motor_m1_brake(value of 134), then with 127, because int -50 is
+        // converted to a uint8_t, and limited to max 127. Then the
+        // motor_m1_forward register, then speed 0.
+        REQUIRE(usart.get_send_byte() == 134);
+        REQUIRE(usart.get_send_byte() == 127);
+        REQUIRE(usart.get_send_byte() == 136);
+        REQUIRE(usart.get_send_byte() == speed);
+
+        send_buffer = usart.get_send_bytes();
+        // Check if send buffer is empty, which should be after these 4 bytes.
+        REQUIRE(send_buffer.size() == 0);
+
+        motor_controller.brake_m1(brake_amount);
+
+        // This should send 4 bytes over the usart bus. First the register of
+        // motor_m1_brake(value of 135), then with 127, because int -50 is
+        // converted to a uint8_t, and limited to max 127 Then the
+        // motor_m1_forward register, then speed 0.
+        REQUIRE(usart.get_send_byte() == 135);
+        REQUIRE(usart.get_send_byte() == 127);
+        REQUIRE(usart.get_send_byte() == 140);
         REQUIRE(usart.get_send_byte() == speed);
 
         send_buffer = usart.get_send_bytes();
