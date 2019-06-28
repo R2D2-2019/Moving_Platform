@@ -191,21 +191,27 @@ namespace r2d2::moving_platform {
     }
 
     void beetle_c::set_steer(int8_t new_angle) {
-        if (new_angle > -90 && new_angle < 90) {
+        if (new_angle >= -90 && new_angle <= 90) {
             steering_angle = new_angle;
             int8_t power_m0 = speed;
             int8_t power_m1 = speed;
-
             if (steering_angle < 0) {
-                power_m0 = ((speed > 0) ? speed - (100 / 90 * -steering_angle)
-                                        : speed + (100 / 90 * -steering_angle));
+                if (speed > 0) {
+                    power_m0 = (speed - (speed * -steering_angle / 90));
+                } else {
+                    power_m0 = (speed + (speed * -steering_angle / 90));
+                }
+
             } else if (steering_angle > 0) {
-                power_m1 = ((speed > 0) ? speed - (100 / 90 * steering_angle)
-                                        : speed + (100 / 90 * steering_angle));
+                if (speed > 0) {
+                    power_m1 = (speed - (speed * steering_angle / 90));
+                } else {
+                    power_m1 = (speed + (speed * steering_angle / 90));
+                }
             }
 
-            qik_2s12v10_motorcontroller.set_m0_speed(power_m0);
-            qik_2s12v10_motorcontroller.set_m1_speed(power_m1);
+            qik_2s12v10_motorcontroller.set_m0_speed(-power_m0);
+            qik_2s12v10_motorcontroller.set_m1_speed(-power_m1);
         }
     }
 
