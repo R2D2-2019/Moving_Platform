@@ -114,20 +114,29 @@ namespace r2d2::moving_platform {
         usart_bus << qik_2s12v10_registers::autodetect_baudrate;
     }
 
-    void qik_2s12v10_c::brake(const uint8_t brake_amount) {
+    void qik_2s12v10_c::brake(uint8_t brake_amount) {
+        if (brake_amount > 127) {
+            brake_amount = 127;
+        }
         usart_bus << qik_2s12v10_registers::set_motor_m0_brake
                   << static_cast<char>(brake_amount);
         usart_bus << qik_2s12v10_registers::set_motor_m1_brake
                   << static_cast<char>(brake_amount);
     }
 
-    void qik_2s12v10_c::brake_m0(const uint8_t brake_amount) {
+    void qik_2s12v10_c::brake_m0(uint8_t brake_amount) {
+        if (brake_amount > 127) {
+            brake_amount = 127;
+        }
         usart_bus << qik_2s12v10_registers::set_motor_m0_brake
                   << static_cast<char>(brake_amount);
         set_m0_speed(0);
     }
 
-    void qik_2s12v10_c::brake_m1(const uint8_t brake_amount) {
+    void qik_2s12v10_c::brake_m1(uint8_t brake_amount) {
+        if (brake_amount > 127) {
+            brake_amount = 127;
+        }
         usart_bus << qik_2s12v10_registers::set_motor_m1_brake
                   << static_cast<char>(brake_amount);
         set_m1_speed(0);
