@@ -144,13 +144,21 @@ TEST_CASE("Testing brake functions", "[qik_2s12v10]") {
         int brake_amount = 50;
         motor_controller.brake(brake_amount);
 
-        // This should send 4 bytes over the usart bus. First the register of
-        // motor_m0_brake, then the brake amount, then the register of
-        // motor_m1_brake and again the brake amount.
+        // This should send 4 bytes over the usart bus. First the register
+        // of motor_m0_brake, then the value of 50. Then set the speed of
+        // motor_m0 to speed 0. Then the motor_m1_brake with value of 50. then
+        // set the speed of motor_m1 to speed 0.
         REQUIRE(usart.get_send_byte() == 134);
         REQUIRE(usart.get_send_byte() == brake_amount);
+        // Set speed of motor_m0 to 0.
+        REQUIRE(usart.get_send_byte() == 136);
+        REQUIRE(usart.get_send_byte() == 0);
+        // motor_m1 brake with value of 50.
         REQUIRE(usart.get_send_byte() == 135);
         REQUIRE(usart.get_send_byte() == brake_amount);
+        // Set speed of motor_m1 to 0.
+        REQUIRE(usart.get_send_byte() == 140);
+        REQUIRE(usart.get_send_byte() == 0);
 
         send_buffer = usart.get_send_bytes();
         // Check if send buffer is empty, which should be after these 4 bytes.
@@ -159,14 +167,22 @@ TEST_CASE("Testing brake functions", "[qik_2s12v10]") {
     SECTION("Testing general brake function with negative value") {
         int brake_amount = -50;
         motor_controller.brake(brake_amount);
+
         // This should send 4 bytes over the usart bus. First the register
         // of motor_m0_brake, then with 127, because int -50 is
         // converted to a uint8_t, and limited to max 127m then the register of
         // motor_m1_brake and again the brake amount.
         REQUIRE(usart.get_send_byte() == 134);
         REQUIRE(usart.get_send_byte() == 127);
+        // Set speed of motor_m0 to 0.
+        REQUIRE(usart.get_send_byte() == 136);
+        REQUIRE(usart.get_send_byte() == 0);
+        // motor_m1 brake with value of 127.
         REQUIRE(usart.get_send_byte() == 135);
         REQUIRE(usart.get_send_byte() == 127);
+        // Set speed of motor_m1 to 0.
+        REQUIRE(usart.get_send_byte() == 140);
+        REQUIRE(usart.get_send_byte() == 0);
 
         send_buffer = usart.get_send_bytes();
         // Check if send buffer is empty, which should be after these 4 bytes.
