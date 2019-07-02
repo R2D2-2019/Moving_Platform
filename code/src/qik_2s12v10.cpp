@@ -118,10 +118,8 @@ namespace r2d2::moving_platform {
         if (brake_amount > 127) {
             brake_amount = 127;
         }
-        usart_bus << qik_2s12v10_registers::set_motor_m0_brake
-                  << static_cast<char>(brake_amount);
-        usart_bus << qik_2s12v10_registers::set_motor_m1_brake
-                  << static_cast<char>(brake_amount);
+        brake_m0(brake_amount);
+        brake_m1(brake_amount);
     }
 
     void qik_2s12v10_c::brake_m0(uint8_t brake_amount) {
