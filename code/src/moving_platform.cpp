@@ -4,7 +4,8 @@ namespace r2d2::moving_platform {
 
     moving_platform_c::moving_platform_c(base_comm_c &comm)
         : base_module_c(comm) {
-        comm.listen_for_frames({r2d2::frame_type::MOVEMENT_CONTROL});
+        comm.configure(r2d2::module::MOVING_PLATFORM,
+                       {r2d2::frame_type::MOVEMENT_CONTROL});
     }
 
     void moving_platform_c::process() {
